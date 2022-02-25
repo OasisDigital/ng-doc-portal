@@ -1,0 +1,28 @@
+{
+  "root": "apps/component-document-portal-e2e",
+  "sourceRoot": "apps/component-document-portal-e2e/src",
+  "projectType": "application",
+  "targets": {
+    "e2e": {
+      "executor": "@nrwl/cypress:cypress",
+      "options": {
+        "cypressConfig": "apps/component-document-portal-e2e/cypress.json",
+        "devServerTarget": "component-document-portal:serve:development"
+      },
+      "configurations": {
+        "production": {
+          "devServerTarget": "component-document-portal:serve:production"
+        }
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["apps/component-document-portal-e2e/**/*.{js,ts}"]
+      }
+    }
+  },
+  "tags": [],
+  "implicitDependencies": ["component-document-portal"]
+}

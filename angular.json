@@ -1,0 +1,7 @@
+{
+  "version": 2,
+  "projects": {
+    "component-document-portal": "apps/component-document-portal",
+    "component-document-portal-e2e": "apps/component-document-portal-e2e"
+  }
+}
