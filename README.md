@@ -66,3 +66,12 @@ Any changes to the `.doc-page.ts` files will result in two compilation loops of 
 This was made in a span of mostly 1 day. There could be better processes for consuming the `.doc-page.ts` files. I attempted to write the compiler in TS, but the way I was compiling my TS it was complaining about es module imports in the `.doc-page.ts` files with the Angular imports when doing a dynamic `import()` of the file from the globbing.
 
 Because of this I just opted to write the compiler in straight nodeJS and do a work around for the above. The compiler just reads the raw TS code from the file and transpiles it to a raw JS string. This raw JS string is then saved to a temporary `.mjs` file, dynamically imported into the compiler runtime, and then the `.mjs` file is deleted.
+
+## Generating Document Pages for Performance Testing
+
+To generate large numbers of Document Pages you can do `npm run gen:perf-testing`. If you want to modify the amount of files generate (default 100) you can do `npm run gen:perf-testing -- --amount {amount here}`.
+
+Example of generating 1000 files:
+`npm run gen:perf-testing -- --amount 1000`
+
+Which took ~6000ms (rounded up to near 1000ms) to initially generate the config list file on a solid grade desktop machine. The watch recompilations average anywhere from 10-50ms (after the 500ms debounce of potential multiple file changes).

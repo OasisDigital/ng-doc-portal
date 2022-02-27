@@ -10,6 +10,7 @@
     "gen:doc-page-configs:watch": "node doc-page-configs-compiler.js --watch",
     "gen:doc-page-configs:silent": "node doc-page-configs-compiler.js --silent",
     "gen:doc-page-configs:watch:silent": "node doc-page-configs-compiler.js --watch --silent",
+    "gen:perf-testing": "node generate-doc-pages.js",
     "serve:cdp": "nx serve component-document-portal",
     "start:cdp": "npm-run-all -p -r gen:doc-page-configs:watch:silent serve:cdp",
     "build": "nx build",

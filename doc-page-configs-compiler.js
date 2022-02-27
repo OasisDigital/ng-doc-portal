@@ -64,8 +64,15 @@ let firstCompile = true;
           );
           return { ...fileEvent, payload };
         } else if (fileEvent.type === 'add' || fileEvent.type === 'change') {
+          const startTime = Number(new Date());
           const configString = await compileDynamicDocPageConfigString(
             fileEvent.filePath
+          );
+          const endTime = Number(new Date());
+          log(
+            chalk.blue(
+              `${timeNow()} - COMPILE - recompiled in ${endTime - startTime}ms`
+            )
           );
           return { ...fileEvent, configString };
         } else {
@@ -92,19 +99,11 @@ let firstCompile = true;
           return copy;
         }
       }, []),
-      debounceTime(1000),
+      debounceTime(500),
       map((fileEvents) => fileEvents.map((fileEvent) => fileEvent.configString))
     )
     .subscribe(async (configStrings) => {
-      if (!firstCompile) {
-        log(chalk.cyan(`${timeNow()} - RECOMPILED STARTED`));
-      }
-
       await writeDynamicPageConfigStringsToFile(configStrings);
-
-      if (!firstCompile) {
-        log(chalk.cyan(`${timeNow()} - RECOMPILED FINISHED`));
-      }
 
       if (firstCompile && shouldWatch) {
         log(chalk.cyan('\nWatching for file changes...'));
@@ -134,38 +133,54 @@ let firstCompile = true;
 })();
 
 async function writeDynamicPageConfigStringsToFile(configStrings) {
-  await fs.writeFile(
-    './apps/component-document-portal/src/app/doc-page-configs.ts',
-    prettier.format(
-      `
-      import { DynamicDocPageConfig } from '@doc-page-config/types';
+  try {
+    await fs.writeFile(
+      './apps/component-document-portal/src/app/doc-page-configs.ts',
+      prettier.format(
+        `
+        import { DynamicDocPageConfig } from '@doc-page-config/types';
 
-      export const docPageConfigs = [
-        ${configStrings.toString()}
-      ] as DynamicDocPageConfig[];
-    `,
-      { parser: 'typescript', printWidth: 100 }
-    )
-  );
+        export const docPageConfigs = [
+          ${configStrings.toString()}
+        ] as DynamicDocPageConfig[];
+      `,
+        { parser: 'typescript', printWidth: 100 }
+      )
+    );
+  } catch (e) {
+    console.error(e);
+    log(
+      chalk.red(
+        `\n\nUnexpected error occurred while generating doc-page-configs.ts\n`
+      )
+    );
+  }
 }
 
 async function compileDynamicDocPageConfigString(filePath) {
-  const fileName = filePath.replace('.ts', '');
-  const rawTS = await fs.readFile('./' + filePath);
-  const rawJS = ts.transpile(rawTS.toString(), { module: 'es2020' });
-  const mjsFileName = `./${fileName}-${uniqueId()}.mjs`;
-  await fs.writeFile(mjsFileName, rawJS);
-  const file = await import(mjsFileName);
-  await fs.unlink(mjsFileName);
-  const docPageConfig = file.default;
-  return `
-    {
-      title: '${docPageConfig.title}',
-      route: '${docPageConfig.route}',
-      getDocPage: () => import('../../../../${fileName}').then((file) => file.default.docPage),
-      getNgModule: () => import('../../../../${fileName}').then((file) => file.default.ngModule),
-    }
-  `;
+  try {
+    const fileName = filePath.replace('.ts', '');
+    const rawTS = await fs.readFile('./' + filePath);
+    const rawJS = ts.transpile(rawTS.toString(), { module: 'es2020' });
+    const mjsFileName = `./${fileName}-${uniqueId()}.mjs`;
+    await fs.writeFile(mjsFileName, rawJS);
+    const file = await import(mjsFileName);
+    await fs.unlink(mjsFileName);
+    const docPageConfig = file.default;
+    return `
+      {
+        title: '${docPageConfig.title}',
+        route: '${docPageConfig.route}',
+        getDocPage: () => import('../../../../${fileName}').then((file) => file.default.docPage),
+        getNgModule: () => import('../../../../${fileName}').then((file) => file.default.ngModule),
+      }
+    `;
+  } catch (e) {
+    console.error(e);
+    log(
+      chalk.red(`\n\nUnexpected error occurred while compiling ${filePath}\n`)
+    );
+  }
 }
 
 function timeNow() {
