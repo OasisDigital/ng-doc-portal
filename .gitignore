@@ -1,5 +1,7 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
+apps/component-document-portal/src/app/doc-page-configs.ts
+
 # compiled output
 /dist
 /tmp

@@ -1,6 +1,6 @@
 {
   "extends": "./tsconfig.json",
-  "include": ["**/*.ts"],
+  "include": ["**/*.ts", "../../doc-page-config.type.ts"],
   "compilerOptions": {
     "types": ["jest", "node"]
   }

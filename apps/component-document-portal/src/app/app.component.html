@@ -1,0 +1,10 @@
+<nav class="side-navigation-bar">
+  <ul>
+    <li *ngFor="let docRoute of docPageRoutes">
+      <a [routerLink]="[docRoute.route]">{{ docRoute.title }}</a>
+    </li>
+  </ul>
+</nav>
+<div class="router-content">
+  <router-outlet></router-outlet>
+</div>

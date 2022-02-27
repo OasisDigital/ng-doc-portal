@@ -1,0 +1,44 @@
+:host {
+  height: 100%;
+  width: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, auto) 1fr;
+  grid-template-areas: 'nav content';
+
+  .side-navigation-bar {
+    grid-area: nav;
+    width: 200px;
+    border-right: 2px solid white;
+    height: 100%;
+    margin-right: 10px;
+
+    ul {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+
+      li {
+        width: 100%;
+
+        a {
+          text-decoration: none;
+          color: white;
+          font-size: 20px;
+          padding: 10px 20px;
+          border-bottom: 2px solid white;
+          width: calc(100% - 40px);
+          display: inline-block;
+
+          &:hover {
+            background-color: #464646;
+          }
+        }
+      }
+    }
+  }
+
+  .router-content {
+    grid-area: content;
+  }
+}
