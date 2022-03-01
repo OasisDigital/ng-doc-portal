@@ -1,7 +1,9 @@
 const chalk = require('chalk');
 const chokidar = require('chokidar');
+const { existsSync } = require('fs');
 const fs = require('fs/promises');
 const glob = require('glob');
+const path = require('path');
 const prettier = require('prettier');
 const { BehaviorSubject } = require('rxjs');
 const { scan, debounceTime, concatMap, map } = require('rxjs/operators');
@@ -159,13 +161,20 @@ async function writeDynamicPageConfigStringsToFile(configStrings) {
 
 async function compileDynamicDocPageConfigString(filePath) {
   try {
-    const fileName = filePath.replace('.ts', '');
+    const fileName = path.basename(filePath).replace('.ts', '');
     const rawTS = await fs.readFile('./' + filePath);
     const rawJS = ts.transpile(rawTS.toString(), { module: 'es2020' });
-    const mjsFileName = `./${fileName}-${uniqueId()}.mjs`;
-    await fs.writeFile(mjsFileName, rawJS);
-    const file = await import(mjsFileName);
-    await fs.unlink(mjsFileName);
+    const mjsPagesFolder = `mjs-pages`;
+    const mjsPagesFolderLocation = `${__dirname}/${mjsPagesFolder}`;
+    if (!existsSync(mjsPagesFolderLocation)) {
+      await fs.mkdir(mjsPagesFolderLocation);
+    }
+    const mjsFileName = `${fileName}-${uniqueId()}.mjs`;
+    const mjsFileLocation = `${mjsPagesFolderLocation}/${mjsFileName}`;
+    const relativeMjsFileLocation = `./${mjsPagesFolder}/${mjsFileName}`;
+    await fs.writeFile(mjsFileLocation, rawJS);
+    const file = await import(relativeMjsFileLocation);
+    await fs.unlink(mjsFileLocation);
     const docPageConfig = file.default;
     return `
       {
