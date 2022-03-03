@@ -176,12 +176,13 @@ async function compileDynamicDocPageConfigString(filePath) {
     const file = await import(relativeMjsFileLocation);
     await fs.unlink(mjsFileLocation);
     const docPageConfig = file.default;
+    const filePathWithoutExtension = filePath.replace('.ts', '');
     return `
       {
         title: '${docPageConfig.title}',
         route: '${docPageConfig.route}',
-        getDocPage: () => import('../../../../${fileName}').then((file) => file.default.docPage),
-        getNgModule: () => import('../../../../${fileName}').then((file) => file.default.ngModule),
+        getDocPage: () => import('../../../../${filePathWithoutExtension}').then((file) => file.default.docPage),
+        getNgModule: () => import('../../../../${filePathWithoutExtension}').then((file) => file.default.ngModule),
       }
     `;
   } catch (e) {
