@@ -1,6 +1,7 @@
 import {
   Component,
   createNgModuleRef,
+  Injector,
   OnDestroy,
   OnInit,
   ViewChild,
@@ -9,7 +10,7 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { filter, map, Subject, takeUntil, tap } from 'rxjs';
 import { docPageRouteParam } from './app.module';
-import { DynamicDocPageConfig } from '@doc-page-config/types';
+import { DynamicDocPageConfig } from '@cdp/component-document-portal/util-types';
 
 import { docPageConfigs } from './doc-page-configs';
 
@@ -22,7 +23,11 @@ export class DocPageViewerComponent implements OnInit, OnDestroy {
 
   destroy = new Subject<void>();
 
-  constructor(private router: Router, private route: ActivatedRoute) {}
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private injector: Injector
+  ) {}
 
   ngOnInit() {
     this.route.paramMap
@@ -45,13 +50,11 @@ export class DocPageViewerComponent implements OnInit, OnDestroy {
         const ngModule = await config.getNgModule();
         let ngModuleRef;
         if (ngModule) {
-          ngModuleRef = createNgModuleRef(ngModule);
+          ngModuleRef = createNgModuleRef(ngModule, this.injector);
         }
         if (this.docPageRenderer) {
           this.docPageRenderer.clear();
-          this.docPageRenderer.createComponent(component, {
-            ngModuleRef,
-          });
+          this.docPageRenderer.createComponent(component, { ngModuleRef });
         }
       });
   }

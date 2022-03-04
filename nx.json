@@ -1,5 +1,5 @@
 {
-  "npmScope": "component-document-portal",
+  "npmScope": "cdp",
   "affected": {
     "defaultBase": "main"
   },

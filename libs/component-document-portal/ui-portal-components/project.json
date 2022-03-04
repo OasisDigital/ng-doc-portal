@@ -1,0 +1,28 @@
+{
+  "projectType": "library",
+  "root": "libs/component-document-portal/ui-portal-components",
+  "sourceRoot": "libs/component-document-portal/ui-portal-components/src",
+  "prefix": "component-document-portal",
+  "targets": {
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": [
+        "coverage/libs/component-document-portal/ui-portal-components"
+      ],
+      "options": {
+        "jestConfig": "libs/component-document-portal/ui-portal-components/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/component-document-portal/ui-portal-components/src/**/*.ts",
+          "libs/component-document-portal/ui-portal-components/src/**/*.html"
+        ]
+      }
+    }
+  },
+  "tags": []
+}

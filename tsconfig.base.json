@@ -16,7 +16,12 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@doc-page-config/types": ["doc-page-config.types.ts"]
+      "@cdp/component-document-portal/ui-portal-components": [
+        "libs/component-document-portal/ui-portal-components/src/index.ts"
+      ],
+      "@cdp/component-document-portal/util-types": [
+        "libs/component-document-portal/util-types/src/index.ts"
+      ]
     }
   },
   "exclude": ["node_modules", "tmp"]

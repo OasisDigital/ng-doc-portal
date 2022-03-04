@@ -2,6 +2,8 @@
   "version": 2,
   "projects": {
     "component-document-portal": "apps/component-document-portal",
-    "component-document-portal-e2e": "apps/component-document-portal-e2e"
+    "component-document-portal-e2e": "apps/component-document-portal-e2e",
+    "component-document-portal-ui-portal-components": "libs/component-document-portal/ui-portal-components",
+    "component-document-portal-util-types": "libs/component-document-portal/util-types"
   }
 }

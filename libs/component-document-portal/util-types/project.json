@@ -1,0 +1,26 @@
+{
+  "projectType": "library",
+  "root": "libs/component-document-portal/util-types",
+  "sourceRoot": "libs/component-document-portal/util-types/src",
+  "prefix": "component-document-portal",
+  "targets": {
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/component-document-portal/util-types"],
+      "options": {
+        "jestConfig": "libs/component-document-portal/util-types/jest.config.js",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/component-document-portal/util-types/src/**/*.ts",
+          "libs/component-document-portal/util-types/src/**/*.html"
+        ]
+      }
+    }
+  },
+  "tags": []
+}

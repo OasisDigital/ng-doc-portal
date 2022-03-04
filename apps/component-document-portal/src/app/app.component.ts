@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { DynamicDocPageConfig } from '@doc-page-config/types';
+import { DynamicDocPageConfig } from '@cdp/component-document-portal/util-types';
 
 import { docPageConfigs } from './doc-page-configs';
 

@@ -154,7 +154,7 @@ async function writeDynamicPageConfigStringsToFile(configStrings) {
       './apps/component-document-portal/src/app/doc-page-configs.ts',
       prettier.format(
         `
-        import { DynamicDocPageConfig } from '@doc-page-config/types';
+        import { DynamicDocPageConfig } from '@cdp/component-document-portal/util-types';
 
         export const docPageConfigs = {
           ${configStrings.toString()}
