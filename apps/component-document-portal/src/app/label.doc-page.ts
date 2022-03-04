@@ -19,8 +19,7 @@ export class LabelDocumentPageComponent {}
 class DocumentPageModule {}
 
 const docPageConfig: DocPageConfig = {
-  title: 'Label',
-  route: 'label',
+  title: 'General/Label',
   docPage: LabelDocumentPageComponent,
   ngModule: DocumentPageModule,
 };

@@ -28,8 +28,7 @@ export class ButtonDocumentPageComponent {}
 class DocumentPageModule {}
 
 const docPageConfig: DocPageConfig = {
-  title: 'Button',
-  route: 'button',
+  title: 'Group/Button',
   docPage: ButtonDocumentPageComponent,
   ngModule: DocumentPageModule,
 };
@@ -38,10 +37,6 @@ export default docPageConfig;
 ```
 
 ## Possible Improvements to the Document Page Files
-
-- The `title` and `route` properties could probably just be combined into just the `title`. The ultimate route would just end up as a kebab case version of the title.
-
-- Allow for the title to set the "grouping" of the various pages.
 
 - Once Angular supports Optional Modules, the `ngModule` export could be removed from the config; letting the component itself handle the typical module declarations, imports, and providers.
 

@@ -4,11 +4,11 @@ import { DocPageConfig } from '@doc-page-config/types';
 
 @Component({
   template: `
-    <h1>Button Component Document Page</h1>
-    <button>Example Button</button>
+    <h1>Input Component Document Page</h1>
+    <input placeholder="Example Input" />
   `,
 })
-export class ButtonDocumentPageComponent {}
+export class InputDocumentPageComponent {}
 
 // This can probably go away when Optional Modules is in Angular
 @NgModule({
@@ -19,8 +19,8 @@ export class ButtonDocumentPageComponent {}
 class DocumentPageModule {}
 
 const docPageConfig: DocPageConfig = {
-  title: 'General/Button',
-  docPage: ButtonDocumentPageComponent,
+  title: 'Forms/Input',
+  docPage: InputDocumentPageComponent,
   ngModule: DocumentPageModule,
 };
 

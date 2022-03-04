@@ -23,9 +23,18 @@ let firstCompile = true;
 
 (async () => {
   log(chalk.blue('Searching for component document page files...\n'));
+  const startTime = Number(new Date());
   let filePaths = await new Promise((resolve) =>
     glob(docPageConfigFilesGlob, { ignore: 'node_modules' }, (_err, files) =>
       resolve(files)
+    )
+  );
+  const endTime = Number(new Date());
+  log(
+    chalk.green(
+      `Finished component document page file searching in ${
+        endTime - startTime
+      }ms`
     )
   );
 
@@ -106,6 +115,11 @@ let firstCompile = true;
     )
     .subscribe(async (configStrings) => {
       await writeDynamicPageConfigStringsToFile(configStrings);
+      if (firstCompile) {
+        log(chalk.cyan('Finished creating the config list file'));
+      } else {
+        log(chalk.cyan(`${timeNow()} - WRITE - config list file`));
+      }
 
       if (firstCompile && shouldWatch) {
         log(chalk.cyan('\nWatching for file changes...'));
@@ -142,9 +156,9 @@ async function writeDynamicPageConfigStringsToFile(configStrings) {
         `
         import { DynamicDocPageConfig } from '@doc-page-config/types';
 
-        export const docPageConfigs = [
+        export const docPageConfigs = {
           ${configStrings.toString()}
-        ] as DynamicDocPageConfig[];
+        } as Record<string, DynamicDocPageConfig>;
       `,
         { parser: 'typescript', printWidth: 100 }
       )
@@ -161,26 +175,36 @@ async function writeDynamicPageConfigStringsToFile(configStrings) {
 
 async function compileDynamicDocPageConfigString(filePath) {
   try {
-    const fileName = path.basename(filePath).replace('.ts', '');
+    // Transpile the TS file to raw JS (mjs)
     const rawTS = await fs.readFile('./' + filePath);
     const rawJS = ts.transpile(rawTS.toString(), { module: 'es2020' });
+
+    // Create folder to house the temporary mjs files (easier housecleaning)
     const mjsPagesFolder = `mjs-pages`;
     const mjsPagesFolderLocation = `${__dirname}/${mjsPagesFolder}`;
     if (!existsSync(mjsPagesFolderLocation)) {
       await fs.mkdir(mjsPagesFolderLocation);
     }
+
+    // Figure out file names & locations for mjs file
+    const fileName = path.basename(filePath).replace('.ts', '');
     const mjsFileName = `${fileName}-${uniqueId()}.mjs`;
     const mjsFileLocation = `${mjsPagesFolderLocation}/${mjsFileName}`;
     const relativeMjsFileLocation = `./${mjsPagesFolder}/${mjsFileName}`;
+
+    // write to mjs file & import the code back in to get config (delete for cleanup)
     await fs.writeFile(mjsFileLocation, rawJS);
     const file = await import(relativeMjsFileLocation);
     await fs.unlink(mjsFileLocation);
-    const docPageConfig = file.default;
+
+    // Figure out variables for config list file output
     const filePathWithoutExtension = filePath.replace('.ts', '');
+    const docPageConfig = file.default;
+    const title = docPageConfig.title;
+    const route = title.toLowerCase().replace(/[ /]/g, '-');
     return `
-      {
-        title: '${docPageConfig.title}',
-        route: '${docPageConfig.route}',
+      '${route}': {
+        title: '${title}',
         getDocPage: () => import('../../../../${filePathWithoutExtension}').then((file) => file.default.docPage),
         getNgModule: () => import('../../../../${filePathWithoutExtension}').then((file) => file.default.ngModule),
       }

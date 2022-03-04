@@ -29,9 +29,7 @@ export class DocPageViewerComponent implements OnInit, OnDestroy {
       .pipe(
         takeUntil(this.destroy),
         map((paramMap) => paramMap.get(docPageRouteParam) as string),
-        map((routeParam) =>
-          docPageConfigs.find((config) => config.route === routeParam)
-        ),
+        map((routeParam) => docPageConfigs[routeParam]),
         tap((docPageConfig) => {
           if (!docPageConfig) {
             this.router.navigate(['/']);
