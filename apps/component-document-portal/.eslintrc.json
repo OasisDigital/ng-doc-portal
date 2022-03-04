@@ -21,7 +21,7 @@
           "error",
           {
             "type": "element",
-            "prefix": "component-document-portal",
+            "prefix": "cdp",
             "style": "kebab-case"
           }
         ]

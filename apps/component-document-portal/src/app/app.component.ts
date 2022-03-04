@@ -22,7 +22,7 @@ interface DocPageRoutesDictionary {
 }
 
 @Component({
-  selector: 'component-document-portal-root',
+  selector: 'cdp-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
