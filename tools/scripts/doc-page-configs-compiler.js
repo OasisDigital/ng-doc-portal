@@ -212,6 +212,10 @@ async function compileDynamicDocPageConfigString(filePath) {
     );
   });
 
+  if (!statementWithTitle) {
+    throw new Error(`Could not find doc page config export from ${filePath}`);
+  }
+
   // Recursively look traverse the nodes from the starting point looking for a string literal
   const rawTitle = (function recursivelyFindTitle(node) {
     const children = node.getChildren(sourceFile);
