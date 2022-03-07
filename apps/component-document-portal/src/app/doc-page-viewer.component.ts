@@ -9,9 +9,10 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { filter, map, Subject, takeUntil, tap } from 'rxjs';
-import { docPageRouteParam } from './app.module';
+
 import { DynamicDocPageConfig } from '@cdp/component-document-portal/util-types';
 
+import { docPageRouteParam } from './app.module';
 import { docPageConfigs } from './doc-page-configs';
 
 @Component({
@@ -45,16 +46,17 @@ export class DocPageViewerComponent implements OnInit, OnDestroy {
             !!docPageConfig
         )
       )
-      .subscribe(async (config) => {
-        const component = await config.getDocPage();
-        const ngModule = await config.getNgModule();
+      .subscribe(async (dynamicConfig) => {
+        const config = await dynamicConfig.loadConfig();
         let ngModuleRef;
-        if (ngModule) {
-          ngModuleRef = createNgModuleRef(ngModule, this.injector);
+        if (config.ngModule) {
+          ngModuleRef = createNgModuleRef(config.ngModule, this.injector);
         }
         if (this.docPageRenderer) {
           this.docPageRenderer.clear();
-          this.docPageRenderer.createComponent(component, { ngModuleRef });
+          this.docPageRenderer.createComponent(config.docPageComponent, {
+            ngModuleRef,
+          });
         }
       });
   }

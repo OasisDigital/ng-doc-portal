@@ -50,7 +50,7 @@ let firstCompile = true;
     )
   );
 
-  fileUpdateStream = new BehaviorSubject({ type: 'init', filePaths });
+  const fileUpdateStream = new BehaviorSubject({ type: 'init', filePaths });
 
   fileUpdateStream
     .pipe(
@@ -205,8 +205,7 @@ async function compileDynamicDocPageConfigString(filePath) {
     return `
       '${route}': {
         title: '${title}',
-        getDocPage: () => import('../../../../${filePathWithoutExtension}').then((file) => file.default.docPage),
-        getNgModule: () => import('../../../../${filePathWithoutExtension}').then((file) => file.default.ngModule),
+        loadConfig: () => import('../../../../${filePathWithoutExtension}').then((file) => file.default)
       }
     `;
   } catch (e) {
@@ -223,10 +222,10 @@ function timeNow() {
   const minutes = d.getMinutes();
   const seconds = d.getSeconds();
   const milliseconds = d.getMilliseconds();
-  h = (hours < 10 ? '0' : '') + hours;
-  m = (minutes < 10 ? '0' : '') + minutes;
-  s = (seconds < 10 ? '0' : '') + seconds;
-  ms =
+  const h = (hours < 10 ? '0' : '') + hours;
+  const m = (minutes < 10 ? '0' : '') + minutes;
+  const s = (seconds < 10 ? '0' : '') + seconds;
+  const ms =
     (milliseconds < 10 ? '00' : '') +
     (10 < milliseconds && milliseconds < 100 ? '0' : '') +
     milliseconds;

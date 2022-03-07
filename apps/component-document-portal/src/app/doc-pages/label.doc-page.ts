@@ -20,7 +20,7 @@ class DocumentPageModule {}
 
 const docPageConfig: DocPageConfig = {
   title: 'General/Label',
-  docPage: LabelDocumentPageComponent,
+  docPageComponent: LabelDocumentPageComponent,
   ngModule: DocumentPageModule,
 };
 

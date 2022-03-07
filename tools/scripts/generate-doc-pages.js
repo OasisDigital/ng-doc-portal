@@ -41,9 +41,8 @@ const directoryLocation =
   class DocumentPageModule {}
 
   const docPageConfig: DocPageConfig = {
-    title: '${docPageId}',
-    route: '${docPageId}',
-    docPage: DocumentPageComponent,
+    title: 'Generated/${docPageId}',
+    docPageComponent: DocumentPageComponent,
     ngModule: DocumentPageModule,
   };
 

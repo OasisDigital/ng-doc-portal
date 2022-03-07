@@ -20,7 +20,7 @@ class DocumentPageModule {}
 
 const docPageConfig: DocPageConfig = {
   title: 'Forms/Input',
-  docPage: InputDocumentPageComponent,
+  docPageComponent: InputDocumentPageComponent,
   ngModule: DocumentPageModule,
 };
 
