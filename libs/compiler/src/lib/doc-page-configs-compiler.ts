@@ -1,20 +1,16 @@
-const chalk = require('chalk');
-const chokidar = require('chokidar');
-const fs = require('fs/promises');
-const glob = require('glob');
-const path = require('path');
-const prettier = require('prettier');
-const { BehaviorSubject } = require('rxjs');
-const {
-  scan,
-  debounceTime,
-  concatMap,
-  map,
-  filter,
-} = require('rxjs/operators');
-const ts = require('typescript');
-const yargs = require('yargs/yargs');
-const { hideBin } = require('yargs/helpers');
+import chalk from 'chalk';
+import chokidar from 'chokidar';
+import fs from 'fs/promises';
+import glob from 'glob';
+import path from 'path';
+import prettier from 'prettier';
+import {BehaviorSubject} from 'rxjs';
+
+import { concatMap, debounceTime, filter, map, scan } from 'rxjs/operators';
+
+import ts from 'typescript';
+import yargs from 'yargs/yargs';
+import { hideBin } from 'yargs/helpers';
 
 const yargOptions = yargs(hideBin(process.argv)).argv;
 
@@ -25,10 +21,40 @@ const silenced = process.env.silent ?? yargOptions.silent ?? false;
 
 let firstCompile = true;
 
+interface EventPayload {
+  filePath: string;
+  configString: string;
+}
+
+interface InitEvent {
+  type: 'init';
+  filePaths: string[];
+  payload?: EventPayload[];
+}
+
+interface AddEvent {
+  type: 'add';
+  filePath: string;
+  configString?: string;
+}
+
+interface ChangeEvent {
+  type: 'change';
+  filePath: string;
+  configString?: string;
+}
+
+interface UnlinkEvent {
+  type: 'unlink';
+  filePath: string;
+}
+
+type FileEvent = InitEvent | AddEvent | ChangeEvent | UnlinkEvent;
+
 (async () => {
   log(chalk.blue('Searching for component document page files...\n'));
   const startTime = Number(new Date());
-  let filePaths = await new Promise((resolve) =>
+  const filePaths = await new Promise<string[]>((resolve) =>
     glob(docPageConfigFilesGlob, { ignore: 'node_modules' }, (_err, files) =>
       resolve(files)
     )
@@ -44,7 +70,7 @@ let firstCompile = true;
 
   log(chalk.blue('Found the below component document page files:'));
 
-  for (let filePath of filePaths) {
+  for (const filePath of filePaths) {
     log(chalk.yellow(filePath));
   }
 
@@ -54,83 +80,20 @@ let firstCompile = true;
     )
   );
 
-  const fileUpdateStream = new BehaviorSubject({ type: 'init', filePaths });
+  const fileUpdateStream = new BehaviorSubject<FileEvent>({
+    type: 'init',
+    filePaths,
+  });
 
   fileUpdateStream
     .pipe(
-      concatMap(async (fileEvent) => {
-        try {
-          if (fileEvent.type === 'init') {
-            let payload = [];
-            log(chalk.blue('Compiling component document page files...\n'));
-            const startTime = Number(new Date());
-            for (let filePath of fileEvent.filePaths) {
-              const configString = await compileDynamicDocPageConfigString(
-                filePath
-              );
-              payload.push({ filePath, configString });
-            }
-            const endTime = Number(new Date());
-            log(
-              chalk.green(
-                `Finished compiling component document page files in ${
-                  endTime - startTime
-                }ms`
-              )
-            );
-            return { ...fileEvent, payload };
-          } else if (fileEvent.type === 'add' || fileEvent.type === 'change') {
-            const startTime = Number(new Date());
-            const configString = await compileDynamicDocPageConfigString(
-              fileEvent.filePath
-            );
-            const endTime = Number(new Date());
-            log(
-              chalk.blue(
-                `${timeNow()} - COMPILE - recompiled in ${
-                  endTime - startTime
-                }ms`
-              )
-            );
-            return { ...fileEvent, configString };
-          } else {
-            return fileEvent;
-          }
-        } catch (error) {
-          log(
-            chalk.red(`Unexpected error occured while compiling...\n${error}`)
-          );
-          if (firstCompile) {
-            process.exit(1);
-          }
-          return null;
-        }
-      }),
-      filter((fileEvent) => !!fileEvent),
-      scan((acc, curr) => {
-        if (curr.type === 'init') {
-          return curr.payload;
-        } else if (curr.type === 'add') {
-          return [
-            ...acc,
-            { filePath: curr.filePath, configString: curr.configString },
-          ];
-        } else if (curr.type === 'unlink') {
-          return acc.filter((f) => f.filePath !== curr.filePath);
-        } else if (curr.type === 'change') {
-          const index = acc.findIndex((f) => f.filePath === curr.filePath);
-          const copy = [...acc];
-          copy[index] = {
-            filePath: curr.filePath,
-            configString: curr.configString,
-          };
-          return copy;
-        }
-      }, []),
+      concatMap(addPayloadToEvent),
+      filter((fileEvent): fileEvent is FileEvent => !!fileEvent),
+      scan(accumulatePayloads, new Array<EventPayload>()),
       debounceTime(500),
       map((fileEvents) => fileEvents.map((fileEvent) => fileEvent.configString))
     )
-    .subscribe(async (configStrings) => {
+    .subscribe(async (configStrings: string[]): Promise<void> => {
       await writeDynamicPageConfigStringsToFile(configStrings);
       if (firstCompile) {
         log(chalk.cyan('Finished creating the config list file'));
@@ -165,7 +128,79 @@ let firstCompile = true;
     });
 })();
 
-async function writeDynamicPageConfigStringsToFile(configStrings) {
+function accumulatePayloads(acc: EventPayload[], curr: FileEvent): EventPayload[] {
+  if (curr.type === 'init') {
+    return curr.payload ?? [];
+  } else if (curr.type === 'add') {
+    return [
+      ...acc,
+      {filePath: curr.filePath, configString: curr.configString ?? ''},
+    ];
+  } else if (curr.type === 'unlink') {
+    return acc.filter((f) => f.filePath !== curr.filePath);
+  } else if (curr.type === 'change') {
+    const index = acc.findIndex((f) => f.filePath === curr.filePath);
+    const copy = [...acc];
+    copy[index] = {
+      filePath: curr.filePath,
+      configString: curr.configString ?? '',
+    };
+    return copy;
+  }
+  return [];
+}
+
+async function addPayloadToEvent(fileEvent: FileEvent): Promise<FileEvent | null> {
+  try {
+    if (fileEvent.type === 'init') {
+      const payload: EventPayload[] = [];
+      log(chalk.blue('Compiling component document page files...\n'));
+      const startTime = Number(new Date());
+      for (const filePath of fileEvent.filePaths) {
+        const configString = await compileDynamicDocPageConfigString(
+          filePath
+        );
+        payload.push({filePath, configString});
+      }
+      const endTime = Number(new Date());
+      log(
+        chalk.green(
+          `Finished compiling component document page files in ${
+            endTime - startTime
+          }ms`
+        )
+      );
+      return {...fileEvent, payload};
+    } else if (fileEvent.type === 'add' || fileEvent.type === 'change') {
+      const startTime = Number(new Date());
+      const configString = await compileDynamicDocPageConfigString(
+        fileEvent.filePath
+      );
+      const endTime = Number(new Date());
+      log(
+        chalk.blue(
+          `${timeNow()} - COMPILE - recompiled in ${
+            endTime - startTime
+          }ms`
+        )
+      );
+      return {...fileEvent, configString};
+    } else {
+      return fileEvent;
+    }
+  } catch (error) {
+    log(
+      chalk.red(`Unexpected error occurred while compiling...\n${error}`)
+    );
+    if (firstCompile) {
+      process.exit(1);
+    }
+    return null;
+  }
+}
+
+
+async function writeDynamicPageConfigStringsToFile(configStrings: string[]) {
   try {
     await fs.writeFile(
       './apps/component-document-portal/src/app/doc-page-configs.ts',
@@ -190,7 +225,7 @@ async function writeDynamicPageConfigStringsToFile(configStrings) {
   }
 }
 
-async function compileDynamicDocPageConfigString(filePath) {
+async function compileDynamicDocPageConfigString(filePath = '') {
   const rawTS = (await fs.readFile('./' + filePath)).toString();
 
   // create a TS node source for our traversal
@@ -217,25 +252,7 @@ async function compileDynamicDocPageConfigString(filePath) {
   }
 
   // Recursively look traverse the nodes from the starting point looking for a string literal
-  const rawTitle = (function recursivelyFindTitle(node) {
-    const children = node.getChildren(sourceFile);
-    if (children.length > 0) {
-      for (let i = 0; i < children.length; i++) {
-        const result = recursivelyFindTitle(children[i]);
-        if (result !== null) {
-          return result;
-        }
-      }
-    } else {
-      const syntaxKind = ts.SyntaxKind[node.kind];
-      if (syntaxKind === 'StringLiteral') {
-        return node.getText(sourceFile);
-      } else {
-        return null;
-      }
-    }
-    return null;
-  })(statementWithTitle);
+  const rawTitle = recursivelyFindTitle(statementWithTitle, sourceFile);
 
   if (!rawTitle) {
     throw new Error(
@@ -257,8 +274,28 @@ async function compileDynamicDocPageConfigString(filePath) {
     `;
 }
 
+function recursivelyFindTitle(node: ts.Node, sourceFile: ts.SourceFile): string | null {
+  const children = node.getChildren(sourceFile);
+  if (children.length > 0) {
+    for (let i = 0; i < children.length; i++) {
+      const result = recursivelyFindTitle(children[i], sourceFile);
+      if (result !== null) {
+        return result;
+      }
+    }
+  } else {
+    const syntaxKind = ts.SyntaxKind[node.kind];
+    if (syntaxKind === 'StringLiteral') {
+      return node.getText(sourceFile);
+    } else {
+      return null;
+    }
+  }
+  return null;
+}
+
 function timeNow() {
-  var d = new Date();
+  const d = new Date();
   const hours = d.getHours();
   const minutes = d.getMinutes();
   const seconds = d.getSeconds();
@@ -273,7 +310,7 @@ function timeNow() {
   return `${h}:${m}:${s}:${ms}`;
 }
 
-function log(message) {
+function log(message: string) {
   if (!silenced) {
     console.log(message);
   }

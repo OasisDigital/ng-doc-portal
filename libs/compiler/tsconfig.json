@@ -9,5 +9,9 @@
     {
       "path": "./tsconfig.spec.json"
     }
-  ]
+  ],
+  "compilerOptions": {
+    "lib": ["es2021"],
+    "esModuleInterop": true
+  }
 }
