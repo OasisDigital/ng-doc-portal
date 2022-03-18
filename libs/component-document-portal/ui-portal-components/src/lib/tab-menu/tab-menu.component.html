@@ -1,20 +1,14 @@
 <div class="tabHeader">
   <div
-    [ngClass]="{ highlight: selectedHeader === header }"
-    (click)="tabSwitch(header)"
-    *ngFor="let header of headers"
+    *ngFor="let tab of tabs"
+    [class.highlight]="activeTab?.title === tab.title"
+    (click)="goToTab(tab)"
   >
-    {{ header }}
+    {{ tab.title | uppercase }}
   </div>
 </div>
-<div class="tabContent">
-  <ng-content
-    *ngIf="selectedHeader === 'OVERVIEW'"
-    select="[overview]"
-  ></ng-content>
-  <ng-content *ngIf="selectedHeader === 'API'" select="[api]"></ng-content>
-  <ng-content
-    *ngIf="selectedHeader === 'EXAMPLES'"
-    select="[examples]"
-  ></ng-content>
+
+<div class="tabContent" *ngIf="activeTab">
+  <ng-container *ngTemplateOutlet="activeTab.templateRef"></ng-container>
 </div>
+

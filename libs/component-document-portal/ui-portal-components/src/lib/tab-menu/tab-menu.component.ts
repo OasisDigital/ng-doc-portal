@@ -1,34 +1,63 @@
-import { Component, Input } from '@angular/core';
+import {
+  AfterContentInit,
+  Component,
+  ContentChildren,
+  OnDestroy,
+  QueryList
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { map, Subject, takeUntil } from 'rxjs';
+import { TabItemComponent } from '../tab-item/tab-item.component';
 
 @Component({
   selector: 'cdp-tab-menu',
   templateUrl: './tab-menu.component.html',
   styleUrls: ['./tab-menu.component.scss'],
 })
-export class TabMenuComponent {
-  @Input() headers = ['OVERVIEW', 'API', 'EXAMPLES'];
-  selectedHeader = this.headers[0];
-  searchParams = new URLSearchParams(window.location.search);
+export class TabMenuComponent implements AfterContentInit, OnDestroy {
+  @ContentChildren(TabItemComponent) tabMenuItems: QueryList<TabItemComponent> = new QueryList<TabItemComponent>();
 
-  constructor(private router: Router, private route: ActivatedRoute) {
-    const param = this.searchParams.get('tab');
-    if (param) {
-      this.selectedHeader = param;
-    } else {
-      this.queryRoute(this.selectedHeader);
+  tabs: TabItemComponent[] = [];
+  activeTab: TabItemComponent | null = null;
+
+  private readonly destroy$ = new Subject<void>();
+
+  constructor(private router: Router, private route: ActivatedRoute) {}
+
+  ngAfterContentInit() {
+    this.route.queryParamMap.pipe(
+      takeUntil(this.destroy$),
+      map(params => params.get('tab')),
+    ).subscribe((tabName) => this.selectTab(tabName));
+  }
+
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  selectTab(tabName: string | null) {
+    this.tabs = this.tabMenuItems.toArray();
+
+    if (!tabName) {
+      this.goToTab(this.tabs[0]);
+      return;
     }
+
+    // Revert kebab-case formatting from `this.selectTab`
+    const title = tabName.replace('-', ' ');
+    const tab = this.tabs.find(t => t.title.toLowerCase() === title);
+
+    this.activeTab = tab ?? this.tabs[0];
   }
 
-  tabSwitch(tab: string) {
-    this.selectedHeader = tab;
-    this.queryRoute(tab);
-  }
+  goToTab(tabItem: TabItemComponent) {
+    // Format as kebab-case for query param
+    const tab = tabItem.title.toLowerCase().replace(' ', '-');
 
-  queryRoute(query: string) {
     this.router.navigate(['.'], {
       relativeTo: this.route,
-      queryParams: { tab: query },
+      queryParams: { tab },
     });
   }
 }

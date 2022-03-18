@@ -7,18 +7,18 @@ import { DocComponentsModule } from '@cdp/component-document-portal/ui-portal-co
 @Component({
   template: `
     <cdp-tab-menu>
-      <div overview>
+      <cdp-tab-item title="Overview">
         <h1>Button Component Document Page</h1>
         <button>Example Button</button>
 
         <p>The button is used to get actions from the user by click</p>
-      </div>
-      <div examples>
+      </cdp-tab-item>
+      <cdp-tab-item title="Examples">
         <button>Example Button</button>
         <cdp-code-reveal lang="html">
           <button>Example Button</button>
         </cdp-code-reveal>
-      </div>
+      </cdp-tab-item>
     </cdp-tab-menu>
   `,
 })
