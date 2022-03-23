@@ -4,7 +4,7 @@ import fs from 'fs/promises';
 import glob from 'glob';
 import path from 'path';
 import prettier from 'prettier';
-import {BehaviorSubject} from 'rxjs';
+import { concat, EMPTY, iif, Observable, tap } from 'rxjs';
 
 import { concatMap, debounceTime, filter, map, scan } from 'rxjs/operators';
 
@@ -16,10 +16,8 @@ const yargOptions = yargs(hideBin(process.argv)).argv;
 
 const docPageConfigFilesGlob = '**/*.doc-page.ts';
 
-const shouldWatch = process.env.watch ?? yargOptions.watch ?? false;
-const silenced = process.env.silent ?? yargOptions.silent ?? false;
-
-let firstCompile = true;
+const shouldWatch = Boolean(process.env.watch ?? yargOptions.watch ?? false);
+const silenced = Boolean(process.env.silent ?? yargOptions.silent ?? false);
 
 interface EventPayload {
   filePath: string;
@@ -51,90 +49,71 @@ interface UnlinkEvent {
 
 type FileEvent = InitEvent | AddEvent | ChangeEvent | UnlinkEvent;
 
-(async () => {
+const initialFileEvent = new Observable<FileEvent>((observer) => {
   log(chalk.blue('Searching for component document page files...\n'));
-  const startTime = Number(new Date());
-  const filePaths = await new Promise<string[]>((resolve) =>
-    glob(docPageConfigFilesGlob, { ignore: 'node_modules' }, (_err, files) =>
-      resolve(files)
-    )
-  );
-  const endTime = Number(new Date());
-  log(
-    chalk.green(
-      `Finished component document page file searching in ${
-        endTime - startTime
-      }ms`
-    )
-  );
-
-  log(chalk.blue('Found the below component document page files:'));
-
-  for (const filePath of filePaths) {
-    log(chalk.yellow(filePath));
-  }
-
-  log(
-    chalk.magenta(
-      "\nIf your component document page isn't found, please verify the extension is `.doc-page.ts`\n"
-    )
-  );
-
-  const fileUpdateStream = new BehaviorSubject<FileEvent>({
-    type: 'init',
-    filePaths,
+  const startTime = Date.now();
+  glob(docPageConfigFilesGlob, { ignore: 'node_modules' }, (err, filePaths) => {
+    if (err) {
+      observer.error(err);
+    } else {
+      const endTime = Date.now();
+      log(chalk.green(`Searching complete in ${endTime - startTime}ms`));
+      observer.next({ type: 'init', filePaths });
+    }
+    observer.complete();
   });
+});
 
-  fileUpdateStream
-    .pipe(
-      concatMap(addPayloadToEvent),
-      filter((fileEvent): fileEvent is FileEvent => !!fileEvent),
-      scan(accumulatePayloads, new Array<EventPayload>()),
-      debounceTime(500),
-      map((fileEvents) => fileEvents.map((fileEvent) => fileEvent.configString))
-    )
-    .subscribe(async (configStrings: string[]): Promise<void> => {
-      await writeDynamicPageConfigStringsToFile(configStrings);
-      if (firstCompile) {
-        log(chalk.cyan('Finished creating the config list file'));
+const watcher = new Observable<FileEvent>((observer) => {
+  const watch = chokidar
+    .watch(docPageConfigFilesGlob, {
+      ignored: 'node_modules',
+      ignoreInitial: true,
+    })
+    .on('all', async (event, rawFilePath) => {
+      const filePath = rawFilePath.replaceAll('\\', '/');
+      if (event === 'add' || event === 'addDir') {
+        log(chalk.green(`${timeNow()} - ADDED - ${filePath}`));
+        observer.next({ type: 'add', filePath });
+      } else if (event === 'unlink' || event === 'unlinkDir') {
+        log(chalk.red(`${timeNow()} - DELETED - ${filePath}`));
+        observer.next({ type: 'unlink', filePath });
       } else {
-        log(chalk.cyan(`${timeNow()} - WRITE - config list file`));
+        log(chalk.yellow(`${timeNow()} - CHANGED - ${filePath}`));
+        observer.next({ type: 'change', filePath });
       }
-
-      if (firstCompile && shouldWatch) {
-        log(chalk.cyan('\nWatching for file changes...'));
-
-        chokidar
-          .watch(docPageConfigFilesGlob, {
-            ignored: 'node_modules',
-            ignoreInitial: true,
-          })
-          .on('all', async (event, path) => {
-            const filePath = path.replaceAll('\\', '/');
-            if (event === 'add' || event === 'addDir') {
-              log(chalk.green(`${timeNow()} - ADDED - ${filePath}`));
-              fileUpdateStream.next({ type: 'add', filePath });
-            } else if (event === 'unlink' || event === 'unlinkDir') {
-              log(chalk.red(`${timeNow()} - DELETED - ${filePath}`));
-              fileUpdateStream.next({ type: 'unlink', filePath });
-            } else {
-              log(chalk.yellow(`${timeNow()} - CHANGED - ${filePath}`));
-              fileUpdateStream.next({ type: 'change', filePath });
-            }
-          });
-      }
-
-      firstCompile = false;
     });
-})();
 
-function accumulatePayloads(acc: EventPayload[], curr: FileEvent): EventPayload[] {
+  return () => {
+    watch.unwatch(docPageConfigFilesGlob);
+    watch.close();
+  };
+});
+
+concat(
+  initialFileEvent,
+  iif(() => shouldWatch, watcher, EMPTY)
+)
+  .pipe(
+    concatMap(addPayloadToEvent),
+    filter((fileEvent): fileEvent is FileEvent => !!fileEvent),
+    scan(accumulatePayloads, new Array<EventPayload>()),
+    debounceTime(500),
+    map((fileEvents) => fileEvents.map((fileEvent) => fileEvent.configString)),
+    tap((configStrings) => writeDynamicPageConfigStringsToFile(configStrings))
+  )
+  .subscribe();
+
+function accumulatePayloads(
+  acc: EventPayload[],
+  curr: FileEvent
+): EventPayload[] {
   if (curr.type === 'init') {
     return curr.payload ?? [];
   } else if (curr.type === 'add') {
     return [
       ...acc,
-      {filePath: curr.filePath, configString: curr.configString ?? ''},
+      { filePath: curr.filePath, configString: curr.configString ?? '' },
     ];
   } else if (curr.type === 'unlink') {
     return acc.filter((f) => f.filePath !== curr.filePath);
@@ -150,17 +129,17 @@ function accumulatePayloads(acc: EventPayload[], curr: FileEvent): EventPayload[
   return [];
 }
 
-async function addPayloadToEvent(fileEvent: FileEvent): Promise<FileEvent | null> {
+async function addPayloadToEvent(
+  fileEvent: FileEvent
+): Promise<FileEvent | null> {
   try {
     if (fileEvent.type === 'init') {
       const payload: EventPayload[] = [];
       log(chalk.blue('Compiling component document page files...\n'));
       const startTime = Number(new Date());
       for (const filePath of fileEvent.filePaths) {
-        const configString = await compileDynamicDocPageConfigString(
-          filePath
-        );
-        payload.push({filePath, configString});
+        const configString = await compileDynamicDocPageConfigString(filePath);
+        payload.push({ filePath, configString });
       }
       const endTime = Number(new Date());
       log(
@@ -170,35 +149,27 @@ async function addPayloadToEvent(fileEvent: FileEvent): Promise<FileEvent | null
           }ms`
         )
       );
-      return {...fileEvent, payload};
+      return { ...fileEvent, payload };
     } else if (fileEvent.type === 'add' || fileEvent.type === 'change') {
-      const startTime = Number(new Date());
+      const startTime = Date.now();
       const configString = await compileDynamicDocPageConfigString(
         fileEvent.filePath
       );
-      const endTime = Number(new Date());
+      const endTime = Date.now();
       log(
         chalk.blue(
-          `${timeNow()} - COMPILE - recompiled in ${
-            endTime - startTime
-          }ms`
+          `${timeNow()} - COMPILE - recompiled in ${endTime - startTime}ms`
         )
       );
-      return {...fileEvent, configString};
+      return { ...fileEvent, configString };
     } else {
       return fileEvent;
     }
   } catch (error) {
-    log(
-      chalk.red(`Unexpected error occurred while compiling...\n${error}`)
-    );
-    if (firstCompile) {
-      process.exit(1);
-    }
+    log(chalk.red(`Unexpected error occurred while compiling...\n${error}`));
     return null;
   }
 }
-
 
 async function writeDynamicPageConfigStringsToFile(configStrings: string[]) {
   try {
@@ -274,7 +245,10 @@ async function compileDynamicDocPageConfigString(filePath = '') {
     `;
 }
 
-function recursivelyFindTitle(node: ts.Node, sourceFile: ts.SourceFile): string | null {
+function recursivelyFindTitle(
+  node: ts.Node,
+  sourceFile: ts.SourceFile
+): string | null {
   const children = node.getChildren(sourceFile);
   if (children.length > 0) {
     for (let i = 0; i < children.length; i++) {
