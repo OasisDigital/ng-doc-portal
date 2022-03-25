@@ -26,7 +26,8 @@
       ],
       "@cdp/component-document-portal/util-types": [
         "libs/component-document-portal/util-types/src/index.ts"
-      ]
+      ],
+      "@cdp/perf": ["libs/perf/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

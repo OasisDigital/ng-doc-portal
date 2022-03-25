@@ -1,12 +1,14 @@
-const { existsSync } = require('fs');
-const fs = require('fs/promises');
-const { v1: uniqueId } = require('uuid');
-const yargs = require('yargs/yargs');
-const { hideBin } = require('yargs/helpers');
+import { existsSync } from 'fs';
+
+import fs from 'fs/promises';
+import { v1 as uniqueId } from 'uuid';
+
+import yargs from 'yargs/yargs';
+import { hideBin } from 'yargs/helpers';
 
 const yargOptions = yargs(hideBin(process.argv)).argv;
 
-const amountOfFiles = process.env.amount ?? yargOptions.amount ?? 100;
+const amountOfFiles = Number(process.env.amount ?? yargOptions.amount ?? 100);
 
 const directoryLocation =
   './apps/component-document-portal/src/app/generated-pages';

@@ -11,7 +11,7 @@
     "gen:doc-page-configs:watch": "ts-node --project libs/compiler/tsconfig.lib.json -r dotenv/config libs/compiler/src/lib/doc-page-configs-compiler.ts --watch",
     "gen:doc-page-configs:silent": "ts-node --project libs/compiler/tsconfig.lib.json -r dotenv/config libs/compiler/src/lib/doc-page-configs-compiler.ts --silent",
     "gen:doc-page-configs:watch:silent": "ts-node --project libs/compiler/tsconfig.lib.json -r dotenv/config libs/compiler/src/lib/doc-page-configs-compiler.ts --watch --silent",
-    "gen:perf-testing": "node tools/scripts/generate-doc-pages.js",
+    "gen:perf-testing": "ts-node --project libs/perf/tsconfig.lib.json -r dotenv/config libs/perf/src/lib/generate-doc-pages.ts",
     "serve:cdp": "nx serve component-document-portal",
     "start:cdp": "npm-run-all -p -r gen:doc-page-configs:watch:silent serve:cdp",
     "build": "nx build",
@@ -60,6 +60,7 @@
     "@types/glob": "^7.2.0",
     "@types/jest": "27.0.2",
     "@types/node": "16.11.7",
+    "@types/uuid": "8.3.4",
     "@typescript-eslint/eslint-plugin": "~5.10.0",
     "@typescript-eslint/parser": "~5.10.0",
     "chalk": "^4.1.2",
@@ -77,7 +78,7 @@
     "ts-jest": "27.0.5",
     "ts-node": "^10.5.0",
     "typescript": "~4.5.2",
-    "uuid": "^8.3.2",
+    "uuid": "8.3.2",
     "yargs": "^17.3.1"
   }
 }
