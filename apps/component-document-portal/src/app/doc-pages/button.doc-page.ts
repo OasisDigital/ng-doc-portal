@@ -1,7 +1,6 @@
 import { Component, NgModule } from '@angular/core';
 
 import { DocPageConfig } from '@cdp/component-document-portal/util-types';
-// This import fails due to tsconfig paths not being registered...
 import { DocComponentsModule } from '@cdp/component-document-portal/ui-portal-components';
 
 @Component({
