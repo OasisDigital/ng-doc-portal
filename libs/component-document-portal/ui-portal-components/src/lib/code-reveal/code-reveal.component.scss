@@ -4,21 +4,27 @@ pre {
   width: max-content;
   margin-bottom: 0;
   word-wrap: break-word;
+  position: relative;
 
   code {
     flex: 1;
     line-height: 1.5em;
     font-size: 14px;
     min-height: 100%;
-    padding: 1em 1.2em;
+    padding: 1em 4em 2em 1.2em;
 
     &.hljs-line-numbers {
       padding: 0 !important;
     }
   }
+
+  button {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+  }
 }
 .hljs {
-  margin: 0 1em;
   padding: 10px;
   border: 1px solid gray;
   border-radius: 4px;
