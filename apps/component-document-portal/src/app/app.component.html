@@ -1,27 +1,30 @@
 <nav class="side-navigation-bar">
   <ul>
     <ng-container
-      *ngTemplateOutlet="recursiveListTmpl; context: { list: docPageRoutes }"
+      *ngTemplateOutlet="
+        recursiveRoutesMenuTemplate;
+        context: { routes: docPageRoutes }
+      "
     ></ng-container>
   </ul>
 </nav>
 
-<ng-template #recursiveListTmpl let-list="list">
-  <li *ngFor="let item of list">
-    <ng-container *ngIf="item.children">
-      <span class="group-header">{{ item.title }}</span>
-      <ul *ngIf="item.children.length > 0">
+<ng-template #recursiveRoutesMenuTemplate let-routes="routes">
+  <li *ngFor="let routeMenu of routes">
+    <ng-container *ngIf="routeMenu.items">
+      <span class="group-header">{{ routeMenu.title }}</span>
+      <ul *ngIf="routeMenu.items.length > 0">
         <ng-container
           *ngTemplateOutlet="
-            recursiveListTmpl;
-            context: { list: item.children }
+            recursiveRoutesMenuTemplate;
+            context: { list: routeMenu.items }
           "
         >
         </ng-container>
       </ul>
     </ng-container>
-    <ng-container *ngIf="!item.children">
-      <a [routerLink]="item.route">{{ item.title }}</a>
+    <ng-container *ngIf="!routeMenu.items">
+      <a [routerLink]="routeMenu.route">{{ routeMenu.title }}</a>
     </ng-container>
   </li>
 </ng-template>

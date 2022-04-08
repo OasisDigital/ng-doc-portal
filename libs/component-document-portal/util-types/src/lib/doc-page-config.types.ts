@@ -10,3 +10,17 @@ export interface DocPageConfig {
   docPageComponent: Type<any>;
   ngModule?: Type<any>;
 }
+
+export type DocPageRoutes = (DocPageMetadata | DocPagesMenu)[];
+
+export interface DocPagesMenu {
+  kind: 'menu';
+  title: string;
+  items: DocPageRoutes;
+}
+
+export interface DocPageMetadata {
+  kind: 'metadata';
+  title: string;
+  route: string;
+}
