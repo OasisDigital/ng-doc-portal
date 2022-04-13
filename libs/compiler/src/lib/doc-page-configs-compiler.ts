@@ -2,56 +2,63 @@ import chalk from 'chalk';
 import chokidar from 'chokidar';
 import { format } from 'date-fns';
 import fs from 'fs/promises';
-import glob from 'glob';
+import glob from 'glob-promise';
 import path from 'path';
 import prettier from 'prettier';
-import { concat, EMPTY, iif, Observable, tap } from 'rxjs';
-
-import { concatMap, debounceTime, filter, map, scan } from 'rxjs/operators';
+import {
+  concat,
+  concatMap,
+  debounceTime,
+  defer,
+  EMPTY,
+  filter,
+  from,
+  iif,
+  map,
+  Observable,
+  scan,
+  tap,
+} from 'rxjs';
 
 import ts from 'typescript';
 
-const docPageConfigFilesGlob = '**/*.doc-page.ts';
+export const DOC_PAGE_CONFIG_FILES_GLOB = '**/*.doc-page.ts';
+export const CONFIG_FILE_LOCATION =
+  './apps/component-document-portal/src/app/doc-page-configs.ts';
 
 interface EventPayload {
   filePath: string;
   configString: string;
 }
 
-interface RawInitEvent {
+export interface RawInitEvent {
   type: 'init';
   filePaths: string[];
 }
 
-interface ProcessedInitEvent {
-  type: 'init';
-  filePaths: string[];
+interface ProcessedInitEvent extends RawInitEvent {
   payload: EventPayload[];
 }
 
-interface RawAddEvent {
+export interface RawAddEvent {
   type: 'add';
   filePath: string;
 }
 
-interface ProcessedAddEvent {
-  type: 'add';
-  filePath: string;
+interface ProcessedAddEvent extends RawAddEvent {
   configString: string;
 }
 
-interface RawChangeEvent {
+export interface RawChangeEvent {
   type: 'change';
   filePath: string;
 }
 
-interface ProcessedChangeEvent {
-  type: 'change';
-  filePath: string;
+interface ProcessedChangeEvent extends RawChangeEvent {
   configString: string;
 }
 
-interface UnlinkEvent {
+export interface UnlinkEvent {
   type: 'unlink';
   filePath: string;
 }
@@ -64,78 +71,109 @@ type ProcessedFileEvent =
   | UnlinkEvent;
 
 export class DocPageConfigsCompiler {
+  private readonly content: Observable<string>;
+
   constructor(
     private readonly shouldWatch: boolean,
     private readonly silenced: boolean
-  ) {}
+  ) {
+    this.content = defer(() =>
+      concat(
+        this.buildInitialFileEvent(),
+        iif(() => this.shouldWatch, this.buildWatcher(), EMPTY)
+      )
+    ).pipe(
+      concatMap(this.addPayloadToEvent.bind(this)),
+      filter((fileEvent): fileEvent is ProcessedFileEvent => !!fileEvent),
+      scan(exportedForTesting.accumulatePayloads, new Array<EventPayload>()),
+      debounceTime(500),
+      map((fileEvents) =>
+        fileEvents.map((fileEvent) => fileEvent.configString)
+      ),
+      map((cs) => exportedForTesting.formatContent(cs))
+    );
+  }
 
+  /**
+   * Compile the existing a modified files and save them to a file.
+   */
   compile() {
-    const initialFileEvent = new Observable<RawInitEvent>((observer) => {
-      this.log(chalk.blue('Searching for component document page files...\n'));
-      const startTime = Date.now();
-      glob(
-        docPageConfigFilesGlob,
-        { ignore: 'node_modules' },
-        (err, filePaths) => {
-          if (err) {
-            observer.error(err);
-          } else {
-            const endTime = Date.now();
-            this.log(
-              chalk.green(`Searching complete in ${endTime - startTime}ms`)
-            );
-            observer.next({ type: 'init', filePaths });
-          }
-          observer.complete();
-        }
-      );
-    });
+    this.content.subscribe(
+      async (content) => await this.writeDynamicPageContentToFile(content)
+    );
+  }
 
-    const watcher = new Observable<RawFileEvent>((observer) => {
+  /**
+   * Build an Observable that emits the initial list of file paths.
+   * @private
+   */
+  private buildInitialFileEvent(): Observable<RawInitEvent> {
+    this.log(chalk.blue('Searching for component document page files...\n'));
+    const startTime = Date.now();
+    return from(
+      glob.promise(DOC_PAGE_CONFIG_FILES_GLOB, { ignore: 'node_modules' })
+    ).pipe(
+      map((filePaths): RawInitEvent => ({ type: 'init', filePaths })),
+      tap(() => {
+        const endTime = Date.now();
+        this.log(chalk.green(`Searching complete in ${endTime - startTime}ms`));
+      })
+    );
+  }
+
+  /**
+   * Generate an Observable of the raw file events.
+   * @private
+   */
+  private buildWatcher(): Observable<RawFileEvent> {
+    return new Observable<RawFileEvent>((observer) => {
       const watch = chokidar
-        .watch(docPageConfigFilesGlob, {
+        .watch(DOC_PAGE_CONFIG_FILES_GLOB, {
           ignored: 'node_modules',
           ignoreInitial: true,
         })
         .on('all', async (event, rawFilePath) => {
-          const filePath = rawFilePath.replace(/\\/g, '/');
-          if (event === 'add' || event === 'addDir') {
-            this.log(chalk.green(`${timeNow()} - ADDED - ${filePath}`));
-            observer.next({ type: 'add', filePath });
-          } else if (event === 'unlink' || event === 'unlinkDir') {
-            this.log(chalk.red(`${timeNow()} - DELETED - ${filePath}`));
-            observer.next({ type: 'unlink', filePath });
-          } else {
-            this.log(chalk.yellow(`${timeNow()} - CHANGED - ${filePath}`));
-            observer.next({ type: 'change', filePath });
-          }
+          observer.next(this.buildRawFileEvent(rawFilePath, event));
         });
 
       return () => {
-        watch.unwatch(docPageConfigFilesGlob);
+        watch.unwatch(DOC_PAGE_CONFIG_FILES_GLOB);
         watch.close();
       };
     });
-
-    concat(
-      initialFileEvent,
-      iif(() => this.shouldWatch, watcher, EMPTY)
-    )
-      .pipe(
-        concatMap(this.addPayloadToEvent.bind(this)),
-        filter((fileEvent): fileEvent is ProcessedFileEvent => !!fileEvent),
-        scan(exportedForTesting.accumulatePayloads, new Array<EventPayload>()),
-        debounceTime(500),
-        map((fileEvents) =>
-          fileEvents.map((fileEvent) => fileEvent.configString)
-        ),
-        tap((configStrings) =>
-          this.writeDynamicPageConfigStringsToFile(configStrings)
-        )
-      )
-      .subscribe();
   }
 
+  /**
+   * Create the RawFileEvent from the chokidar event.
+   *
+   * @param rawFilePath The file that was modified
+   * @param event The type of chokidar change
+   * @private
+   */
+  private buildRawFileEvent(
+    rawFilePath: string,
+    event: 'add' | 'addDir' | 'change' | 'unlink' | 'unlinkDir'
+  ): RawFileEvent {
+    const filePath = rawFilePath.replace(/\\/g, '/');
+    if (event === 'add' || event === 'addDir') {
+      this.log(chalk.green(`${timeNow()} - ADDED - ${filePath}`));
+      return { type: 'add', filePath };
+    } else if (event === 'unlink' || event === 'unlinkDir') {
+      this.log(chalk.red(`${timeNow()} - DELETED - ${filePath}`));
+      return { type: 'unlink', filePath };
+    } else {
+      this.log(chalk.yellow(`${timeNow()} - CHANGED - ${filePath}`));
+      return { type: 'change', filePath };
+    }
+  }
+
+  /**
+   * Process a raw file event, adding config string payloads.
+   *
+   * @param fileEvent The raw file event that describe which file(s)
+   * is affected and what is happening.
+   * @private
+   */
   private async addPayloadToEvent(
     fileEvent: RawFileEvent
   ): Promise<ProcessedFileEvent | null> {
@@ -184,21 +222,15 @@ export class DocPageConfigsCompiler {
     }
   }
 
-  private async writeDynamicPageConfigStringsToFile(configStrings: string[]) {
+  /**
+   * Generate a file to hold the config content.
+   *
+   * @param content The config content generated from our path files
+   * @private
+   */
+  private async writeDynamicPageContentToFile(content: string) {
     try {
-      await fs.writeFile(
-        './apps/component-document-portal/src/app/doc-page-configs.ts',
-        prettier.format(
-          `
-        import { DynamicDocPageConfig } from '@cdp/component-document-portal/util-types';
-
-        export const docPageConfigs = {
-          ${configStrings.toString()}
-        } as Record<string, DynamicDocPageConfig>;
-      `,
-          { parser: 'typescript', printWidth: 100, singleQuote: true }
-        )
-      );
+      await fs.writeFile(CONFIG_FILE_LOCATION, content);
     } catch (e) {
       console.error(e);
       this.log(
@@ -377,6 +409,25 @@ function recursivelyFindTitle(
   return null;
 }
 
+/**
+ * Generate the text of formatted TypeScript file around the config strings.
+ *
+ * @param configStrings The config strings generated from our path files
+ * @private
+ */
+function formatContent(configStrings: string[]): string {
+  return prettier.format(
+    `
+      import { DynamicDocPageConfig } from '@cdp/component-document-portal/util-types';
+
+      export const docPageConfigs = {
+        ${configStrings.toString()}
+      } as Record<string, DynamicDocPageConfig>;
+    `,
+    { parser: 'typescript', printWidth: 100, singleQuote: true }
+  );
+}
+
 function timeNow() {
   return format(new Date(), 'HH:mm:ss:SSS');
 }
@@ -386,6 +437,7 @@ export const exportedForTesting = {
   compileDynamicDocPageConfigString,
   findStatementWithTitle,
   findTitle,
+  formatContent,
   generateDocPageConfig,
   recursivelyFindTitle,
 };

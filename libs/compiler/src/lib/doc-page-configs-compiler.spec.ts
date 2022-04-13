@@ -1,9 +1,17 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
+  CONFIG_FILE_LOCATION,
   DocPageConfigsCompiler,
   exportedForTesting,
+  RawAddEvent,
+  RawInitEvent,
+  UnlinkEvent,
 } from './doc-page-configs-compiler';
 import fs from 'fs/promises';
+import glob from 'glob-promise';
 import ts from 'typescript';
+import { subscribeSpyTo } from '@hirez_io/observer-spy';
+import { delay, firstValueFrom, of } from 'rxjs';
 
 const mockFile = `
 import { Component, NgModule } from '@angular/core';
@@ -31,6 +39,319 @@ const docPageConfig: DocPageConfig = {
 export default docPageConfig;`;
 
 describe(DocPageConfigsCompiler, () => {
+  describe('methods', () => {
+    let compiler: DocPageConfigsCompiler;
+
+    beforeEach(() => {
+      compiler = new DocPageConfigsCompiler(false, true);
+      jest.spyOn(compiler as any, 'log');
+    });
+
+    describe('content', () => {
+      beforeEach(() => {
+        jest
+          .spyOn(exportedForTesting, 'compileDynamicDocPageConfigString')
+          .mockImplementation((filePath) =>
+            Promise.resolve(`['${filePath}']: 'config'`)
+          );
+      });
+
+      it('should handle without watching', async () => {
+        // Arrange
+        jest.spyOn(compiler as any, 'buildInitialFileEvent').mockReturnValue(
+          of({
+            type: 'init',
+            filePaths: ['file1', 'dir/file2'],
+          } as RawInitEvent)
+        );
+
+        // Act
+        const result = await firstValueFrom(compiler['content']);
+
+        // Assert
+        expect(result)
+          .toEqual(`import { DynamicDocPageConfig } from '@cdp/component-document-portal/util-types';
+
+export const docPageConfigs = {
+  ['file1']: 'config',
+  ['dir/file2']: 'config',
+} as Record<string, DynamicDocPageConfig>;
+`);
+      });
+
+      it('should handle with watching', async () => {
+        // Arrange
+        compiler = new DocPageConfigsCompiler(true, true);
+        jest.spyOn(compiler as any, 'log');
+        jest.spyOn(compiler as any, 'buildWatcher').mockReturnValue(
+          of({
+            type: 'add',
+            filePath: 'file3',
+          } as RawAddEvent).pipe(delay(1))
+        );
+        jest.spyOn(compiler as any, 'buildInitialFileEvent').mockReturnValue(
+          of({
+            type: 'init',
+            filePaths: ['file1', 'dir/file2'],
+          } as RawInitEvent)
+        );
+
+        // Act
+        const result = await firstValueFrom(compiler['content']);
+
+        // Assert
+        expect(result)
+          .toEqual(`import { DynamicDocPageConfig } from '@cdp/component-document-portal/util-types';
+
+export const docPageConfigs = {
+  ['file1']: 'config',
+  ['dir/file2']: 'config',
+  ['file3']: 'config',
+} as Record<string, DynamicDocPageConfig>;
+`);
+      });
+    });
+
+    describe('compile', () => {
+      it('should handle the happy case', async () => {
+        // Arrange
+        jest.spyOn(fs, 'writeFile');
+        (compiler['content'] as any) = of('content');
+
+        // Act
+        await compiler.compile();
+
+        // Assert
+        expect(fs.writeFile).toHaveBeenCalledWith(
+          './apps/component-document-portal/src/app/doc-page-configs.ts',
+          'content'
+        );
+      });
+    });
+
+    describe('buildInitialFileEvent', () => {
+      it('should handle the happy case', async () => {
+        // Arrange
+        jest.spyOn(glob, 'promise').mockResolvedValue(['file1', 'file2']);
+
+        // Act
+        const observerSpy = subscribeSpyTo(compiler['buildInitialFileEvent']());
+        await observerSpy.onComplete();
+
+        // Assert
+        expect(observerSpy.getValuesLength()).toEqual(1);
+        expect(observerSpy.getFirstValue()).toEqual({
+          filePaths: ['file1', 'file2'],
+          type: 'init',
+        });
+        expect(compiler['log']).toHaveBeenCalledTimes(2);
+      });
+    });
+
+    describe('buildRawFileEvent', () => {
+      it.each(['add' as const, 'addDir' as const])(
+        'should handle %s',
+        (event) => {
+          // Arrange
+
+          // Act
+          const result = compiler['buildRawFileEvent']('dir\\file', event);
+
+          // Assert
+          expect(result).toEqual({
+            filePath: 'dir/file',
+            type: 'add',
+          });
+          expect(compiler['log']).toHaveBeenCalledTimes(1);
+        }
+      );
+
+      it.each(['unlink' as const, 'unlinkDir' as const])(
+        'should handle %s',
+        (event) => {
+          // Arrange
+
+          // Act
+          const result = compiler['buildRawFileEvent']('dir\\file', event);
+
+          // Assert
+          expect(result).toEqual({
+            filePath: 'dir/file',
+            type: 'unlink',
+          });
+          expect(compiler['log']).toHaveBeenCalledTimes(1);
+        }
+      );
+
+      it('should handle change', () => {
+        // Arrange
+
+        // Act
+        const result = compiler['buildRawFileEvent'](
+          'dir\\subdir\\file',
+          'change'
+        );
+
+        // Assert
+        expect(result).toEqual({
+          filePath: 'dir/subdir/file',
+          type: 'change',
+        });
+        expect(compiler['log']).toHaveBeenCalledTimes(1);
+      });
+    });
+
+    describe('addPayloadToEvent', () => {
+      beforeEach(() => {
+        jest.resetAllMocks();
+      });
+
+      afterEach(() => {
+        jest.resetAllMocks();
+      });
+
+      it('should handle an init event', async () => {
+        // Arrange
+        const event: RawInitEvent = {
+          type: 'init',
+          filePaths: ['path1', 'path2'],
+        };
+        jest
+          .spyOn(exportedForTesting, 'compileDynamicDocPageConfigString')
+          .mockResolvedValueOnce('config1')
+          .mockResolvedValueOnce('config2');
+
+        // Act
+        const result = await compiler['addPayloadToEvent'](event);
+
+        // Assert
+        expect(result).toEqual({
+          ...event,
+          payload: [
+            {
+              configString: 'config1',
+              filePath: 'path1',
+            },
+            {
+              configString: 'config2',
+              filePath: 'path2',
+            },
+          ],
+        });
+        expect(
+          exportedForTesting.compileDynamicDocPageConfigString
+        ).toHaveBeenCalledTimes(2);
+        expect(compiler['log']).toHaveBeenCalledTimes(2);
+      });
+
+      it.each(['add' as const, 'change' as const])(
+        'should handle a %s event',
+        async (type) => {
+          // Arrange
+          jest
+            .spyOn(exportedForTesting, 'compileDynamicDocPageConfigString')
+            .mockResolvedValue('config1');
+          const event = {
+            type,
+            filePath: 'path1',
+          };
+
+          // Act
+          const result = await compiler['addPayloadToEvent'](event);
+
+          // Assert
+          expect(result).toEqual({
+            ...event,
+            configString: 'config1',
+          });
+          expect(
+            exportedForTesting.compileDynamicDocPageConfigString
+          ).toHaveBeenCalledTimes(1);
+          expect(compiler['log']).toHaveBeenCalledTimes(1);
+        }
+      );
+
+      it('should handle an unlink event', async () => {
+        // Arrange
+        const event: UnlinkEvent = {
+          type: 'unlink',
+          filePath: 'path1',
+        };
+        jest.spyOn(exportedForTesting, 'compileDynamicDocPageConfigString');
+
+        // Act
+        const result = await compiler['addPayloadToEvent'](event);
+
+        // Assert
+        expect(result).toBe(event);
+        expect(
+          exportedForTesting.compileDynamicDocPageConfigString
+        ).not.toHaveBeenCalled();
+        expect(compiler['log']).not.toHaveBeenCalled();
+      });
+
+      it('should handle an error', async () => {
+        // Arrange
+        const event: RawInitEvent = {
+          type: 'init',
+          filePaths: ['path1', 'path2'],
+        };
+        jest
+          .spyOn(exportedForTesting, 'compileDynamicDocPageConfigString')
+          .mockResolvedValueOnce('config1')
+          .mockRejectedValue('oops');
+
+        // Act
+        const result = await compiler['addPayloadToEvent'](event);
+
+        // Assert
+        expect(result).toBeNull();
+        expect(
+          exportedForTesting.compileDynamicDocPageConfigString
+        ).toHaveBeenCalledTimes(2);
+        expect(compiler['log']).toHaveBeenCalledTimes(2);
+      });
+    });
+
+    describe('writeDynamicPageContentToFile', () => {
+      beforeEach(() => {
+        jest.spyOn(console, 'error').mockImplementation();
+      });
+
+      it('should handle the happy case', async () => {
+        // Arrange
+        jest.spyOn(fs, 'writeFile').mockResolvedValue();
+
+        // Act
+        await compiler['writeDynamicPageContentToFile']('all the content');
+
+        // Assert
+        expect(fs.writeFile).toHaveBeenCalledWith(
+          CONFIG_FILE_LOCATION,
+          'all the content'
+        );
+        expect(console.error).not.toHaveBeenCalled();
+        expect(compiler['log']).not.toHaveBeenCalled();
+      });
+
+      it('should handle a file error', async () => {
+        // Arrange
+        jest.spyOn(fs, 'writeFile').mockRejectedValue('oops');
+
+        // Act
+        await compiler['writeDynamicPageContentToFile']('all the content');
+
+        // Assert
+        expect(fs.writeFile).toHaveBeenCalledWith(
+          CONFIG_FILE_LOCATION,
+          'all the content'
+        );
+        expect(console.error).toHaveBeenCalledWith('oops');
+        expect(compiler['log']).toHaveBeenCalled();
+      });
+    });
+  });
+
   describe('functions', () => {
     beforeEach(() => {
       jest.restoreAllMocks();
@@ -490,6 +811,25 @@ describe(DocPageConfigsCompiler, () => {
           ) => string,
         } as ts.Node;
       }
+    });
+
+    describe(exportedForTesting.formatContent, () => {
+      it('should handle the happy case', () => {
+        // Arrange
+
+        // Act
+        const result = exportedForTesting.formatContent(['string1', 'string2']);
+
+        // Assert
+        expect(result)
+          .toEqual(`import { DynamicDocPageConfig } from '@cdp/component-document-portal/util-types';
+
+export const docPageConfigs = {
+  string1,
+  string2,
+} as Record<string, DynamicDocPageConfig>;
+`);
+      });
     });
   });
 
