@@ -2,4 +2,4 @@
   <code [highlight]="code" [languages]="['typescript', 'html']"></code>
   <button (click)="copyToClipboard()">{{ buttonText | async }}</button>
 </pre>
-<div [hidden]="true"><ng-content></ng-content></div>
+<div [hidden]="true" #content><ng-content></ng-content></div>
