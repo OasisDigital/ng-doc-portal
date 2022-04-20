@@ -25,7 +25,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [AppComponent, DocPageViewerComponent],
   imports: [BrowserModule, RouterModule.forRoot(routes)],
   providers: [
     {

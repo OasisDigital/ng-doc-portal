@@ -1,14 +1,6 @@
-import {
-  Component,
-  createNgModuleRef,
-  Injector,
-  OnDestroy,
-  OnInit,
-  ViewChild,
-  ViewContainerRef,
-} from '@angular/core';
+import { Component, Type } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { filter, map, Subject, takeUntil, tap } from 'rxjs';
+import { filter, map, Observable, switchMap, tap } from 'rxjs';
 
 import { DynamicDocPageConfig } from '@cdp/component-document-portal/util-types';
 
@@ -16,53 +8,29 @@ import { docPageRouteParam } from './app.module';
 import { docPageConfigs } from './doc-page-configs';
 
 @Component({
-  template: `<ng-template #docPageRenderer></ng-template>`,
+  template: `<ng-container
+    *ngIf="component$ | async as component"
+    [ngComponentOutlet]="component"
+  ></ng-container>`,
 })
-export class DocPageViewerComponent implements OnInit, OnDestroy {
-  @ViewChild('docPageRenderer', { read: ViewContainerRef })
-  docPageRenderer?: ViewContainerRef;
+export class DocPageViewerComponent {
+  component$: Observable<Type<any>>;
 
-  destroy = new Subject<void>();
-
-  constructor(
-    private router: Router,
-    private route: ActivatedRoute,
-    private injector: Injector
-  ) {}
-
-  ngOnInit() {
-    this.route.paramMap
-      .pipe(
-        takeUntil(this.destroy),
-        map((paramMap) => paramMap.get(docPageRouteParam) as string),
-        map((routeParam) => docPageConfigs[routeParam]),
-        tap((docPageConfig) => {
-          if (!docPageConfig) {
-            this.router.navigate(['/']);
-          }
-        }),
-        filter(
-          (docPageConfig): docPageConfig is DynamicDocPageConfig =>
-            !!docPageConfig
-        )
-      )
-      .subscribe(async (dynamicConfig) => {
-        const config = await dynamicConfig.loadConfig();
-        let ngModuleRef;
-        if (config.ngModule) {
-          ngModuleRef = createNgModuleRef(config.ngModule, this.injector);
+  constructor(private router: Router, private route: ActivatedRoute) {
+    this.component$ = this.route.paramMap.pipe(
+      map((paramMap) => paramMap.get(docPageRouteParam) as string),
+      map((routeParam) => docPageConfigs[routeParam]),
+      tap((docPageConfig) => {
+        if (!docPageConfig) {
+          this.router.navigate(['/']);
         }
-        if (this.docPageRenderer) {
-          this.docPageRenderer.clear();
-          this.docPageRenderer.createComponent(config.docPageComponent, {
-            ngModuleRef,
-          });
-        }
-      });
-  }
-
-  ngOnDestroy(): void {
-    this.destroy.next();
-    this.destroy.complete();
+      }),
+      filter(
+        (docPageConfig): docPageConfig is DynamicDocPageConfig =>
+          !!docPageConfig
+      ),
+      switchMap((docPageConfig) => docPageConfig.loadConfig()),
+      map((config) => config.docPageComponent)
+    );
   }
 }
