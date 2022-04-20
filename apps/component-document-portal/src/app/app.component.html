@@ -1,34 +1,17 @@
-<nav class="side-navigation-bar">
-  <ul>
-    <ng-container
-      *ngTemplateOutlet="
-        recursiveRoutesMenuTemplate;
-        context: { routes: docPageRoutes }
-      "
-    ></ng-container>
-  </ul>
-</nav>
+<ng-container *ngIf="!configService.loading; else loadingConfigs">
+  <div class="configs-loaded-view">
+    <cdp-nav [configs]="configService.configs"></cdp-nav>
+    <div class="router-content">
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</ng-container>
 
-<ng-template #recursiveRoutesMenuTemplate let-routes="routes">
-  <li *ngFor="let routeMenu of routes">
-    <ng-container *ngIf="routeMenu.items">
-      <span class="group-header">{{ routeMenu.title }}</span>
-      <ul *ngIf="routeMenu.items.length > 0">
-        <ng-container
-          *ngTemplateOutlet="
-            recursiveRoutesMenuTemplate;
-            context: { routes: routeMenu.items }
-          "
-        >
-        </ng-container>
-      </ul>
-    </ng-container>
-    <ng-container *ngIf="!routeMenu.items">
-      <a [routerLink]="routeMenu.route">{{ routeMenu.title }}</a>
-    </ng-container>
-  </li>
+<ng-template #loadingConfigs>
+  <div class="loading-status">
+    <div>
+      <h1>Currently Loading the Document Page Configs</h1>
+      <h2>Please Wait...</h2>
+    </div>
+  </div>
 </ng-template>
-
-<div class="router-content">
-  <router-outlet></router-outlet>
-</div>

@@ -5,7 +5,7 @@ import { filter, map, Observable, switchMap, tap } from 'rxjs';
 import { DynamicDocPageConfig } from '@cdp/component-document-portal/util-types';
 
 import { docPageRouteParam } from './app.module';
-import { docPageConfigs } from './doc-page-configs';
+import { DocPageConfigService } from './doc-page-config.service';
 
 @Component({
   template: `<ng-container
@@ -16,10 +16,14 @@ import { docPageConfigs } from './doc-page-configs';
 export class DocPageViewerComponent {
   component$: Observable<Type<any>>;
 
-  constructor(private router: Router, private route: ActivatedRoute) {
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private configsService: DocPageConfigService
+  ) {
     this.component$ = this.route.paramMap.pipe(
       map((paramMap) => paramMap.get(docPageRouteParam) as string),
-      map((routeParam) => docPageConfigs[routeParam]),
+      map((routeParam) => this.configsService.configs[routeParam]),
       tap((docPageConfig) => {
         if (!docPageConfig) {
           this.router.navigate(['/']);

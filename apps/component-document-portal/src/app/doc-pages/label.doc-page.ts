@@ -16,7 +16,7 @@ export class LabelDocumentPageComponent {}
   imports: [],
   providers: [],
 })
-class DocumentPageModule {}
+export class DocumentPageModule {}
 
 const docPageConfig: DocPageConfig = {
   title: 'General/Label',

@@ -12,11 +12,11 @@ export class InputDocumentPageComponent {}
 
 // This can probably go away when Optional Modules is in Angular
 @NgModule({
-  declarations: [],
+  declarations: [InputDocumentPageComponent],
   imports: [],
   providers: [],
 })
-class DocumentPageModule {}
+export class DocumentPageModule {}
 
 const docPageConfig: DocPageConfig = {
   title: 'Forms/Input',

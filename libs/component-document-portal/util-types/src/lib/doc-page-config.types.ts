@@ -5,6 +5,10 @@ export interface DynamicDocPageConfig {
   loadConfig: () => Promise<DocPageConfig>;
 }
 
+export interface DocConfig {
+  loadConfig: () => Promise<DocPageConfig>;
+}
+
 export interface DocPageConfig {
   title: string;
   docPageComponent: Type<any>;
@@ -24,3 +28,9 @@ export interface DocPageMetadata {
   title: string;
   route: string;
 }
+
+export type CompilerMode = 'lazy' | 'runtime';
+
+export type LazyDocConfigRecord = Record<string, DynamicDocPageConfig>;
+
+export type RuntimeDocConfigArray = (() => Promise<DocPageConfig>)[];

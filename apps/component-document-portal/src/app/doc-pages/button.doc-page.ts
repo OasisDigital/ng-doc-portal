@@ -15,7 +15,7 @@ import { DocComponentsModule } from '@cdp/component-document-portal/ui-portal-co
       <cdp-tab-item title="Examples">
         <button>Example Button</button>
         <cdp-code-reveal lang="html">
-          <button>Example Button</button>
+          <button>Example Buttons</button>
         </cdp-code-reveal>
       </cdp-tab-item>
     </cdp-tab-menu>

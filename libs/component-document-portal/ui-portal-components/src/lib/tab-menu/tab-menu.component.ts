@@ -3,7 +3,7 @@ import {
   Component,
   ContentChildren,
   OnDestroy,
-  QueryList
+  QueryList,
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map, Subject, takeUntil } from 'rxjs';
@@ -15,7 +15,8 @@ import { TabItemComponent } from '../tab-item/tab-item.component';
   styleUrls: ['./tab-menu.component.scss'],
 })
 export class TabMenuComponent implements AfterContentInit, OnDestroy {
-  @ContentChildren(TabItemComponent) tabMenuItems: QueryList<TabItemComponent> = new QueryList<TabItemComponent>();
+  @ContentChildren(TabItemComponent) tabMenuItems: QueryList<TabItemComponent> =
+    new QueryList<TabItemComponent>();
 
   tabs: TabItemComponent[] = [];
   activeTab: TabItemComponent | null = null;
@@ -25,10 +26,12 @@ export class TabMenuComponent implements AfterContentInit, OnDestroy {
   constructor(private router: Router, private route: ActivatedRoute) {}
 
   ngAfterContentInit() {
-    this.route.queryParamMap.pipe(
-      takeUntil(this.destroy$),
-      map(params => params.get('tab')),
-    ).subscribe((tabName) => this.selectTab(tabName));
+    this.route.queryParamMap
+      .pipe(
+        takeUntil(this.destroy$),
+        map((params) => params.get('tab'))
+      )
+      .subscribe((tabName) => this.selectTab(tabName));
   }
 
   ngOnDestroy() {
@@ -46,7 +49,7 @@ export class TabMenuComponent implements AfterContentInit, OnDestroy {
 
     // Revert kebab-case formatting from `this.selectTab`
     const title = tabName.replace('-', ' ');
-    const tab = this.tabs.find(t => t.title.toLowerCase() === title);
+    const tab = this.tabs.find((t) => t.title.toLowerCase() === title);
 
     this.activeTab = tab ?? this.tabs[0];
   }

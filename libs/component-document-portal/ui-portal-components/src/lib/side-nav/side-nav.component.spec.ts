@@ -1,32 +1,22 @@
 import {
-  DocPageMetadata,
-  DocPagesMenu,
   DynamicDocPageConfig,
+  DocPagesMenu,
+  DocPageMetadata,
 } from '@cdp/component-document-portal/util-types';
-
-import { createDocPageRoutes } from './app.component';
+import { createDocPageRoutes } from './side-nav.component';
 
 const mockDocPageConfigs = {
   'general-button': {
     title: 'General/Button',
-    loadConfig: () =>
-      import(
-        '../../../../apps/component-document-portal/src/app/doc-pages/button.doc-page'
-      ).then((file) => file.default),
+    loadConfig: jest.fn(),
   },
   'forms-input': {
     title: 'Forms/Input',
-    loadConfig: () =>
-      import(
-        '../../../../apps/component-document-portal/src/app/doc-pages/input.doc-page'
-      ).then((file) => file.default),
+    loadConfig: jest.fn(),
   },
   'general-label': {
     title: 'General/Label',
-    loadConfig: () =>
-      import(
-        '../../../../apps/component-document-portal/src/app/doc-pages/label.doc-page'
-      ).then((file) => file.default),
+    loadConfig: jest.fn(),
   },
 } as Record<string, DynamicDocPageConfig>;
 

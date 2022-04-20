@@ -5,10 +5,22 @@ import { HighlightModule } from 'ngx-highlightjs';
 import { CodeRevealComponent } from './code-reveal/code-reveal.component';
 import { TabMenuComponent } from './tab-menu/tab-menu.component';
 import { TabItemComponent } from './tab-item/tab-item.component';
+import { SideNavComponent } from './side-nav/side-nav.component';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
-  imports: [HighlightModule, CommonModule],
-  declarations: [TabMenuComponent, CodeRevealComponent, TabItemComponent],
-  exports: [TabMenuComponent, CodeRevealComponent, TabItemComponent],
+  imports: [HighlightModule, CommonModule, RouterModule],
+  declarations: [
+    TabMenuComponent,
+    CodeRevealComponent,
+    TabItemComponent,
+    SideNavComponent,
+  ],
+  exports: [
+    TabMenuComponent,
+    CodeRevealComponent,
+    TabItemComponent,
+    SideNavComponent,
+  ],
 })
 export class DocComponentsModule {}

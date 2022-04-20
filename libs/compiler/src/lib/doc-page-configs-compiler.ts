@@ -22,6 +22,8 @@ import {
 
 import ts from 'typescript';
 
+import { CompilerMode } from '@cdp/component-document-portal/util-types';
+
 export const DOC_PAGE_CONFIG_FILES_GLOB = '**/*.doc-page.ts';
 export const CONFIG_FILE_LOCATION =
   './apps/component-document-portal/src/app/doc-page-configs.ts';
@@ -74,24 +76,36 @@ export class DocPageConfigsCompiler {
   private readonly content: Observable<string>;
 
   constructor(
-    private readonly shouldWatch: boolean,
+    readonly mode: CompilerMode,
+    readonly shouldWatch: boolean,
     private readonly silenced: boolean
   ) {
-    this.content = defer(() =>
+    const fileEvents = defer(() =>
       concat(
         this.buildInitialFileEvent(),
-        iif(() => this.shouldWatch, this.buildWatcher(), EMPTY)
+        iif(() => shouldWatch, this.buildWatcher(), EMPTY)
       )
-    ).pipe(
-      concatMap(this.addPayloadToEvent.bind(this)),
-      filter((fileEvent): fileEvent is ProcessedFileEvent => !!fileEvent),
-      scan(exportedForTesting.accumulatePayloads, new Array<EventPayload>()),
-      debounceTime(500),
-      map((fileEvents) =>
-        fileEvents.map((fileEvent) => fileEvent.configString)
-      ),
-      map((cs) => exportedForTesting.formatContent(cs))
     );
+    if (mode === 'lazy') {
+      this.content = fileEvents.pipe(
+        concatMap(this.addPayloadToEvent.bind(this)),
+        filter((fileEvent): fileEvent is ProcessedFileEvent => !!fileEvent),
+        scan(exportedForTesting.accumulatePayloads, new Array<EventPayload>()),
+        debounceTime(500),
+        map((eventPayloads) =>
+          eventPayloads.map((eventPayload) => eventPayload.configString)
+        ),
+        map(wrapTypescriptBoilerplate),
+        map(exportedForTesting.formatContent)
+      );
+    } else {
+      this.content = fileEvents.pipe(
+        scan(exportedForTesting.accumulateFilePaths, new Array<string>()),
+        debounceTime(500),
+        map(createdRuntimeConfig),
+        map(exportedForTesting.formatContent)
+      );
+    }
   }
 
   /**
@@ -283,6 +297,44 @@ function accumulatePayloads(
   return [];
 }
 
+function createdRuntimeConfig(filePaths: string[]) {
+  let fullString = `
+  import { RuntimeDocConfigArray, CompilerMode } from '@cdp/component-document-portal/util-types';
+  export const docPageConfigs = [`;
+  for (const filePath of filePaths) {
+    const splitPath = filePath.split('.ts');
+    fullString =
+      fullString +
+      `() => import('../../../../${splitPath[0]}').then(
+      (file) => file.default
+    ),`;
+  }
+  fullString = fullString + `] as RuntimeDocConfigArray;`;
+  fullString =
+    fullString + `export const applicationMode:CompilerMode = 'runtime';`;
+  return fullString;
+}
+
+/**
+ * Extract all the filePaths from the various processed file events.
+ *
+ * @param acc The previous accumulated filePaths
+ * @param curr The current file event
+ */
+function accumulateFilePaths(acc: string[], curr: RawFileEvent): string[] {
+  if (curr.type === 'init') {
+    return curr.filePaths;
+  } else if (curr.type === 'add') {
+    return [...acc, curr.filePath];
+  } else if (curr.type === 'unlink') {
+    return acc.filter((f) => f !== curr.filePath);
+  } else if (curr.type === 'change') {
+    return acc;
+  }
+  // Can't happen, but needed for the compiler
+  return [];
+}
+
 /**
  * Build the config string for a particular input file.
  *
@@ -415,17 +467,23 @@ function recursivelyFindTitle(
  * @param configStrings The config strings generated from our path files
  * @private
  */
-function formatContent(configStrings: string[]): string {
-  return prettier.format(
-    `
-      import { DynamicDocPageConfig } from '@cdp/component-document-portal/util-types';
+function formatContent(content: string): string {
+  return prettier.format(content, {
+    parser: 'typescript',
+    printWidth: 100,
+    singleQuote: true,
+  });
+}
 
-      export const docPageConfigs = {
-        ${configStrings.toString()}
-      } as Record<string, DynamicDocPageConfig>;
-    `,
-    { parser: 'typescript', printWidth: 100, singleQuote: true }
-  );
+function wrapTypescriptBoilerplate(configStrings: string[]) {
+  return `
+  import { LazyDocConfigRecord, CompilerMode } from '@cdp/component-document-portal/util-types';
+
+  export const docPageConfigs = {
+    ${configStrings.toString()}
+  } as LazyDocConfigRecord;
+  export const applicationMode:CompilerMode = 'lazy';
+`;
 }
 
 function timeNow() {
@@ -433,6 +491,7 @@ function timeNow() {
 }
 
 export const exportedForTesting = {
+  accumulateFilePaths,
   accumulatePayloads,
   compileDynamicDocPageConfigString,
   findStatementWithTitle,

@@ -2,11 +2,9 @@
 
 # Compiled output for the component document page configs
 apps/component-document-portal/src/app/doc-page-configs.ts
-*.mjs
 
 # Compiled ouputs for compiler performance testing
 apps/component-document-portal/src/app/generated-pages
-
 
 # compiled output
 /dist
