@@ -366,6 +366,7 @@ function generateDocPageConfig(filePath: string, title: string) {
   const route = title.toLowerCase().replace(/[ /]/g, '-');
   return `
       '${route}': {
+        mode: 'lazy',
         title: '${title}',
         loadConfig: () => import('../../../../${filePathWithoutExtension}').then((file) => file.default)
       }

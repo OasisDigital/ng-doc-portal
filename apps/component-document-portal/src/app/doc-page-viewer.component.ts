@@ -1,8 +1,11 @@
 import { Component, Type } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { filter, map, Observable, switchMap, tap } from 'rxjs';
+import { filter, map, Observable, of, switchMap, tap } from 'rxjs';
 
-import { DynamicDocPageConfig } from '@cdp/component-document-portal/util-types';
+import {
+  DynamicDocPageConfig,
+  RuntimeDocPageConfig,
+} from '@cdp/component-document-portal/util-types';
 
 import { docPageRouteParam } from './app.module';
 import { DocPageConfigService } from './doc-page-config.service';
@@ -30,10 +33,18 @@ export class DocPageViewerComponent {
         }
       }),
       filter(
-        (docPageConfig): docPageConfig is DynamicDocPageConfig =>
+        (
+          docPageConfig
+        ): docPageConfig is DynamicDocPageConfig | RuntimeDocPageConfig =>
           !!docPageConfig
       ),
-      switchMap((docPageConfig) => docPageConfig.loadConfig()),
+      switchMap((docPageConfig) => {
+        if (docPageConfig.mode === 'lazy') {
+          return docPageConfig.loadConfig();
+        } else {
+          return of(docPageConfig.config);
+        }
+      }),
       map((config) => config.docPageComponent)
     );
   }

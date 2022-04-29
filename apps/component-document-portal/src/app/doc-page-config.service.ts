@@ -41,7 +41,8 @@ async function importRuntimeDocConfigs(runtimeConfigs: RuntimeDocConfigArray) {
     const route = config.title.toLowerCase().replace(/[ /]/g, '-');
     configs[route] = {
       title: config.title,
-      loadConfig: () => Promise.resolve(config),
+      mode: 'runtime',
+      config,
     };
   }
   return configs;

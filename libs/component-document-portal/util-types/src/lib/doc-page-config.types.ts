@@ -1,8 +1,15 @@
 import { Type } from '@angular/core';
 
 export interface DynamicDocPageConfig {
+  mode: 'lazy';
   title: string;
   loadConfig: () => Promise<DocPageConfig>;
+}
+
+export interface RuntimeDocPageConfig {
+  mode: 'runtime';
+  title: string;
+  config: DocPageConfig;
 }
 
 export interface DocConfig {
@@ -31,6 +38,9 @@ export interface DocPageMetadata {
 
 export type CompilerMode = 'lazy' | 'runtime';
 
-export type LazyDocConfigRecord = Record<string, DynamicDocPageConfig>;
+export type LazyDocConfigRecord = Record<
+  string,
+  DynamicDocPageConfig | RuntimeDocPageConfig
+>;
 
 export type RuntimeDocConfigArray = (() => Promise<DocPageConfig>)[];
