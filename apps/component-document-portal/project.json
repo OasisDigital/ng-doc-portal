@@ -85,7 +85,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/apps/component-document-portal"],
       "options": {
-        "jestConfig": "apps/component-document-portal/jest.config.js",
+        "jestConfig": "apps/component-document-portal/jest.config.ts",
         "passWithNoTests": true
       }
     }

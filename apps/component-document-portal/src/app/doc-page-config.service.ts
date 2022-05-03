@@ -23,14 +23,14 @@ export class DocPageConfigService {
   async init() {
     if (this.compilerMode === 'lazy') {
       this.configs = this.docPageConfigs as LazyDocConfigRecord;
+      this.loading = false;
     } else {
       this.configs = await importRuntimeDocConfigs(
         this.docPageConfigs as RuntimeDocConfigArray
       );
+      // Just so we can see the loading message for now :)
+      setTimeout(() => (this.loading = false), 1000);
     }
-
-    // Just so we can see the loading message for now :)
-    setTimeout(() => (this.loading = false), 1000);
   }
 }
 

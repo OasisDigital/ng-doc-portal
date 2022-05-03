@@ -8,7 +8,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/libs/component-document-portal/util-types"],
       "options": {
-        "jestConfig": "libs/component-document-portal/util-types/jest.config.js",
+        "jestConfig": "libs/component-document-portal/util-types/jest.config.ts",
         "passWithNoTests": true
       }
     },

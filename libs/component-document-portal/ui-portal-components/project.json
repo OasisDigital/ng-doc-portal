@@ -10,7 +10,7 @@
         "coverage/libs/component-document-portal/ui-portal-components"
       ],
       "options": {
-        "jestConfig": "libs/component-document-portal/ui-portal-components/jest.config.js",
+        "jestConfig": "libs/component-document-portal/ui-portal-components/jest.config.ts",
         "passWithNoTests": true
       }
     },

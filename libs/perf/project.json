@@ -14,7 +14,7 @@
       "executor": "@nrwl/jest:jest",
       "outputs": ["coverage/libs/perf"],
       "options": {
-        "jestConfig": "libs/perf/jest.config.js",
+        "jestConfig": "libs/perf/jest.config.ts",
         "passWithNoTests": true
       }
     }
