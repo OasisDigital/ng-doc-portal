@@ -7,6 +7,7 @@
     "nx": "nx",
     "postinstall": "node ./decorate-angular-cli.js && ngcc --properties es2015 browser module main",
     "start": "nx serve",
+    "generate:doc-page": "nx workspace-generator doc-page",
     "gen:doc-page-configs:lazy": "ts-node --project libs/compiler/tsconfig.lib.json -r dotenv/config libs/compiler/src/lib/main.ts",
     "gen:doc-page-configs:runtime": "ts-node --project libs/compiler/tsconfig.lib.json -r dotenv/config libs/compiler/src/lib/main.ts --mode=runtime",
     "gen:doc-page-configs:watch": "ts-node --project libs/compiler/tsconfig.lib.json -r dotenv/config libs/compiler/src/lib/main.ts --watch",
