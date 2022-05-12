@@ -1,0 +1,25 @@
+<div class="component-view">
+  <ng-container
+    *ngIf="component"
+    [cdpRenderComponent]="component"
+    (componentRefCreated)="setupComponentInputValueChanges($event)"
+  ></ng-container>
+</div>
+<div class="form-view">
+  <ng-template #playgroundControlsLayout let-gridItems="gridItems">
+    <div class="form-layout">
+      <div class="form-control" *ngFor="let item of gridItems | async">
+        <incrudable-control-picker
+          [control]="item.control"
+        ></incrudable-control-picker>
+      </div>
+    </div>
+  </ng-template>
+
+  <incrudable-renderer
+    [controls]="inputsControls"
+    [form]="formGroup"
+    [formLayout]="playgroundControlsLayout"
+  >
+  </incrudable-renderer>
+</div>

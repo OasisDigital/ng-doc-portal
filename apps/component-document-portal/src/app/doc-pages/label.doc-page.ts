@@ -1,4 +1,4 @@
-import { Component, NgModule } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { DocPageConfig } from '@cdp/component-document-portal/util-types';
 
@@ -10,18 +10,9 @@ import { DocPageConfig } from '@cdp/component-document-portal/util-types';
 })
 export class LabelDocumentPageComponent {}
 
-// This can probably go away when Optional Modules is in Angular
-@NgModule({
-  declarations: [],
-  imports: [],
-  providers: [],
-})
-export class DocumentPageModule {}
-
 const docPageConfig: DocPageConfig = {
   title: 'General/Label',
   docPageComponent: LabelDocumentPageComponent,
-  ngModule: DocumentPageModule,
 };
 
 export default docPageConfig;
