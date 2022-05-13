@@ -28,9 +28,7 @@ export class MarkdownComponent {
     this.parsedHtml = marked.parse(textToMark);
   }
 
-  getFileData(localPath: string): string {
-    return lastValueFrom(
-      this.http.get(localPath, { responseType: 'text' })
-    ).toString();
+  getFileData(localPath: string) {
+    return lastValueFrom(this.http.get(localPath, { responseType: 'text' }));
   }
 }
