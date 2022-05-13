@@ -30,6 +30,12 @@ export class ComponentPlaygroundComponent {
   }
 
   setupComponentInputValueChanges(ref: ComponentRef<any>) {
+    // This should set the default form values, but does nothing for some reason...
+    for (const [key, value] of Object.entries(ref.instance)) {
+      this.formGroup.get(key)?.setValue(value);
+    }
+
+    // syncs form to inputs
     this.formGroup.valueChanges
       .pipe(takeUntil(this.destroyFormValueChanges))
       .subscribe((formValue) => {

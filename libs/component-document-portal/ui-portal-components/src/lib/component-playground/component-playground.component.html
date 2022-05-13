@@ -1,9 +1,11 @@
 <div class="component-view">
-  <ng-container
-    *ngIf="component"
-    [cdpRenderComponent]="component"
-    (componentRefCreated)="setupComponentInputValueChanges($event)"
-  ></ng-container>
+  <div class="component-display">
+    <ng-container
+      *ngIf="component"
+      [cdpRenderComponent]="component"
+      (componentRefCreated)="setupComponentInputValueChanges($event)"
+    ></ng-container>
+  </div>
 </div>
 <div class="form-view">
   <ng-template #playgroundControlsLayout let-gridItems="gridItems">

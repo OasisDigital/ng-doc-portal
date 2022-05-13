@@ -5,10 +5,18 @@
   grid-template-rows: auto 1fr;
 
   .component-view {
-    width: calc(100% - 10px);
-    padding: 5px;
+    width: 100%;
+    padding: 40px 0;
+
     display: grid;
-    place-items: center;
+    place-content: center;
+    grid-template-columns: max-content;
+
+    .component-display {
+      padding: 15px;
+      border-radius: 5px;
+      box-shadow: 0px 0px 10px 10px rgba(0, 0, 0, 0.75);
+    }
   }
 
   .form-view {

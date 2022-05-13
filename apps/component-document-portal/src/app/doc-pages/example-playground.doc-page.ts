@@ -9,13 +9,24 @@ import {
 
 @Component({
   template: `
-    <h1>The Text: {{ text }}</h1>
-    <h2>color: {{ color }}</h2>
+    <p>The Text: {{ text }}</p>
+    <p>color: {{ color }}</p>
   `,
+  styles: [
+    `
+      :host {
+        padding: 5px;
+        display: block;
+        background-color: rgb(32, 122, 195);
+        font-size: 24px;
+        color: white;
+      }
+    `,
+  ],
 })
 export class TestComponent {
-  @Input() text = '';
-  @Input() color = '';
+  @Input() text = 'asdawdasdawdasd';
+  @Input() color = 'blue';
 }
 
 @Component({
