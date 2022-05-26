@@ -1,17 +1,1 @@
-<ng-container *ngIf="!configService.loading; else loadingConfigs">
-  <div class="configs-loaded-view">
-    <cdp-nav [configs]="configService.configs"></cdp-nav>
-    <div class="router-content">
-      <router-outlet></router-outlet>
-    </div>
-  </div>
-</ng-container>
-
-<ng-template #loadingConfigs>
-  <div class="loading-status">
-    <div>
-      <h1>Currently Loading the Document Page Configs</h1>
-      <h2>Please Wait...</h2>
-    </div>
-  </div>
-</ng-template>
+<router-outlet></router-outlet>

@@ -1,0 +1,46 @@
+cdp-playground {
+  height: 100%;
+  width: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr;
+
+  .component-view {
+    width: 100%;
+    padding: 40px 0;
+
+    display: grid;
+    place-content: center;
+    grid-template-columns: max-content;
+
+    .component-display {
+      padding: 15px;
+      border-radius: 5px;
+      box-shadow: 0px 0px 10px 10px rgba(0, 0, 0, 0.75);
+    }
+  }
+
+  .form-view {
+    border-top: 2px solid black;
+    display: grid;
+    place-items: center;
+
+    label {
+      margin-right: 10px;
+    }
+
+    incrudable-renderer {
+      width: auto;
+    }
+
+    .form-layout {
+      padding: 10px;
+      display: grid;
+      row-gap: 20px;
+      place-items: center;
+
+      .form-control {
+        width: 100%;
+      }
+    }
+  }
+}

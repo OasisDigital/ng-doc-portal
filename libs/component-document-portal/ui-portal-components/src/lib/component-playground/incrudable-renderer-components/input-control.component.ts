@@ -3,7 +3,6 @@ import { InputRunTimeControl } from '@incrudable/forms';
 
 @Component({
   selector: 'cdp-input-control',
-  styleUrls: ['./control.scss'],
   template: `
     <ng-container *ngIf="control">
       <label [for]="control.propertyName">{{ control.label }}:</label>

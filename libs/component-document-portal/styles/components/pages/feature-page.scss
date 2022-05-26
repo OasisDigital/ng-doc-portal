@@ -1,0 +1,25 @@
+cdp-feature {
+  height: 100%;
+  width: 100%;
+
+  .configs-loaded-view {
+    height: 100%;
+    width: 100%;
+    display: grid;
+    grid-template-columns: minmax(0, auto) 1fr;
+    grid-template-areas: 'nav content';
+
+    .router-content {
+      grid-area: content;
+    }
+  }
+
+  .loading-status {
+    height: 100%;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    place-items: center;
+    text-align: center;
+  }
+}

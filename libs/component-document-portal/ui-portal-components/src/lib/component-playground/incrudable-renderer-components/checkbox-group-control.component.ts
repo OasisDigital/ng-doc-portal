@@ -3,7 +3,6 @@ import { CheckGroupRuntimeControl } from '@incrudable/forms';
 
 @Component({
   selector: 'cdp-input-control',
-  styleUrls: ['./control.scss'],
   template: `
     <ng-container *ngIf="control">
       <label>{{ control.label }}:</label>

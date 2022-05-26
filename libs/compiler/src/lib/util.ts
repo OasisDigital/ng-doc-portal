@@ -52,7 +52,7 @@ export function createRuntimeConfig(filePaths: string[]) {
   return `
     import { RuntimeDocConfigArray, CompilerMode } from '@cdp/component-document-portal/util-types';
 
-    export const applicationMode: CompilerMode = 'runtime';
+    export const compilerMode: CompilerMode = 'runtime';
 
     export const docPageConfigs = [
       ${arrayStringContent}
@@ -228,7 +228,7 @@ export function wrapTypescriptBoilerplate(configStrings: string[]) {
   export const docPageConfigs = {
     ${configStrings.toString()}
   } as LazyDocConfigRecord;
-  export const applicationMode:CompilerMode = 'lazy';
+  export const compilerMode:CompilerMode = 'lazy';
 `;
 }
 

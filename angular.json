@@ -4,6 +4,7 @@
     "compiler": "libs/compiler",
     "component-document-portal": "apps/component-document-portal",
     "component-document-portal-e2e": "apps/component-document-portal-e2e",
+    "component-document-portal-feature-portal-app": "libs/component-document-portal/feature-portal-app",
     "component-document-portal-ui-portal-components": "libs/component-document-portal/ui-portal-components",
     "component-document-portal-util-types": "libs/component-document-portal/util-types",
     "perf": "libs/perf"

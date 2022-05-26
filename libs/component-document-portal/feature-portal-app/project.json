@@ -1,0 +1,26 @@
+{
+  "projectType": "library",
+  "root": "libs/component-document-portal/feature-portal-app",
+  "sourceRoot": "libs/component-document-portal/feature-portal-app/src",
+  "prefix": "cdp",
+  "targets": {
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/component-document-portal/feature-portal-app"],
+      "options": {
+        "jestConfig": "libs/component-document-portal/feature-portal-app/jest.config.ts",
+        "passWithNoTests": true
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "options": {
+        "lintFilePatterns": [
+          "libs/component-document-portal/feature-portal-app/**/*.ts",
+          "libs/component-document-portal/feature-portal-app/**/*.html"
+        ]
+      }
+    }
+  },
+  "tags": []
+}

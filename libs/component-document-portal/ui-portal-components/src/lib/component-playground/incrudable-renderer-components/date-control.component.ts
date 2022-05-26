@@ -3,7 +3,6 @@ import { DateRunTimeControl } from '@incrudable/forms';
 
 @Component({
   selector: 'cdp-select-control',
-  styleUrls: ['./control.scss'],
   template: `
     <ng-container *ngIf="control">
       <label [for]="control.propertyName">{{ control.label }}:</label>

@@ -7,8 +7,8 @@ import {
   RuntimeDocPageConfig,
 } from '@cdp/component-document-portal/util-types';
 
-import { docPageRouteParam } from './app.module';
-import { DocPageConfigService } from './doc-page-config.service';
+import { docPageRouteParam } from '../../util/constants';
+import { DocPageConfigService } from '../../services/doc-page-config.service';
 
 @Component({
   template: `<ng-container

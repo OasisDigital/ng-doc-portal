@@ -62,7 +62,7 @@ export const docPageConfigs = {
     loadConfig: () => import('../../../../dir/file2').then((file) => file.default),
   },
 } as LazyDocConfigRecord;
-export const applicationMode: CompilerMode = 'lazy';
+export const compilerMode: CompilerMode = 'lazy';
 `);
       });
 
@@ -107,7 +107,7 @@ export const docPageConfigs = {
     loadConfig: () => import('../../../../file3').then((file) => file.default),
   },
 } as LazyDocConfigRecord;
-export const applicationMode: CompilerMode = 'lazy';
+export const compilerMode: CompilerMode = 'lazy';
 `);
       });
     });

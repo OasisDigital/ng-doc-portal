@@ -21,6 +21,9 @@
     "baseUrl": ".",
     "paths": {
       "@cdp/compiler": ["libs/compiler/src/index.ts"],
+      "@cdp/component-document-portal/feature-portal-app": [
+        "libs/component-document-portal/feature-portal-app/src/index.ts"
+      ],
       "@cdp/component-document-portal/ui-portal-components": [
         "libs/component-document-portal/ui-portal-components/src/index.ts"
       ],

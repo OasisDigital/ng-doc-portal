@@ -18,7 +18,10 @@
           "apps/component-document-portal/src/favicon.ico",
           "apps/component-document-portal/src/assets"
         ],
-        "styles": ["apps/component-document-portal/src/styles.scss"],
+        "styles": [
+          "libs/component-document-portal/styles/component-document-portal.scss",
+          "apps/component-document-portal/src/styles.scss"
+        ],
         "scripts": []
       },
       "configurations": {
