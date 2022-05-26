@@ -1,1 +1,1 @@
-export * from './lib/compiler';
+export * from './lib/doc-page-configs-compiler';

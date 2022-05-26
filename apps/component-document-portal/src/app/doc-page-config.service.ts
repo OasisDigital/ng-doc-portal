@@ -38,9 +38,21 @@ async function importRuntimeDocConfigs(runtimeConfigs: RuntimeDocConfigArray) {
   const configs = {} as LazyDocConfigRecord;
   for (const loadConfig of runtimeConfigs) {
     const config = await loadConfig();
-    const route = config.title.toLowerCase().replace(/[ /]/g, '-');
+    let route = config.title.toLowerCase().replace(/[ /]/g, '-');
+    let title = config.title;
+    let titleCountAddition = 1;
+    while (configs[route]) {
+      titleCountAddition++;
+      title = `${config.title} ${titleCountAddition}`;
+      route = title.toLowerCase().replace(/[ /]/g, '-');
+    }
+    if (titleCountAddition > 1) {
+      console.warn(
+        `DUPLICATE DOCUMENT PAGE TITLE DETECTED!\n"${config.title}" RENAMED TO "${title}"\n Please Resolve This Before Publishing!`
+      );
+    }
     configs[route] = {
-      title: config.title,
+      title: title,
       mode: 'runtime',
       config,
     };
