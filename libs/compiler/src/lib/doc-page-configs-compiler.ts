@@ -1,6 +1,5 @@
 import chalk from 'chalk';
 import chokidar from 'chokidar';
-import fs from 'fs/promises';
 import glob from 'glob-promise';
 import {
   concat,
@@ -19,6 +18,13 @@ import {
 
 import { CompilerMode } from '@cdp/component-document-portal/util-types';
 
+import { CONFIG_FILE_LOCATION, DOC_PAGE_CONFIG_FILES_GLOB } from './constants';
+import {
+  ProcessedFileEvent,
+  EventPayload,
+  RawInitEvent,
+  RawFileEvent,
+} from './types';
 import {
   accumulateFilePaths,
   accumulatePayloads,
@@ -29,13 +35,8 @@ import {
   timeNow,
   wrapTypescriptBoilerplate,
 } from './util';
-import {
-  ProcessedFileEvent,
-  EventPayload,
-  RawInitEvent,
-  RawFileEvent,
-} from './types';
-import { CONFIG_FILE_LOCATION, DOC_PAGE_CONFIG_FILES_GLOB } from './constants';
+
+import fs from 'fs/promises';
 
 export class DocPageConfigsCompiler {
   private readonly content: Observable<string>;

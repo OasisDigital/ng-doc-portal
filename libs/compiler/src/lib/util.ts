@@ -1,10 +1,11 @@
 import { format } from 'date-fns';
-import path from 'path';
-import ts from 'typescript';
-import fs from 'fs/promises';
 import prettier from 'prettier';
+import ts from 'typescript';
 
 import { EventPayload, ProcessedFileEvent, RawFileEvent } from './types';
+
+import fs from 'fs/promises';
+import path from 'path';
 
 /**
  * Extract all the payloads from the various processed file events.

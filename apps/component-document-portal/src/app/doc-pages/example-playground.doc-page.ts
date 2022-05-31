@@ -1,11 +1,11 @@
 import { Component, Input, NgModule } from '@angular/core';
 
-import { DocPageConfig } from '@cdp/component-document-portal/util-types';
 import {
   ComponentPlaygroundConfig,
   DocComponentsModule,
   PlaygroundControls,
 } from '@cdp/component-document-portal/ui-portal-components';
+import { DocPageConfig } from '@cdp/component-document-portal/util-types';
 
 @Component({
   template: `

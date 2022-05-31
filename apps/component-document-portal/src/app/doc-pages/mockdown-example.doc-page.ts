@@ -1,6 +1,6 @@
 import { Component, NgModule } from '@angular/core';
-import { DocComponentsModule } from '@cdp/component-document-portal/ui-portal-components';
 
+import { DocComponentsModule } from '@cdp/component-document-portal/ui-portal-components';
 import { DocPageConfig } from '@cdp/component-document-portal/util-types';
 
 const exampleMarkdown = `

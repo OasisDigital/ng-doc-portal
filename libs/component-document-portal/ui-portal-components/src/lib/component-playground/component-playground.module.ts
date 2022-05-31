@@ -4,13 +4,13 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ControlMapping, FormEngineModule } from '@incrudable/forms';
 
 import { ComponentPlaygroundComponent } from './component-playground.component';
-import { RenderComponentDirective } from './render-component.directive';
-import { InputControlComponent } from './incrudable-renderer-components/input-control.component';
-import { SelectControlComponent } from './incrudable-renderer-components/select-control.component';
-import { DateControlComponent } from './incrudable-renderer-components/date-control.component';
 import { CheckBoxControlComponent } from './incrudable-renderer-components/checkbox-group-control.component';
+import { DateControlComponent } from './incrudable-renderer-components/date-control.component';
+import { InputControlComponent } from './incrudable-renderer-components/input-control.component';
 import { RadioGroupControlComponent } from './incrudable-renderer-components/radio-group-control.component';
+import { SelectControlComponent } from './incrudable-renderer-components/select-control.component';
 import { TimeControlComponent } from './incrudable-renderer-components/time-control.component';
+import { RenderComponentDirective } from './render-component.directive';
 
 const controls: ControlMapping = {
   input: { control: InputControlComponent },

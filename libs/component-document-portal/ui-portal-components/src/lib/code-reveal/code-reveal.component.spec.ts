@@ -1,6 +1,7 @@
-import { CodeRevealComponent } from './code-reveal.component';
-import { firstValueFrom, skip, take, toArray } from 'rxjs';
 import { fakeAsync, tick } from '@angular/core/testing';
+import { firstValueFrom, skip, take, toArray } from 'rxjs';
+
+import { CodeRevealComponent } from './code-reveal.component';
 
 describe('CodeRevealComponent', () => {
   let component: CodeRevealComponent;

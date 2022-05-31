@@ -1,7 +1,9 @@
 import ts from 'typescript';
-import fs from 'fs/promises';
 
 import * as utilFunctions from './util';
+
+import fs from 'fs/promises';
+
 
 const mockFile = `
 import { Component, NgModule } from '@angular/core';

@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map, Subject, takeUntil } from 'rxjs';
+
 import { TabItemComponent } from '../tab-item/tab-item.component';
 
 @Component({

@@ -1,5 +1,5 @@
-import yargs from 'yargs/yargs';
 import { hideBin } from 'yargs/helpers';
+import yargs from 'yargs/yargs';
 
 import { CompilerMode } from '@cdp/component-document-portal/util-types';
 

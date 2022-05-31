@@ -1,7 +1,7 @@
 import { Component, NgModule } from '@angular/core';
 
-import { DocPageConfig } from '@cdp/component-document-portal/util-types';
 import { DocComponentsModule } from '@cdp/component-document-portal/ui-portal-components';
+import { DocPageConfig } from '@cdp/component-document-portal/util-types';
 
 @Component({
   template: `

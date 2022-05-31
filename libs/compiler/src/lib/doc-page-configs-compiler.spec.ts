@@ -1,12 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import fs from 'fs/promises';
-import glob from 'glob-promise';
 import { subscribeSpyTo } from '@hirez_io/observer-spy';
+import glob from 'glob-promise';
 import { delay, firstValueFrom, of } from 'rxjs';
 
 import { CONFIG_FILE_LOCATION } from './constants';
 import { DocPageConfigsCompiler } from './doc-page-configs-compiler';
 import { RawInitEvent, RawAddEvent, UnlinkEvent, EventPayload } from './types';
+
+import fs from 'fs/promises';
 
 jest.mock('./util', () => {
   const originalModule = jest.requireActual('./util');

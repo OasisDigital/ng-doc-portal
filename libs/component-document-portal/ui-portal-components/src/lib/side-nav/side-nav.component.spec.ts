@@ -3,6 +3,7 @@ import {
   DocPagesMenu,
   DocPageMetadata,
 } from '@cdp/component-document-portal/util-types';
+
 import { createDocPageRoutes } from './side-nav.component';
 
 const mockDocPageConfigs = {
