@@ -1,3 +1,4 @@
+import { EmbedIframeComponent } from './embed-iframe/embed-iframe.component';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
@@ -25,6 +26,7 @@ import { TabMenuComponent } from './tab-menu/tab-menu.component';
     TabItemComponent,
     SideNavComponent,
     MarkdownComponent,
+    EmbedIframeComponent,
   ],
   exports: [
     TabMenuComponent,
@@ -32,6 +34,7 @@ import { TabMenuComponent } from './tab-menu/tab-menu.component';
     TabItemComponent,
     SideNavComponent,
     MarkdownComponent,
+    EmbedIframeComponent,
     ComponentPlaygroundModule,
   ],
 })
