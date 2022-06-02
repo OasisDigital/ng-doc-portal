@@ -3,35 +3,55 @@ import { Component, Input, NgModule } from '@angular/core';
 import {
   ComponentPlaygroundConfig,
   DocComponentsModule,
-  PlaygroundControls,
+  PlaygroundControlConfigType,
 } from '@cdp/component-document-portal/ui-portal-components';
 import { DocPageConfig } from '@cdp/component-document-portal/util-types';
 
 @Component({
   template: `
     <p>The Text: {{ text }}</p>
-    <p>color: {{ color }}</p>
+    <p>pet: {{ pet }}</p>
+    <p>
+      color:
+      <span class="color-block" [style.background]="color"></span>
+    </p>
   `,
   styles: [
     `
       :host {
-        padding: 5px;
+        padding: 5px 20px;
         display: block;
         background-color: rgb(32, 122, 195);
         font-size: 24px;
         color: white;
+
+        .color-block {
+          display: inline-block;
+          padding: 5px;
+          height: 15px;
+          width: 15px;
+        }
       }
     `,
   ],
 })
 export class TestComponent {
-  @Input() text = 'asdawdasdawdasd';
-  @Input() color = 'blue';
+  @Input() text?: string;
+  @Input() pet?: string;
+  @Input() color?: string;
 }
 
 @Component({
   template: `
-    <cdp-playground [config]="playgroundComponentConfig"></cdp-playground>
+    <cdp-tab-menu>
+      <cdp-tab-item title="Overview">
+        <h1>Playground Test Component</h1>
+        <p></p>
+      </cdp-tab-item>
+      <cdp-tab-item title="Playground">
+        <cdp-playground [config]="playgroundComponentConfig"></cdp-playground>
+      </cdp-tab-item>
+    </cdp-tab-menu>
   `,
 })
 export class ExamplePlaygroundPageComponent {
@@ -40,38 +60,35 @@ export class ExamplePlaygroundPageComponent {
     inputs: [
       {
         label: 'Text Input',
-        propertyName: 'text',
-        type: PlaygroundControls.input,
+        property: 'text',
+        type: PlaygroundControlConfigType.Text,
+        value: 'blah',
       },
       {
-        label: 'Select a Color',
-        propertyName: 'color',
-        type: PlaygroundControls.select,
-        // Would be nice if the "typeOption" properties were flat on this control object
-        typeOptions: {
-          options: [
-            {
-              label: 'Blue',
-              value: 'blue',
-              // what is this? why is it needed?
-              propertyName: '',
-            },
-            {
-              label: 'Red',
-              value: 'red',
-              propertyName: '',
-            },
-            {
-              label: 'Green',
-              value: 'green',
-              propertyName: '',
-            },
-          ],
-          // should probably have this be the default... and thus not need to state it
-          optionSource: 'static',
-          // why is this needed when it's static?
-          optionSourceHook: '',
-        },
+        label: 'Select a Pet',
+        property: 'pet',
+        type: PlaygroundControlConfigType.Select,
+        value: 'dog',
+        options: [
+          {
+            display: 'Dog',
+            value: 'dog',
+          },
+          {
+            display: 'Cat',
+            value: 'cat',
+          },
+          {
+            display: 'Hamster',
+            value: 'hamster',
+          },
+        ],
+      },
+      {
+        label: 'Color',
+        property: 'color',
+        type: PlaygroundControlConfigType.ColorPicker,
+        value: '#363636',
       },
     ],
   };

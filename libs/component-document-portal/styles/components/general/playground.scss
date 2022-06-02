@@ -1,8 +1,8 @@
 cdp-playground {
   height: 100%;
-  width: 100%;
   display: grid;
   grid-template-rows: auto 1fr;
+  margin-left: -20px;
 
   .component-view {
     width: 100%;
@@ -22,25 +22,16 @@ cdp-playground {
   .form-view {
     border-top: 2px solid black;
     display: grid;
+    grid-auto-rows: max-content;
     place-items: center;
+    padding: 10px;
+    row-gap: 20px;
 
-    label {
-      margin-right: 10px;
-    }
-
-    incrudable-renderer {
-      width: auto;
-    }
-
-    .form-layout {
-      padding: 10px;
-      display: grid;
-      row-gap: 20px;
-      place-items: center;
-
-      .form-control {
-        width: 100%;
+    .form-control {
+      label {
+        margin-right: 10px;
       }
+      width: 100%;
     }
   }
 }

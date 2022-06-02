@@ -1,5 +1,6 @@
 cdp-tab-menu {
   display: grid;
+  margin-left: -20px;
 
   .tabHeader {
     display: grid;
@@ -7,6 +8,7 @@ cdp-tab-menu {
     justify-content: start;
     background-color: rgb(255, 255, 255);
     border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+
     div {
       cursor: pointer;
       padding: 1rem;
@@ -20,5 +22,7 @@ cdp-tab-menu {
   .tabContent {
     background-color: rgb(255, 255, 255);
     height: 100%;
+    padding-left: 20px;
+    padding-top: 5px;
   }
 }

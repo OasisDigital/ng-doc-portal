@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, Input } from '@angular/core';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import { marked } from 'marked';
 import { lastValueFrom } from 'rxjs';
 
@@ -9,7 +10,7 @@ import { lastValueFrom } from 'rxjs';
   styleUrls: ['./markdown.component.scss'],
 })
 export class MarkdownComponent {
-  parsedHtml = '';
+  parsedHtml: SafeHtml | undefined;
 
   @Input() set markdown(value: string) {
     this.parseMarkdown(value);
@@ -22,10 +23,12 @@ export class MarkdownComponent {
     })();
   }
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private sanitizer: DomSanitizer) {}
 
   parseMarkdown(textToMark: string) {
-    this.parsedHtml = marked.parse(textToMark);
+    this.parsedHtml = this.sanitizer.bypassSecurityTrustHtml(
+      marked.parse(textToMark)
+    );
   }
 
   getFileData(localPath: string) {

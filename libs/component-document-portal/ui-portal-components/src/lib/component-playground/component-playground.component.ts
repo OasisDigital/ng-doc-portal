@@ -3,13 +3,23 @@ import {
   Component,
   ComponentRef,
   Input,
+  OnDestroy,
   Type,
 } from '@angular/core';
-import { FormGroup } from '@angular/forms';
-import { Control } from '@incrudable/forms';
-import { Subject, takeUntil } from 'rxjs';
+import { FormControl, FormGroup } from '@angular/forms';
+import { startWith, Subject, takeUntil } from 'rxjs';
 
-import { ComponentPlaygroundConfig } from '../types';
+import {
+  ComponentPlaygroundConfig,
+  PlaygroundControlConfig,
+  PlaygroundControlConfigType,
+} from './playground-types';
+import { PlaygroundControlTemplateTypeGuards } from './template-type-guards';
+
+interface PlaygroundControl {
+  formControl: FormControl;
+  config: PlaygroundControlConfig;
+}
 
 @Component({
   selector: 'cdp-playground',
@@ -17,31 +27,41 @@ import { ComponentPlaygroundConfig } from '../types';
   styleUrls: ['./component-playground.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ComponentPlaygroundComponent {
+export class ComponentPlaygroundComponent implements OnDestroy {
   component: Type<any> | undefined;
-  inputsControls: Control[] = [];
+  playgroundControls: PlaygroundControl[] = [];
   formGroup = new FormGroup({});
-  destroyFormValueChanges = new Subject<void>();
+  destroyControlsValueChanges = new Subject<void>();
+
+  TypeGuards = PlaygroundControlTemplateTypeGuards;
+
+  ControlTypes = PlaygroundControlConfigType;
 
   @Input() set config(value: ComponentPlaygroundConfig) {
-    this.destroyFormValueChanges.next();
-    this.inputsControls = value.inputs;
+    this.destroyControlsValueChanges.next();
     this.component = value.component;
+    this.playgroundControls = value.inputs.map((config) => ({
+      config,
+      formControl: new FormControl(config.value),
+    }));
   }
 
   setupComponentInputValueChanges(ref: ComponentRef<any>) {
-    // This should set the default form values, but does nothing for some reason...
-    for (const [key, value] of Object.entries(ref.instance)) {
-      this.formGroup.get(key)?.setValue(value);
+    // syncs form controls to inputs
+    for (const playgroundControl of this.playgroundControls) {
+      playgroundControl.formControl.valueChanges
+        .pipe(
+          startWith(playgroundControl.formControl.value),
+          takeUntil(this.destroyControlsValueChanges)
+        )
+        .subscribe((newValue) => {
+          ref.instance[playgroundControl.config.property] = newValue;
+        });
     }
+  }
 
-    // syncs form to inputs
-    this.formGroup.valueChanges
-      .pipe(takeUntil(this.destroyFormValueChanges))
-      .subscribe((formValue) => {
-        for (const [key, value] of Object.entries(formValue)) {
-          ref.instance[key] = value;
-        }
-      });
+  ngOnDestroy(): void {
+    this.destroyControlsValueChanges.next();
+    this.destroyControlsValueChanges.complete();
   }
 }
