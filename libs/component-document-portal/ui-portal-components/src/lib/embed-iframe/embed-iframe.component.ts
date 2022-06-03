@@ -8,7 +8,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 })
 export class EmbedIframeComponent {
   safeUrl: SafeResourceUrl | undefined;
-  @Input() set SafeUrl(url: string) {
+  @Input() set src(url: string) {
     this.safeUrl = this.getTrustedUrl(url);
   }
 
