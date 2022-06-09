@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   displayName: 'perf',
 
   globals: {
@@ -12,5 +12,5 @@ module.exports = {
   },
   moduleFileExtensions: ['ts', 'tsx', 'js', 'jsx'],
   coverageDirectory: '../../coverage/libs/perf',
-  preset: '../../jest.preset.ts',
+  preset: '../../jest.preset.js',
 };

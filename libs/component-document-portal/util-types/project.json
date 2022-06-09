@@ -1,6 +1,6 @@
 {
+  "$schema": "..\\..\\..\\node_modules\\nx\\schemas\\project-schema.json",
   "projectType": "library",
-  "root": "libs/component-document-portal/util-types",
   "sourceRoot": "libs/component-document-portal/util-types/src",
   "prefix": "component-document-portal",
   "targets": {

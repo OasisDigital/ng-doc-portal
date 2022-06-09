@@ -6,7 +6,7 @@ import {
   OnDestroy,
   Type,
 } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { UntypedFormControl, UntypedFormGroup } from '@angular/forms';
 import { startWith, Subject, takeUntil } from 'rxjs';
 
 import {
@@ -17,7 +17,7 @@ import {
 import { PlaygroundControlTemplateTypeGuards } from './template-type-guards';
 
 interface PlaygroundControl {
-  formControl: FormControl;
+  formControl: UntypedFormControl;
   config: PlaygroundControlConfig;
 }
 
@@ -30,7 +30,7 @@ interface PlaygroundControl {
 export class ComponentPlaygroundComponent implements OnDestroy {
   component: Type<any> | undefined;
   playgroundControls: PlaygroundControl[] = [];
-  formGroup = new FormGroup({});
+  formGroup = new UntypedFormGroup({});
   destroyControlsValueChanges = new Subject<void>();
 
   TypeGuards = PlaygroundControlTemplateTypeGuards;
@@ -42,7 +42,7 @@ export class ComponentPlaygroundComponent implements OnDestroy {
     this.component = value.component;
     this.playgroundControls = value.inputs.map((config) => ({
       config,
-      formControl: new FormControl(config.value),
+      formControl: new UntypedFormControl(config.value),
     }));
   }
 

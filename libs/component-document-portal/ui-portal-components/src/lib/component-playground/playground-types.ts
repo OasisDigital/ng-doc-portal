@@ -107,7 +107,6 @@ export type PlaygroundControlConfig =
   | PlaygroundRangeControlConfig
   | PlaygroundSelectControlConfig
   | PlaygroundCheckboxControlConfig
-  // | PlaygroundCheckboxGroupControlConfig
   | PlaygroundRadioGroupControlConfig
   | PlaygroundDateControlConfig
   | PlaygroundTimeControlConfig

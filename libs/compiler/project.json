@@ -1,5 +1,5 @@
 {
-  "root": "libs/compiler",
+  "$schema": "..\\..\\node_modules\\nx\\schemas\\project-schema.json",
   "sourceRoot": "libs/compiler/src",
   "projectType": "library",
   "targets": {
