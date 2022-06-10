@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { DocPageConfig } from '@cdp/component-document-portal/util-types';
 
 @Component({
+  standalone: true,
   template: `
     <h1>Label Component Document Page</h1>
     <label>Example Label</label>

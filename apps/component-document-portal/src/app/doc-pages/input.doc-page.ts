@@ -1,8 +1,9 @@
-import { Component, NgModule } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { DocPageConfig } from '@cdp/component-document-portal/util-types';
 
 @Component({
+  standalone: true,
   template: `
     <h1>Input Component Document Page</h1>
     <input placeholder="Example Input" />
@@ -10,18 +11,9 @@ import { DocPageConfig } from '@cdp/component-document-portal/util-types';
 })
 export class InputDocumentPageComponent {}
 
-// This can probably go away when Optional Modules is in Angular
-@NgModule({
-  declarations: [InputDocumentPageComponent],
-  imports: [],
-  providers: [],
-})
-export class DocumentPageModule {}
-
 const docPageConfig: DocPageConfig = {
   title: 'Forms/Input',
   docPageComponent: InputDocumentPageComponent,
-  ngModule: DocumentPageModule,
 };
 
 export default docPageConfig;

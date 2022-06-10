@@ -1,9 +1,11 @@
-import { Component, NgModule } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { DocComponentsModule } from '@cdp/component-document-portal/ui-portal-components';
 import { DocPageConfig } from '@cdp/component-document-portal/util-types';
 
 @Component({
+  standalone: true,
+  imports: [DocComponentsModule],
   template: `
     <cdp-tab-menu>
       <cdp-tab-item title="Overview">
@@ -20,17 +22,9 @@ import { DocPageConfig } from '@cdp/component-document-portal/util-types';
 })
 export class IframeEmbedExampleComponent {}
 
-// This can probably go away when Optional Modules is in Angular
-@NgModule({
-  declarations: [IframeEmbedExampleComponent],
-  imports: [DocComponentsModule],
-})
-export class DocumentPageModule {}
-
 const docPageConfig: DocPageConfig = {
   title: 'General/Iframe Embed Example',
   docPageComponent: IframeEmbedExampleComponent,
-  ngModule: DocumentPageModule,
 };
 
 export default docPageConfig;

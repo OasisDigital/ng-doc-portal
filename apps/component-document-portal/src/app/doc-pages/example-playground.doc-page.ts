@@ -1,4 +1,4 @@
-import { Component, Input, NgModule } from '@angular/core';
+import { Component } from '@angular/core';
 
 import {
   ComponentPlaygroundConfig,
@@ -7,41 +7,11 @@ import {
 } from '@cdp/component-document-portal/ui-portal-components';
 import { DocPageConfig } from '@cdp/component-document-portal/util-types';
 
-@Component({
-  template: `
-    <p>The Text: {{ text }}</p>
-    <p>pet: {{ pet }}</p>
-    <p>
-      color:
-      <span class="color-block" [style.background]="color"></span>
-    </p>
-  `,
-  styles: [
-    `
-      :host {
-        padding: 5px 20px;
-        display: block;
-        background-color: rgb(32, 122, 195);
-        font-size: 24px;
-        color: white;
-
-        .color-block {
-          display: inline-block;
-          padding: 5px;
-          height: 15px;
-          width: 15px;
-        }
-      }
-    `,
-  ],
-})
-export class TestComponent {
-  @Input() text?: string;
-  @Input() pet?: string;
-  @Input() color?: string;
-}
+import { TestComponent } from './test.component';
 
 @Component({
+  standalone: true,
+  imports: [DocComponentsModule],
   template: `
     <cdp-tab-menu>
       <cdp-tab-item title="Overview">
@@ -94,17 +64,9 @@ export class ExamplePlaygroundPageComponent {
   };
 }
 
-// This can probably go away when Optional Modules is in Angular
-@NgModule({
-  declarations: [ExamplePlaygroundPageComponent],
-  imports: [DocComponentsModule],
-})
-export class DocumentPageModule {}
-
 const docPageConfig: DocPageConfig = {
   title: 'General/Playground Example',
   docPageComponent: ExamplePlaygroundPageComponent,
-  ngModule: DocumentPageModule,
 };
 
 export default docPageConfig;

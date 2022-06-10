@@ -30,7 +30,6 @@ class DocumentPageModule {}
 const docPageConfig: DocPageConfig = {
   title: 'Group/Button',
   docPage: ButtonDocumentPageComponent,
-  ngModule: DocumentPageModule,
 };
 
 export default docPageConfig;
