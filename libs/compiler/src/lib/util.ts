@@ -1,3 +1,4 @@
+import { tsquery } from '@phenomnomnominal/tsquery';
 import { format } from 'date-fns';
 import prettier from 'prettier';
 import ts from 'typescript';
@@ -84,6 +85,12 @@ export function accumulateFilePaths(
   return [];
 }
 
+export function generateTitleFromFilePath(filePath: string) {
+  const baseName = path.basename(filePath);
+  const fileName = baseName.substring(0, baseName.indexOf('.'));
+  return fileName.charAt(0).toUpperCase() + fileName.substring(1);
+}
+
 /**
  * Extract the title from the doc page file's config
  *
@@ -93,13 +100,69 @@ export function accumulateFilePaths(
 export async function extractTitleFromDocPageFile(filePath: string) {
   const rawTS = (await fs.readFile('./' + filePath)).toString();
 
-  // create a TS node source for our traversal
-  const sourceFile = ts.createSourceFile(
-    path.basename(filePath),
-    rawTS,
-    ts.ScriptTarget.Latest
-  );
-  return exports.findTitle(sourceFile, filePath);
+  const ast = tsquery.ast(rawTS);
+
+  const defaultExportClassDeclaration = tsquery(
+    ast,
+    'ClassDeclaration:has(ExportKeyword):has(DefaultKeyword)'
+  ).at(0);
+
+  if (defaultExportClassDeclaration) {
+    // generate title dynamically
+    // TODO: Add folder structure to title generated here
+    //       Should be based off whatever glob picked up this file
+    return generateTitleFromFilePath(filePath);
+  } else {
+    // Find ExportAssignment in the TS file
+    const exportAssignment = tsquery(ast, 'ExportAssignment').at(0);
+
+    if (exportAssignment) {
+      // There are two paths on this front
+      // Either there is an in-line ObjectLiteral
+      // Or there is an identifier that points to a VariableDeclaration
+      // with the ObjectLiteral
+
+      let objectLiteralExpression = tsquery(
+        exportAssignment,
+        'ObjectLiteralExpression'
+      ).at(0);
+
+      if (!objectLiteralExpression) {
+        const identifier = tsquery(exportAssignment, 'Identifier').at(0);
+        objectLiteralExpression = tsquery(
+          ast,
+          `VariableDeclaration:has(Identifier[name="${identifier?.getText(
+            ast
+          )}"]) > ObjectLiteralExpression`
+        ).at(0);
+      }
+
+      if (objectLiteralExpression) {
+        // Once the ObjectLiteral is found
+        // Find the `title` property's string value
+
+        const title = tsquery(
+          objectLiteralExpression,
+          'PropertyAssignment:has(Identifier[name="title"]) > StringLiteral'
+        )
+          .at(0)
+          ?.getText(ast);
+
+        if (title) {
+          // For some reason `.getText()` returns the quotes of the string
+          return title.replaceAll("'", '');
+        } else {
+          throw new Error(
+            `No property found for 'title' in exported object literal for file: ${filePath}`
+          );
+        }
+      } else {
+        throw new Error(`No object literal export found for file: ${filePath}`);
+      }
+    } else {
+      throw new Error(`No exports found for file: ${filePath}`);
+    }
+  }
 }
 
 /**
@@ -119,89 +182,6 @@ export function generateDocPageConfig(filePath: string, title: string) {
       loadConfig: () => import('../../../../${filePathWithoutExtension}').then((file) => file.default)
     }
 `;
-}
-
-/**
- * Find the title from the sourceFile, if possible. Throw an error if
- * it can't be found.
- *
- * @param sourceFile The sourceFile
- * @param filePath The file being examined (used for error logging)
- */
-export function findTitle(sourceFile: ts.SourceFile, filePath: string) {
-  // Find the starting point for the recursive traversal
-  // This is hopefully an object that is being default exported or has the `DocPageConfig` type
-  const statementWithTitle = exports.findStatementWithTitle(
-    sourceFile.statements,
-    sourceFile
-  );
-
-  if (!statementWithTitle) {
-    throw new Error(`Could not find doc page config export from ${filePath}`);
-  }
-
-  // Recursively traverse the nodes from the starting point looking for a string literal
-  const rawTitle = exports.recursivelyFindTitle(statementWithTitle, sourceFile);
-
-  if (!rawTitle) {
-    throw new Error(
-      `Could not find title in page config for ${filePath}...\n` +
-        `Make sure to only provide a single or double quote string literal.`
-    );
-  }
-
-  // Get rid of the surrounding string literal marks (single or double quotes)
-  return rawTitle.replace(/['"]/g, '');
-}
-
-/**
- * Find the statement that includes the exported title, if possible.
- *
- * @param statements The TS statements for the sourceFile. This is passed
- * separate from the sourceFile itself to simplify unit testing.
- * @param sourceFile The sourceFile
- */
-export function findStatementWithTitle(
-  statements: ReadonlyArray<ts.Statement>,
-  sourceFile: ts.SourceFile
-) {
-  return statements.find((statement) => {
-    const text = statement.getText(sourceFile);
-
-    return (
-      ((text.includes('DocPageConfig') && !text.includes('import')) ||
-        text.includes('export default')) &&
-      text.includes('title:')
-    );
-  });
-}
-
-/**
- * Return the value of the first StringLiteral found in a depth-first traversal of the tree.
- *
- * @param node The node to examine
- * @param sourceFile The file upon which the node is built
- */
-export function recursivelyFindTitle(
-  node: ts.Node,
-  sourceFile: ts.SourceFile
-): string | null {
-  const children = node.getChildren(sourceFile);
-  if (children.length > 0) {
-    for (let i = 0; i < children.length; i++) {
-      const result = exports.recursivelyFindTitle(children[i], sourceFile);
-      if (result !== null) {
-        return result;
-      }
-    }
-  } else {
-    if (node.kind === ts.SyntaxKind.StringLiteral) {
-      return node.getText(sourceFile);
-    } else {
-      return null;
-    }
-  }
-  return null;
 }
 
 /**
