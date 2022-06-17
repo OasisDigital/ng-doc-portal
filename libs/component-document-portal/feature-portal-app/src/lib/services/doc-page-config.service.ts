@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@angular/core';
 
 import {
   CompilerMode,
+  DocConfigRecord,
   LazyDocConfigRecord,
   RuntimeDocConfigArray,
 } from '@cdp/component-document-portal/util-types';
@@ -15,7 +16,7 @@ import {
   providedIn: 'root',
 })
 export class DocPageConfigService {
-  configs: LazyDocConfigRecord = {};
+  configs: DocConfigRecord = {};
   loading = true;
 
   constructor(
@@ -28,7 +29,7 @@ export class DocPageConfigService {
 
   async init() {
     if (this.compilerMode === 'lazy') {
-      this.configs = this.docPageConfigs as LazyDocConfigRecord;
+      this.configs = this.docPageConfigs as DocConfigRecord;
       this.loading = false;
     } else {
       this.configs = await importRuntimeDocConfigs(
@@ -38,10 +39,20 @@ export class DocPageConfigService {
       setTimeout(() => (this.loading = false), 1000);
     }
   }
+
+  filterConfigs(filter: string) {
+    const filtered = Object.assign(
+      {},
+      ...Object.entries(this.configs)
+        .filter(([k]) => k.includes(filter))
+        .map(([k, v]) => ({ [k]: v }))
+    );
+    return filtered;
+  }
 }
 
 async function importRuntimeDocConfigs(runtimeConfigs: RuntimeDocConfigArray) {
-  const configs = {} as LazyDocConfigRecord;
+  const configs = {} as DocConfigRecord;
   for (const loadConfig of runtimeConfigs) {
     const config = await loadConfig();
     let route = config.title.toLowerCase().replace(/[ /]/g, '-');

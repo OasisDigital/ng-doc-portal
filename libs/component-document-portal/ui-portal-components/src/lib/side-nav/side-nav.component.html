@@ -1,4 +1,10 @@
 <nav class="side-navigation-bar">
+  <input
+    class="filter-input"
+    type="text"
+    (keyup)="filterConfig($event)"
+    placeholder="Search for Components Here"
+  />
   <ul>
     <ng-container
       *ngTemplateOutlet="

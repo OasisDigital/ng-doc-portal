@@ -1,7 +1,6 @@
 import { tsquery } from '@phenomnomnominal/tsquery';
 import { format } from 'date-fns';
 import prettier from 'prettier';
-import ts from 'typescript';
 
 import { EventPayload, ProcessedFileEvent, RawFileEvent } from './types';
 

@@ -8,5 +8,12 @@ import { DocPageConfigService } from '../../services/doc-page-config.service';
   styleUrls: ['./component-document-portal-feature.component.scss'],
 })
 export class ComponentDocumentPortalFeatureComponent {
-  constructor(public configService: DocPageConfigService) {}
+  filteredConfig: any;
+  constructor(public configService: DocPageConfigService) {
+    this.filteredConfig = { ...configService.configs };
+  }
+
+  filterConfig(event: any) {
+    this.filteredConfig = this.configService.filterConfigs(event.target.value);
+  }
 }

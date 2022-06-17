@@ -5,6 +5,15 @@ cdp-nav {
     border-right: 2px solid black;
     height: 100%;
 
+    .filter-input {
+      width: calc(100% - 10px);
+      border: none;
+      outline: none;
+      padding: 5px 0;
+      padding-left: 10px;
+      border-bottom: 2px solid black;
+    }
+
     ul {
       list-style: none;
       margin: 0;

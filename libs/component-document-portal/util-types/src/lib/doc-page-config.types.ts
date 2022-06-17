@@ -37,9 +37,10 @@ export interface DocPageMetadata {
 
 export type CompilerMode = 'lazy' | 'runtime';
 
-export type LazyDocConfigRecord = Record<
+export type LazyDocConfigRecord = Record<string, DynamicDocPageConfig>;
+export type RuntimeDocConfigArray = (() => Promise<DocPageConfig>)[];
+
+export type DocConfigRecord = Record<
   string,
   DynamicDocPageConfig | RuntimeDocPageConfig
 >;
-
-export type RuntimeDocConfigArray = (() => Promise<DocPageConfig>)[];

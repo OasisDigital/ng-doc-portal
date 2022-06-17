@@ -19,7 +19,6 @@ import {
   DOC_PAGE_CONFIG_TOKEN,
 } from './util/injection-tokens';
 
-
 const routes: Routes = [
   {
     path: '',

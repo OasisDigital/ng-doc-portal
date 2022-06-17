@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 
 import {
   DocPageRoutes,
-  LazyDocConfigRecord,
+  DocConfigRecord,
 } from '@cdp/component-document-portal/util-types';
 
 @Component({
@@ -11,11 +11,49 @@ import {
   styleUrls: ['./side-nav.component.scss'],
 })
 export class SideNavComponent {
-  @Input() set configs(value: LazyDocConfigRecord) {
-    this.docPageRoutes = createDocPageRoutes(value);
+  @Input() set configs(value: DocConfigRecord) {
+    this.docConfigRecord = value;
+    this.docPageRoutes = filterAndGenerateDocPageRoutes(
+      this.docConfigRecord,
+      this.currentFilter
+    );
   }
 
+  private docConfigRecord: DocConfigRecord = {};
+  private currentFilter = '';
   docPageRoutes: DocPageRoutes = [];
+
+  filterConfig(event: any) {
+    this.currentFilter = (event.target.value as string)
+      .toLowerCase()
+      .replace(/[\s/-]/g, '');
+    this.docPageRoutes = filterAndGenerateDocPageRoutes(
+      this.docConfigRecord,
+      this.currentFilter
+    );
+  }
+}
+
+function filterAndGenerateDocPageRoutes(
+  config: DocConfigRecord,
+  filter: string
+) {
+  const filteredConfig = filterConfigs(config, filter);
+  return createDocPageRoutes(filteredConfig);
+}
+
+function filterConfigs(configs: DocConfigRecord, filter: string) {
+  const filtered: DocConfigRecord = Object.assign(
+    {},
+    ...Object.entries(configs)
+      .filter(
+        ([k, v]) =>
+          k.replace(/[-]/g, '').includes(filter) ||
+          v.title.toLowerCase().replace(/[/]/g, '').includes(filter)
+      )
+      .map(([k, v]) => ({ [k]: v }))
+  );
+  return filtered;
 }
 
 function createRoutesStructure(
@@ -54,7 +92,7 @@ function createRoutesStructure(
 }
 
 export function createDocPageRoutes(
-  docPageConfigs: LazyDocConfigRecord
+  docPageConfigs: DocConfigRecord
 ): DocPageRoutes {
   const docPageRoutes: DocPageRoutes = [];
   for (const route in docPageConfigs) {
