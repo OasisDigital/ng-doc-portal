@@ -1,4 +1,3 @@
-import { EmbedIframeComponent } from './embed-iframe/embed-iframe.component';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
@@ -7,6 +6,7 @@ import { HighlightModule } from 'ngx-highlightjs';
 
 import { CodeRevealComponent } from './code-reveal/code-reveal.component';
 import { ComponentPlaygroundModule } from './component-playground/component-playground.module';
+import { EmbedIframeComponent } from './embed-iframe/embed-iframe.component';
 import { MarkdownComponent } from './markdown/markdown.component';
 import { SideNavComponent } from './side-nav/side-nav.component';
 import { TabItemComponent } from './tab-item/tab-item.component';

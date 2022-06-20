@@ -1,9 +1,4 @@
 <ng-container *ngIf="!configService.loading; else loadingConfigs">
-  <input
-    type="text"
-    (keyup)="filterConfig($event)"
-    placeholder="Search for Components Here"
-  />
   <div class="configs-loaded-view">
     <cdp-nav [configs]="filteredConfig"></cdp-nav>
     <div class="router-content">

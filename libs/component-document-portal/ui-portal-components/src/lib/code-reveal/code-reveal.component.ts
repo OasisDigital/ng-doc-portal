@@ -1,8 +1,26 @@
-import { AfterViewInit, Component, ElementRef, Input, OnDestroy, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  Input,
+  OnDestroy,
+  ViewChild,
+} from '@angular/core';
 import * as prettier from 'prettier';
 import * as parserHTML from 'prettier/parser-html';
 import * as parserTS from 'prettier/parser-typescript';
-import { catchError, delay, from, merge, Observable, of, startWith, Subject, switchMap } from 'rxjs';
+import {
+  catchError,
+  delay,
+  from,
+  merge,
+  Observable,
+  of,
+  startWith,
+  Subject,
+  switchMap,
+} from 'rxjs';
 
 @Component({
   selector: 'cdp-code-reveal',
@@ -16,15 +34,15 @@ export class CodeRevealComponent implements AfterViewInit, OnDestroy {
   buttonText: Observable<string>;
   copyTrigger = new Subject<void>();
 
-  constructor() {
+  constructor(private cdr: ChangeDetectorRef) {
     this.buttonText = this.copyTrigger.pipe(
       switchMap(() =>
         from(navigator.clipboard.writeText(this.code)).pipe(
           switchMap(() => delayedReset('Copied', 'Copy')),
-          catchError(() => delayedReset('Failed', 'Copy')),
-        ),
+          catchError(() => delayedReset('Failed', 'Copy'))
+        )
       ),
-      startWith('Copy'),
+      startWith('Copy')
     );
   }
 
@@ -35,6 +53,7 @@ export class CodeRevealComponent implements AfterViewInit, OnDestroy {
       parser: this.language,
       plugins: [parserHTML, parserTS],
     });
+    this.cdr.detectChanges();
   }
 
   ngOnDestroy() {
@@ -56,8 +75,5 @@ export class CodeRevealComponent implements AfterViewInit, OnDestroy {
 }
 
 function delayedReset(initial: string, reset: string) {
-  return merge(
-    of(initial),
-    of(reset).pipe(delay(2000))
-  )
+  return merge(of(initial), of(reset).pipe(delay(2000)));
 }

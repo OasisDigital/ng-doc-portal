@@ -1,5 +1,6 @@
 import {
-  AfterContentInit,
+  AfterViewInit,
+  ChangeDetectorRef,
   Component,
   ContentChildren,
   OnDestroy,
@@ -15,7 +16,7 @@ import { TabItemComponent } from '../tab-item/tab-item.component';
   templateUrl: './tab-menu.component.html',
   styleUrls: ['./tab-menu.component.scss'],
 })
-export class TabMenuComponent implements AfterContentInit, OnDestroy {
+export class TabMenuComponent implements AfterViewInit, OnDestroy {
   @ContentChildren(TabItemComponent) tabMenuItems: QueryList<TabItemComponent> =
     new QueryList<TabItemComponent>();
 
@@ -24,15 +25,22 @@ export class TabMenuComponent implements AfterContentInit, OnDestroy {
 
   private readonly destroy$ = new Subject<void>();
 
-  constructor(private router: Router, private route: ActivatedRoute) {}
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private cdr: ChangeDetectorRef
+  ) {}
 
-  ngAfterContentInit() {
+  ngAfterViewInit() {
     this.route.queryParamMap
       .pipe(
         takeUntil(this.destroy$),
         map((params) => params.get('tab'))
       )
-      .subscribe((tabName) => this.selectTab(tabName));
+      .subscribe((tabName) => {
+        this.selectTab(tabName);
+        this.cdr.detectChanges();
+      });
   }
 
   ngOnDestroy() {
@@ -44,20 +52,18 @@ export class TabMenuComponent implements AfterContentInit, OnDestroy {
     this.tabs = this.tabMenuItems.toArray();
 
     if (!tabName) {
-      this.goToTab(this.tabs[0]);
-      return;
+      tabName = this.tabs[0].title;
     }
 
-    // Revert kebab-case formatting from `this.selectTab`
-    const title = tabName.replace('-', ' ');
-    const tab = this.tabs.find((t) => t.title.toLowerCase() === title);
+    const title = decodeURIComponent(tabName);
+    const tab = this.tabs.find((t) => t.title === title);
 
     this.activeTab = tab ?? this.tabs[0];
   }
 
   goToTab(tabItem: TabItemComponent) {
     // Format as kebab-case for query param
-    const tab = tabItem.title.toLowerCase().replace(' ', '-');
+    const tab = encodeURIComponent(tabItem.title);
 
     this.router.navigate(['.'], {
       relativeTo: this.route,
