@@ -45,7 +45,10 @@ export class DocPageViewerComponent {
           return of(docPageConfig.config);
         }
       }),
-      map((config) => config.docPageComponent)
+      // Temporary hacky code to get the component out of the config
+      // or assume the "config" is actually just a default exported component
+      // TODO: Update the typing to accurately reflect this
+      map((config) => config.docPageComponent ?? config)
     );
   }
 }

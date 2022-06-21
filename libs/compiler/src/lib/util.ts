@@ -87,7 +87,8 @@ export function accumulateFilePaths(
 export function generateTitleFromFilePath(filePath: string) {
   const baseName = path.basename(filePath);
   const fileName = baseName.substring(0, baseName.indexOf('.'));
-  return fileName.charAt(0).toUpperCase() + fileName.substring(1);
+  const title = fileName.replaceAll('-', ' ');
+  return title.charAt(0).toUpperCase() + title.substring(1);
 }
 
 /**
