@@ -3,10 +3,10 @@
   "name": "ng-doc-portal-plugin",
   "version": "0.0.1",
   "generators": {
-    "ng-doc-portal-plugin": {
-      "factory": "./src/generators/ng-doc-portal-plugin/generator",
-      "schema": "./src/generators/ng-doc-portal-plugin/schema.json",
-      "description": "ng-doc-portal-plugin generator"
+    "app": {
+      "factory": "./src/generators/app/generator",
+      "schema": "./src/generators/app/schema.json",
+      "description": "ng-doc-portal-plugin app generator"
     }
   }
 }

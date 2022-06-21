@@ -5,6 +5,9 @@
     "declaration": true,
     "types": []
   },
-  "include": ["**/*.ts"],
+  "include": [
+    "**/*.ts",
+    "src/generators/app/files/app/starting-example.doc-page.ts__tmpl__"
+  ],
   "exclude": ["jest.config.ts", "**/*.spec.ts", "**/*.test.ts"]
 }
