@@ -30,6 +30,7 @@
       "@cdp/component-document-portal/util-types": [
         "libs/component-document-portal/util-types/src/index.ts"
       ],
+      "@cdp/ng-doc-portal-plugin": ["libs/ng-doc-portal-plugin/src/index.ts"],
       "@cdp/perf": ["libs/perf/src/index.ts"]
     }
   },

@@ -7,6 +7,8 @@
     "component-document-portal-feature-portal-app": "libs/component-document-portal/feature-portal-app",
     "component-document-portal-ui-portal-components": "libs/component-document-portal/ui-portal-components",
     "component-document-portal-util-types": "libs/component-document-portal/util-types",
+    "ng-doc-portal-plugin": "libs/ng-doc-portal-plugin",
+    "ng-doc-portal-plugin-e2e": "apps/ng-doc-portal-plugin-e2e",
     "perf": "libs/perf"
   }
 }
