@@ -4,9 +4,17 @@
   "sourceRoot": "apps/component-document-portal/src",
   "prefix": "component-document-portal",
   "targets": {
+    "cdp-build": {
+      "executor": "@cdp/ng-doc-portal-plugin:build"
+    },
+    "cdp-serve": {
+      "executor": "@cdp/ng-doc-portal-plugin:serve"
+    },
     "build": {
       "executor": "@angular-devkit/build-angular:browser",
-      "outputs": ["{options.outputPath}"],
+      "outputs": [
+        "{options.outputPath}"
+      ],
       "options": {
         "outputPath": "dist/apps/component-document-portal",
         "index": "apps/component-document-portal/src/index.html",
@@ -86,7 +94,9 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/apps/component-document-portal"],
+      "outputs": [
+        "coverage/apps/component-document-portal"
+      ],
       "options": {
         "jestConfig": "apps/component-document-portal/jest.config.ts",
         "passWithNoTests": true

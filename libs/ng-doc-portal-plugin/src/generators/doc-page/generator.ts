@@ -8,10 +8,10 @@ import {
   readWorkspaceConfiguration,
 } from '@nrwl/devkit';
 
-export interface DocPageSchema {
-  name: string;
-  path?: string;
-}
+import { DocPageSchema } from './schema';
+
+import * as path from 'path';
+
 const execSchematicCommand = `npm run nx workspace-generator doc-page`;
 
 export default async function (tree: Tree, schema: DocPageSchema) {
@@ -21,7 +21,7 @@ export default async function (tree: Tree, schema: DocPageSchema) {
   const defaultProject = readWorkspaceConfiguration(tree).defaultProject;
   const findPath = getProjects(tree).get(defaultProject ?? '')?.root;
   const targetPath = findPath ?? './';
-  const templatePath = 'tools/generators/doc-page/templates';
+  const templatePath = path.join(__dirname, 'files');
   const interfaceNames = names(schema.name);
 
   const substitutions = {

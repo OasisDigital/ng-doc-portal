@@ -7,6 +7,11 @@
       "factory": "./src/generators/app/generator",
       "schema": "./src/generators/app/schema.json",
       "description": "ng-doc-portal-plugin app generator"
+    },
+    "doc-page": {
+      "factory": "./src/generators/doc-page/generator",
+      "schema": "./src/generators/doc-page/schema.json",
+      "description": "ng-doc-portal-plugin doc page generator"
     }
   }
 }
