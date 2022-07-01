@@ -45,3 +45,13 @@ export type ProcessedFileEvent =
   | ProcessedAddEvent
   | ProcessedChangeEvent
   | UnlinkEvent;
+
+export interface GlobPattern {
+  pattern: string;
+  titlePrefix?: string;
+}
+
+export interface CdpConfig {
+  globPattern?: string | GlobPattern;
+  globPatterns?: (string | GlobPattern)[];
+}

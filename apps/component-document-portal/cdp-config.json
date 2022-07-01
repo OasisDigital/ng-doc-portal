@@ -1,0 +1,12 @@
+{
+  "globPatterns": [
+    {
+      "pattern": "apps/component-document-portal/src/app/doc-pages/*.doc-page.ts",
+      "titlePrefix": "General"
+    },
+    {
+      "pattern": "apps/component-document-portal/src/app/starting-example.doc-page.ts",
+      "titlePrefix": "Example"
+    }
+  ]
+}

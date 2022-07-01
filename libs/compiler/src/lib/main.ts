@@ -18,5 +18,6 @@ if (mode !== 'lazy' && mode !== 'runtime') {
 new DocPageConfigsCompiler(
   mode as CompilerMode,
   shouldWatch,
+  'apps/component-document-portal/cdp-config.json',
   silenced
 ).compile();

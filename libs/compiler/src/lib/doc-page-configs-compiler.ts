@@ -14,16 +14,21 @@ import {
   Observable,
   scan,
   tap,
+  switchMap,
+  forkJoin,
+  merge,
 } from 'rxjs';
 
 import { CompilerMode } from '@cdp/component-document-portal/util-types';
 
-import { CONFIG_FILE_LOCATION, DOC_PAGE_CONFIG_FILES_GLOB } from './constants';
+import { CONFIG_FILE_LOCATION } from './constants';
 import {
   ProcessedFileEvent,
   EventPayload,
   RawInitEvent,
   RawFileEvent,
+  CdpConfig,
+  GlobPattern,
 } from './types';
 import {
   accumulateFilePaths,
@@ -36,6 +41,7 @@ import {
   wrapTypescriptBoilerplate,
 } from './util';
 
+import { existsSync } from 'fs';
 import fs from 'fs/promises';
 
 export class DocPageConfigsCompiler {
@@ -44,14 +50,43 @@ export class DocPageConfigsCompiler {
   constructor(
     readonly mode: CompilerMode,
     readonly shouldWatch: boolean,
+    private readonly configFileLocation: string,
     private readonly silenced: boolean
   ) {
-    const fileEvents = defer(() =>
-      concat(
-        this.buildInitialFileEvent(),
-        iif(() => shouldWatch, this.buildWatcher(), EMPTY)
+    if (!existsSync(this.configFileLocation)) {
+      throw new Error(
+        `Could not find config file at ${this.configFileLocation}`
+      );
+    }
+    const configLoad: Observable<CdpConfig> = from(
+      fs.readFile(this.configFileLocation)
+    ).pipe(map((file) => JSON.parse(file.toString())));
+
+    const globPatterns = configLoad.pipe(
+      map((config) => {
+        let patterns: (string | GlobPattern)[] | undefined =
+          config.globPatterns;
+        if (!patterns && config.globPattern) {
+          patterns = [config.globPattern];
+        }
+
+        if (!patterns) {
+          throw new Error('No glob patterns detected in configuration file');
+        }
+
+        return patterns;
+      })
+    );
+
+    const fileEvents = defer(() => globPatterns).pipe(
+      switchMap((patterns) =>
+        concat(
+          this.buildInitialFileEvent(patterns),
+          iif(() => shouldWatch, this.buildWatcher(patterns), EMPTY)
+        )
       )
     );
+
     if (mode === 'lazy') {
       this.content = fileEvents.pipe(
         concatMap(this.addPayloadToEvent.bind(this)),
@@ -90,12 +125,19 @@ export class DocPageConfigsCompiler {
    * Build an Observable that emits the initial list of file paths.
    * @private
    */
-  private buildInitialFileEvent(): Observable<RawInitEvent> {
+  private buildInitialFileEvent(
+    patterns: (string | GlobPattern)[]
+  ): Observable<RawInitEvent> {
     this.log(chalk.blue('Searching for component document page files...\n'));
     const startTime = Date.now();
-    return from(
-      glob.promise(DOC_PAGE_CONFIG_FILES_GLOB, { ignore: 'node_modules' })
+
+    return forkJoin(
+      patterns.map((val) => {
+        const pattern = typeof val === 'string' ? val : val.pattern;
+        return from(glob.promise(pattern, { ignore: 'node_modules' }));
+      })
     ).pipe(
+      map((filePathsArr) => filePathsArr.flat()),
       map((filePaths): RawInitEvent => ({ type: 'init', filePaths })),
       tap(() => {
         const endTime = Date.now();
@@ -108,22 +150,34 @@ export class DocPageConfigsCompiler {
    * Generate an Observable of the raw file events.
    * @private
    */
-  private buildWatcher(): Observable<RawFileEvent> {
-    return new Observable<RawFileEvent>((observer) => {
-      const watch = chokidar
-        .watch(DOC_PAGE_CONFIG_FILES_GLOB, {
-          ignored: 'node_modules',
-          ignoreInitial: true,
-        })
-        .on('all', async (event, rawFilePath) => {
-          observer.next(this.buildRawFileEvent(rawFilePath, event));
-        });
+  private buildWatcher(
+    patterns: (string | GlobPattern)[]
+  ): Observable<RawFileEvent> {
+    return merge(
+      ...patterns.map(
+        (globPattern) =>
+          new Observable<RawFileEvent>((observer) => {
+            const pattern =
+              typeof globPattern === 'string'
+                ? globPattern
+                : globPattern.pattern;
 
-      return () => {
-        watch.unwatch(DOC_PAGE_CONFIG_FILES_GLOB);
-        watch.close();
-      };
-    });
+            const watch = chokidar
+              .watch(pattern, {
+                ignored: 'node_modules',
+                ignoreInitial: true,
+              })
+              .on('all', async (event, rawFilePath) => {
+                observer.next(this.buildRawFileEvent(rawFilePath, event));
+              });
+
+            return () => {
+              watch.unwatch(pattern);
+              watch.close();
+            };
+          })
+      )
+    );
   }
 
   /**
