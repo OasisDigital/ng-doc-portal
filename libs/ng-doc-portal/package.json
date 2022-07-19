@@ -1,0 +1,15 @@
+{
+  "name": "@oasisdigital/ng-doc-portal",
+  "version": "1.0.0",
+  "peerDependencies": {
+    "@angular/common": "^14.0.0",
+    "@angular/core": "^14.0.0",
+    "@angular/forms": "^14.0.0",
+    "@angular/router": "^14.0.0",
+    "@angular/platform-browser": "^14.0.0",
+    "tslib": "^2.3.0",
+    "marked": "^4.0.15",
+    "ngx-highlightjs": "^7.0.0",
+    "prettier": "^2.6.2"
+  }
+}

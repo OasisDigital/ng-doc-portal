@@ -1,12 +1,9 @@
 {
   "version": 2,
   "projects": {
-    "compiler": "libs/compiler",
     "component-document-portal": "apps/component-document-portal",
     "component-document-portal-e2e": "apps/component-document-portal-e2e",
-    "component-document-portal-feature-portal-app": "libs/component-document-portal/feature-portal-app",
-    "component-document-portal-ui-portal-components": "libs/component-document-portal/ui-portal-components",
-    "component-document-portal-util-types": "libs/component-document-portal/util-types",
+    "ng-doc-portal": "libs/ng-doc-portal",
     "ng-doc-portal-plugin": "libs/ng-doc-portal-plugin",
     "ng-doc-portal-plugin-e2e": "apps/ng-doc-portal-plugin-e2e",
     "perf": "libs/perf"

@@ -20,18 +20,9 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@cdp/compiler": ["libs/compiler/src/index.ts"],
-      "@cdp/component-document-portal/feature-portal-app": [
-        "libs/component-document-portal/feature-portal-app/src/index.ts"
-      ],
-      "@cdp/component-document-portal/ui-portal-components": [
-        "libs/component-document-portal/ui-portal-components/src/index.ts"
-      ],
-      "@cdp/component-document-portal/util-types": [
-        "libs/component-document-portal/util-types/src/index.ts"
-      ],
       "@cdp/ng-doc-portal-plugin": ["libs/ng-doc-portal-plugin/src/index.ts"],
-      "@cdp/perf": ["libs/perf/src/index.ts"]
+      "@cdp/perf": ["libs/perf/src/index.ts"],
+      "@oasisdigital/ng-doc-portal": ["libs/ng-doc-portal/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

@@ -18,9 +18,7 @@
     },
     "build": {
       "executor": "@angular-devkit/build-angular:browser",
-      "outputs": [
-        "{options.outputPath}"
-      ],
+      "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/apps/component-document-portal",
         "index": "apps/component-document-portal/src/index.html",
@@ -33,7 +31,7 @@
           "apps/component-document-portal/src/assets"
         ],
         "styles": [
-          "libs/component-document-portal/styles/component-document-portal.scss",
+          "libs/ng-doc-portal/src/lib/styles/ng-doc-portal.scss",
           "apps/component-document-portal/src/styles.scss"
         ],
         "scripts": []
@@ -100,9 +98,7 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": [
-        "coverage/apps/component-document-portal"
-      ],
+      "outputs": ["coverage/apps/component-document-portal"],
       "options": {
         "jestConfig": "apps/component-document-portal/jest.config.ts",
         "passWithNoTests": true

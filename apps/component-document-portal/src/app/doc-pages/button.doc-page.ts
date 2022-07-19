@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
-
-import { DocComponentsModule } from '@cdp/component-document-portal/ui-portal-components';
-import { DocPageConfig } from '@cdp/component-document-portal/util-types';
+import {
+  NgDocPortalComponentsModule,
+  DocPageConfig,
+} from '@oasisdigital/ng-doc-portal';
 
 @Component({
   standalone: true,
-  imports: [DocComponentsModule],
+  imports: [NgDocPortalComponentsModule],
   template: `
     <cdp-tab-menu>
       <cdp-tab-item title="Overview">

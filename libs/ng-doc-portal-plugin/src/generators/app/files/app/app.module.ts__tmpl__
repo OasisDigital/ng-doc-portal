@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 
-import { ComponentDocumentPortalFeatureModule } from '@cdp/component-document-portal/feature-portal-app';
+import { NgDocPortalModule } from '@oasisdigital/ng-doc-portal';
 
 import { AppComponent } from './app.component';
 import { compilerMode, docPageConfigs } from './doc-page-configs';
@@ -10,7 +10,7 @@ import { compilerMode, docPageConfigs } from './doc-page-configs';
   declarations: [AppComponent],
   imports: [
     BrowserModule,
-    ComponentDocumentPortalFeatureModule.forRoot(docPageConfigs, compilerMode),
+    NgDocPortalModule.forRoot(docPageConfigs, compilerMode),
   ],
   bootstrap: [AppComponent],
 })

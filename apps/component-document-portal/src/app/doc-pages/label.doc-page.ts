@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
-
-import { DocPageConfig } from '@cdp/component-document-portal/util-types';
+import { DocPageConfig } from '@oasisdigital/ng-doc-portal';
 
 @Component({
   standalone: true,

@@ -5,7 +5,6 @@ import yargs from 'yargs/yargs';
 import { existsSync } from 'fs';
 import fs from 'fs/promises';
 
-
 const yargOptions = yargs(hideBin(process.argv)).argv;
 
 const amountOfFiles = Number(process.env.amount ?? yargOptions.amount ?? 100);
@@ -24,8 +23,7 @@ const directoryLocation =
     const docPageContent = `
   import { Component, NgModule } from '@angular/core';
 
-  import { DocPageConfig } from '@cdp/component-document-portal/util-types';
-  import { DocComponentsModule } from '@cdp/component-document-portal/ui-portal-components';
+  import { DocPageConfig, NgDocPortalComponentsModule } from '@oasisdigital/ng-doc-portal';
 
   @Component({
     template: \`
@@ -53,7 +51,7 @@ const directoryLocation =
   // This can probably go away when Optional Modules is in Angular
   @NgModule({
     declarations: [DocumentPageComponent],
-    imports: [DocComponentsModule],
+    imports: [NgDocPortalComponentsModule],
   })
   class DocumentPageModule {}
 
