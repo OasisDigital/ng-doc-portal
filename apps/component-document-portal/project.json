@@ -6,11 +6,15 @@
   "targets": {
     "cdp-build": {
       "executor": "@cdp/ng-doc-portal-plugin:build",
-      "configFile": "apps/component-document-portal/cdp-config.json"
+      "options": {
+        "configFile": "apps/component-document-portal/cdp-config.json"
+      }
     },
     "cdp-serve": {
       "executor": "@cdp/ng-doc-portal-plugin:serve",
-      "configFile": "apps/component-document-portal/cdp-config.json"
+      "options": {
+        "configFile": "apps/component-document-portal/cdp-config.json"
+      }
     },
     "build": {
       "executor": "@angular-devkit/build-angular:browser",

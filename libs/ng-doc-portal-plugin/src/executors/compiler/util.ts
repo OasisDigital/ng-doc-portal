@@ -1,11 +1,11 @@
 import { tsquery } from '@phenomnomnominal/tsquery';
 import { format } from 'date-fns';
-import prettier from 'prettier';
+import prettier = require('prettier');
 
 import { EventPayload, ProcessedFileEvent, RawFileEvent } from './types';
 
-import fs from 'fs/promises';
-import path from 'path';
+import { readFileSync } from 'fs';
+import path = require('path');
 
 /**
  * Extract all the payloads from the various processed file events.
@@ -87,7 +87,7 @@ export function accumulateFilePaths(
 export function generateTitleFromFilePath(filePath: string) {
   const baseName = path.basename(filePath);
   const fileName = baseName.substring(0, baseName.indexOf('.'));
-  const title = fileName.replaceAll('-', ' ');
+  const title = fileName.replace(/-/g, ' ');
   return title.charAt(0).toUpperCase() + title.substring(1);
 }
 
@@ -98,7 +98,7 @@ export function generateTitleFromFilePath(filePath: string) {
  * contents of the file will be used to extract title from the config in the file
  */
 export async function extractTitleFromDocPageFile(filePath: string) {
-  const rawTS = (await fs.readFile('./' + filePath)).toString();
+  const rawTS = readFileSync('./' + filePath).toString();
 
   const ast = tsquery.ast(rawTS);
 
@@ -150,7 +150,7 @@ export async function extractTitleFromDocPageFile(filePath: string) {
 
         if (title) {
           // For some reason `.getText()` returns the quotes of the string
-          return title.replaceAll("'", '');
+          return title.replace(/'/g, '');
         } else {
           throw new Error(
             `No property found for 'title' in exported object literal for file: ${filePath}`

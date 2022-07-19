@@ -1,13 +1,26 @@
 import { ExecutorContext, runExecutor } from '@nrwl/devkit';
 
+import { getConfigFileLocationFromContext } from '../../util/context';
+import { DocPageConfigsCompiler } from '../compiler/doc-page-configs-compiler';
+
 import { BuildExecutorSchema } from './schema';
 
 export default async function buildExecutor(
   _options: BuildExecutorSchema,
   context: ExecutorContext
 ) {
+  // create compiler
+  const configLocation = getConfigFileLocationFromContext(context);
+
+  const compiler = new DocPageConfigsCompiler('lazy', configLocation);
+
   // run doc config compiler once
-  // No idea how to do this yet...
+  try {
+    await compiler.runOnce();
+  } catch (err) {
+    console.error(err);
+    return { success: false };
+  }
 
   // run ng build
   const result = await runExecutor(
