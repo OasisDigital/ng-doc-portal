@@ -51,7 +51,7 @@ export interface GlobPattern {
   titlePrefix?: string;
 }
 
-export interface CdpConfig {
+export interface NgDocPortalConfig {
   globPattern?: string | GlobPattern;
   globPatterns?: (string | GlobPattern)[];
 }

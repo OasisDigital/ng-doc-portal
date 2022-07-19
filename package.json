@@ -19,7 +19,9 @@
     "check": "run-s format:check lint test",
     "affected:lint": "nx affected:lint --base=origin/main",
     "affected:test": "nx affected:test --parallel --base=origin/main",
-    "affected:check": "run-s format:check affected:lint affected:test --base=origin/main"
+    "affected:check": "run-s format:check affected:lint affected:test --base=origin/main",
+    "build:package": "nx build ng-doc-portal",
+    "build:plugin": "nx build ng-doc-portal-plugin"
   },
   "private": true,
   "dependencies": {

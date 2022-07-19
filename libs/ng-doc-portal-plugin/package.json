@@ -1,7 +1,15 @@
 {
-  "name": "@cdp/ng-doc-portal-plugin",
-  "version": "0.0.1",
+  "name": "@oasisdigital/ng-doc-portal-plugin",
+  "version": "1.0.0",
   "main": "src/index.js",
   "generators": "./generators.json",
-  "executors": "./executors.json"
+  "executors": "./executors.json",
+  "peerDependencies": {
+    "chalk": "^4.1.2",
+    "chokidar": "^3.5.3",
+    "glob-promise": "^4.2.2",
+    "@phenomnomnominal/tsquery": "^5.0.0",
+    "date-fns": "2.28.0",
+    "prettier": "^2.6.2"
+  }
 }

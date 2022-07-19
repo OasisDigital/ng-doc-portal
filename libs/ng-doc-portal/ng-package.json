@@ -3,5 +3,6 @@
   "dest": "../../dist/libs/ng-doc-portal",
   "lib": {
     "entryFile": "src/index.ts"
-  }
+  },
+  "assets": ["./src/lib/styles/ng-doc-portal.scss"]
 }

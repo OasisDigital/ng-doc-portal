@@ -11,5 +11,10 @@
     "marked": "^4.0.15",
     "ngx-highlightjs": "^7.0.0",
     "prettier": "^2.6.2"
+  },
+  "exports": {
+    "./styles": {
+      "sass": "./src/libs/styles/ng-doc-portal.scss"
+    }
   }
 }

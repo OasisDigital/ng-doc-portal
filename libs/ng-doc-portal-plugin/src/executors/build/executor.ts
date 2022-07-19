@@ -1,6 +1,9 @@
 import { ExecutorContext, runExecutor } from '@nrwl/devkit';
 
-import { getConfigFileLocationFromContext } from '../../util/context';
+import {
+  getConfigFileLocationFromContext,
+  getDocPageConfigsFileLocationFromContext,
+} from '../../util/context';
 import { DocPageConfigsCompiler } from '../compiler/doc-page-configs-compiler';
 
 import { BuildExecutorSchema } from './schema';
@@ -11,8 +14,14 @@ export default async function buildExecutor(
 ) {
   // create compiler
   const configLocation = getConfigFileLocationFromContext(context);
+  const docPageConfigsFileLocation =
+    getDocPageConfigsFileLocationFromContext(context);
 
-  const compiler = new DocPageConfigsCompiler('lazy', configLocation);
+  const compiler = new DocPageConfigsCompiler(
+    'lazy',
+    configLocation,
+    docPageConfigsFileLocation
+  );
 
   // run doc config compiler once
   try {

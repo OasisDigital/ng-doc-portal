@@ -51,13 +51,11 @@ export function createRuntimeConfig(filePaths: string[]) {
   }
 
   return `
-    import { RuntimeDocConfigArray, CompilerMode } from '@oasisdigital/ng-doc-portal';
-
-    export const compilerMode: CompilerMode = 'runtime';
+    export const compilerMode = 'runtime';
 
     export const docPageConfigs = [
       ${arrayStringContent}
-    ] as RuntimeDocConfigArray;
+    ] as any;
   `;
 }
 
@@ -204,12 +202,10 @@ export function formatContent(content: string): string {
  */
 export function wrapTypescriptBoilerplate(configStrings: string[]) {
   return `
-  import { LazyDocConfigRecord, CompilerMode } from '@oasisdigital/ng-doc-portal';
-
   export const docPageConfigs = {
     ${configStrings.toString()}
-  } as LazyDocConfigRecord;
-  export const compilerMode:CompilerMode = 'lazy';
+  } as any;
+  export const compilerMode = 'lazy';
 `;
 }
 

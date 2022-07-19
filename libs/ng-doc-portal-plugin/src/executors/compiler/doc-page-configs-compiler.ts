@@ -17,13 +17,12 @@ import {
   firstValueFrom,
 } from 'rxjs';
 
-import { CONFIG_FILE_LOCATION } from './constants';
 import {
   ProcessedFileEvent,
   EventPayload,
   RawInitEvent,
   RawFileEvent,
-  CdpConfig,
+  NgDocPortalConfig,
   GlobPattern,
 } from './types';
 import {
@@ -45,6 +44,7 @@ export class DocPageConfigsCompiler {
   constructor(
     private readonly mode: 'lazy' | 'runtime',
     private readonly configFileLocation: string,
+    private readonly docPageConfigsFileLocation: string,
     private readonly silenced = false
   ) {
     if (!existsSync(this.configFileLocation)) {
@@ -53,7 +53,7 @@ export class DocPageConfigsCompiler {
       );
     }
 
-    const config: CdpConfig = readJsonFile(this.configFileLocation);
+    const config: NgDocPortalConfig = readJsonFile(this.configFileLocation);
 
     let patterns = config.globPatterns;
     if (!patterns && config.globPattern) {
@@ -298,7 +298,7 @@ export class DocPageConfigsCompiler {
    */
   private async writeDynamicPageContentToFile(content: string) {
     try {
-      writeFileSync(CONFIG_FILE_LOCATION, content);
+      writeFileSync(this.docPageConfigsFileLocation, content);
     } catch (e) {
       console.error(e);
       this.log(

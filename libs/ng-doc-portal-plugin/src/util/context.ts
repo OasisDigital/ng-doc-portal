@@ -4,7 +4,7 @@ export function getConfigFileLocationFromContext(context: ExecutorContext) {
   const projectRelativeRoot = context.workspace.projects[
     context.projectName ?? ''
   ].root.replace(/\\/g, '/');
-  const defaultconfigFileLocation = `${projectRelativeRoot}/cdp-config.json`;
+  const defaultconfigFileLocation = `${projectRelativeRoot}/ng-doc-portal-config.json`;
 
   let configFileLocation: string | undefined =
     context.target?.options?.configFile;
@@ -13,4 +13,13 @@ export function getConfigFileLocationFromContext(context: ExecutorContext) {
   }
 
   return configFileLocation ?? defaultconfigFileLocation;
+}
+
+export function getDocPageConfigsFileLocationFromContext(
+  context: ExecutorContext
+) {
+  const projectRelativeRoot = context.workspace.projects[
+    context.projectName ?? ''
+  ].root.replace(/\\/g, '/');
+  return `${projectRelativeRoot}/src/app/doc-page-configs.ts`;
 }

@@ -67,7 +67,7 @@ async function updateProjectStyles(tree: Tree, options: NormalizedSchema) {
     const styles = projectConfig.targets.build.options.styles;
     const updatedStyles = [
       // TODO: replace with `node_modules` target folder when we have a proper npm scope/package
-      'libs/component-document-portal/styles/component-document-portal.scss',
+      'node_modules/@oasisdigital/ng-doc-portal/src/lib/styles/ng-doc-portal.scss',
       ...styles,
     ];
     projectConfig.targets.build.options.styles = updatedStyles;

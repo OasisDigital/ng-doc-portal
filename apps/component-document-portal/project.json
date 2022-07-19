@@ -5,15 +5,15 @@
   "prefix": "component-document-portal",
   "targets": {
     "cdp-build": {
-      "executor": "@cdp/ng-doc-portal-plugin:build",
+      "executor": "@oasisdigital/ng-doc-portal-plugin:build",
       "options": {
-        "configFile": "apps/component-document-portal/cdp-config.json"
+        "configFile": "apps/component-document-portal/ng-doc-portal-config.json"
       }
     },
     "cdp-serve": {
-      "executor": "@cdp/ng-doc-portal-plugin:serve",
+      "executor": "@oasisdigital/ng-doc-portal-plugin:serve",
       "options": {
-        "configFile": "apps/component-document-portal/cdp-config.json"
+        "configFile": "apps/component-document-portal/ng-doc-portal-config.json"
       }
     },
     "build": {
