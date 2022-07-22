@@ -9,11 +9,13 @@ This package is meant to be used in tangent with the `@oasisdigital/ng-doc-porta
 ### npm
 
 `npm install --save @oasisdigital/ng-doc-portal`
+
 `npm install --save-dev @oasisdigital/ng-doc-portal-plugin`
 
 ### yarn
 
 `yarn add @oasisdigital/ng-doc-portal`
+
 `yarn add --dev @oasisdigital/ng-doc-portal-plugin`
 
 ## Generating a New `ng-doc-portal` Application
@@ -76,6 +78,21 @@ More examples below:
 You can add a prefixed group to any glob pattern object by adding the `titlePrefix` property. This will automatically prefix the globbed pages with the group in the side navigation system.
 
 This will not overwrite any groups you can explicitly defined in the page's title property. It will only prefix the title.
+
+```json
+{
+  "globPatterns": [
+    {
+      "pattern": "apps/component-document-portal/src/app/doc-pages/*.doc-page.ts",
+      "titlePrefix": "General"
+    },
+    {
+      "pattern": "apps/component-document-portal/src/app/starting-example.doc-page.ts",
+      "titlePrefix": "Example"
+    }
+  ]
+}
+```
 
 ## Adding Your Own Doc Page
 
@@ -195,6 +212,10 @@ const docPageConfig: DocPageConfig = {
 
 export default docPageConfig;
 ```
+
+## Styling your Ng Doc Portal Application
+
+Since the `ng-doc-portal` system piggy backs off of an angular application you can simply add your custom styles to the root `styles.scss` file or in the `style` property of the angular app's `project.json` build config.
 
 ## Ng Doc Portal's Component Library
 
