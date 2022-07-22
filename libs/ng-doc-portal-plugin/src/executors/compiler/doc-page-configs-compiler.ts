@@ -1,7 +1,7 @@
 import { readJsonFile } from '@nrwl/devkit';
-import chalk = require('chalk');
-import chokidar = require('chokidar');
-import glob = require('glob-promise');
+import * as chalk from 'chalk';
+import * as chokidar from 'chokidar';
+import * as glob from 'glob-promise';
 import {
   concatMap,
   debounceTime,

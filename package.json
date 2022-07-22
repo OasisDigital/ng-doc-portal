@@ -8,8 +8,8 @@
     "postinstall": "node ./decorate-angular-cli.js && ngcc --properties es2020 browser module main",
     "start": "nx run component-document-portal:cdp-serve",
     "build": "nx run component-document-portal:cdp-build",
-    "generate:doc-page": "nx g @cdp/ng-doc-portal-plugin:doc-page",
-    "generate:app": "nx g @cdp/ng-doc-portal-plugin:app",
+    "generate:doc-page": "nx g @oasisdigital/ng-doc-portal-plugin:doc-page",
+    "generate:app": "nx g @oasisdigital/ng-doc-portal-plugin:app",
     "gen:perf-testing": "ts-node --project libs/perf/tsconfig.lib.json -r dotenv/config libs/perf/src/lib/generate-doc-pages.ts",
     "test": "nx test",
     "lint": "nx workspace-lint && nx run-many --target=lint --all",
@@ -20,8 +20,7 @@
     "affected:lint": "nx affected:lint --base=origin/main",
     "affected:test": "nx affected:test --parallel --base=origin/main",
     "affected:check": "run-s format:check affected:lint affected:test --base=origin/main",
-    "build:package": "nx build ng-doc-portal",
-    "build:plugin": "nx build ng-doc-portal-plugin"
+    "build:packages": "nx build ng-doc-portal && nx build ng-doc-portal-plugin"
   },
   "private": true,
   "dependencies": {

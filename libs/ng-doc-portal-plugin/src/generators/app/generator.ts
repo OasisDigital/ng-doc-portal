@@ -6,6 +6,7 @@ import {
   names,
   offsetFromRoot,
   Tree,
+  logger,
   readProjectConfiguration,
   updateProjectConfiguration,
 } from '@nrwl/devkit';
@@ -55,18 +56,17 @@ function addFiles(tree: Tree, options: NormalizedSchema) {
   generateFiles(
     tree,
     path.join(__dirname, 'files'),
-    `${options.projectRoot}/src`,
+    `${options.projectRoot}`,
     templateOptions
   );
 }
 
-async function updateProjectStyles(tree: Tree, options: NormalizedSchema) {
+function updateProjectStyles(tree: Tree, options: NormalizedSchema) {
   const projectConfig = readProjectConfiguration(tree, options.projectName);
 
   if (projectConfig.targets) {
     const styles = projectConfig.targets.build.options.styles;
     const updatedStyles = [
-      // TODO: replace with `node_modules` target folder when we have a proper npm scope/package
       'node_modules/@oasisdigital/ng-doc-portal/src/lib/styles/ng-doc-portal.scss',
       ...styles,
     ];
@@ -76,33 +76,83 @@ async function updateProjectStyles(tree: Tree, options: NormalizedSchema) {
   }
 }
 
-// async function updateProjectExecutors(tree: Tree, options: NormalizedSchema) {}
+function updateProjectExecutors(tree: Tree, options: NormalizedSchema) {
+  const projectConfig = readProjectConfiguration(tree, options.projectName);
+
+  if (projectConfig.targets) {
+    const targetOptions = {
+      configFile: `apps/${
+        options.name || 'component-document-portal'
+      }/ng-doc-portal-config.json`,
+    };
+
+    projectConfig.targets = {
+      ...projectConfig.targets,
+      ['cdp-build']: {
+        executor: '@oasisdigital/ng-doc-portal-plugin:build',
+        options: targetOptions,
+      },
+      ['cdp-serve']: {
+        executor: '@oasisdigital/ng-doc-portal-plugin:serve',
+        options: targetOptions,
+      },
+    };
+
+    updateProjectConfiguration(tree, options.projectName, projectConfig);
+  }
+}
+
+function removeProjectBuildBudgets(tree: Tree, options: NormalizedSchema) {
+  const projectConfig = readProjectConfiguration(tree, options.projectName);
+
+  if (projectConfig.targets) {
+    delete projectConfig.targets.build.configurations?.production.budgets;
+
+    updateProjectConfiguration(tree, options.projectName, projectConfig);
+  }
+}
+
+async function updateGitIgnore(tree: Tree) {
+  if (tree.exists('.gitignore')) {
+    const entry = '**/doc-page-configs.ts';
+
+    let content = tree.read('.gitignore', 'utf-8') ?? '';
+    if (/\*\*\/doc-page-configs\.ts/gm.test(content)) {
+      return;
+    }
+
+    content = `${content}\n${entry}\n`;
+    tree.write('.gitignore', content);
+  } else {
+    logger.warn(`Couldn't find .gitignore file to update`);
+  }
+}
 
 export default async function (
   tree: Tree,
   options: NgDocPortalPluginGeneratorSchema
 ) {
   const normalizedOptions = normalizeOptions(tree, options);
+
   await applicationGenerator(tree, {
-    name: options.name ?? 'component-document-portal',
+    name: options.name || 'component-document-portal',
     tags: normalizedOptions.parsedTags.join(','),
     directory: options.directory,
     e2eTestRunner: 'none' as any,
     skipTests: true,
     prefix: 'app',
-    // TODO: Figure out a good way to get rid of the boilerplate in the `app.component.ts` without
-    // hardcoding the new angular app to a particular stylesheet format
-    // We "should" use the default the nx workspace has
     style: 'scss',
   });
+
   addFiles(tree, normalizedOptions);
-  console.log(
-    `${normalizedOptions.projectRoot}/src/app/nx-welcome.component.ts`
-  );
+
   tree.delete(
     `${normalizedOptions.projectRoot}/src/app/nx-welcome.component.ts`
   );
-  await updateProjectStyles(tree, normalizedOptions);
-  // await updateProjectExecutors(tree, normalizedOptions);
+
+  updateProjectStyles(tree, normalizedOptions);
+  updateProjectExecutors(tree, normalizedOptions);
+  removeProjectBuildBudgets(tree, normalizedOptions);
+  updateGitIgnore(tree);
   await formatFiles(tree);
 }

@@ -1,6 +1,7 @@
 {
   "name": "@oasisdigital/ng-doc-portal",
-  "version": "1.0.0",
+  "description": "Component documentation portal system written natively in Angular",
+  "version": "0.1.0",
   "peerDependencies": {
     "@angular/common": "^14.0.0",
     "@angular/core": "^14.0.0",
@@ -16,5 +17,23 @@
     "./styles": {
       "sass": "./src/libs/styles/ng-doc-portal.scss"
     }
-  }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "keywords": [
+    "angular",
+    "documentation",
+    "portal",
+    "component",
+    "components"
+  ],
+  "author": "Zachary Kipping <zjkipping@hotmail.com>",
+  "contributors": [
+    {
+      "name": "Alisha Robinson",
+      "email": "alisha.robinson@oasisdigital.com"
+    }
+  ],
+  "license": "MIT"
 }

@@ -40,6 +40,11 @@ cdp-nav {
       }
     }
 
+    > ul {
+      margin: 0;
+      width: 100%;
+    }
+
     span.group-header {
       display: block;
       font-size: 24px;

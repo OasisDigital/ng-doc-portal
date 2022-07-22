@@ -4,5 +4,5 @@
   "lib": {
     "entryFile": "src/index.ts"
   },
-  "assets": ["./src/lib/styles/ng-doc-portal.scss"]
+  "assets": ["./src/lib/styles/**/*"]
 }

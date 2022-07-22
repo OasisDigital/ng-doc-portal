@@ -1,11 +1,11 @@
 import { tsquery } from '@phenomnomnominal/tsquery';
 import { format } from 'date-fns';
-import prettier = require('prettier');
+import * as prettier from 'prettier';
 
 import { EventPayload, ProcessedFileEvent, RawFileEvent } from './types';
 
 import { readFileSync } from 'fs';
-import path = require('path');
+import * as path from 'path';
 
 /**
  * Extract all the payloads from the various processed file events.
