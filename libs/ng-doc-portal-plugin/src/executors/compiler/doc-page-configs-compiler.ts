@@ -15,6 +15,7 @@ import {
   forkJoin,
   merge,
   firstValueFrom,
+  concat,
 } from 'rxjs';
 
 import {
@@ -67,7 +68,7 @@ export class DocPageConfigsCompiler {
     this.globPatterns = patterns;
   }
 
-  async runOnce(): Promise<{ success: boolean }> {
+  async runOnce() {
     const initialFileEvent = this.buildInitialFileEvent(this.globPatterns);
 
     let handledFileEvents: Observable<void>;
@@ -77,34 +78,23 @@ export class DocPageConfigsCompiler {
       handledFileEvents = this.handleFileEventsRuntime(initialFileEvent);
     }
 
-    try {
-      await firstValueFrom(handledFileEvents);
-    } catch (err) {
-      console.error(err);
-      return { success: false };
-    }
-
-    return { success: true };
+    return await firstValueFrom(handledFileEvents);
   }
 
   watch() {
-    const initialFileEvent = this.buildWatcher(this.globPatterns);
+    const fileEvents = concat(
+      this.buildInitialFileEvent(this.globPatterns),
+      this.buildWatcher(this.globPatterns)
+    );
 
     let handledFileEvents: Observable<void>;
     if (this.mode === 'lazy') {
-      handledFileEvents = this.handleFileEventsLazy(initialFileEvent);
+      handledFileEvents = this.handleFileEventsLazy(fileEvents);
     } else {
-      handledFileEvents = this.handleFileEventsRuntime(initialFileEvent);
+      handledFileEvents = this.handleFileEventsRuntime(fileEvents);
     }
 
-    console.log(chalk.blue('Watching doc-portal files for changes...\n'));
-
-    return new Promise<{ success: boolean }>((resolve) => {
-      handledFileEvents.subscribe({
-        error: () => resolve({ success: false }),
-        complete: () => resolve({ success: true }),
-      });
-    });
+    return handledFileEvents;
   }
 
   handleFileEventsLazy(obs: Observable<RawFileEvent>) {

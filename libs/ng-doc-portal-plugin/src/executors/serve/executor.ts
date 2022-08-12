@@ -1,4 +1,5 @@
 import { ExecutorContext, runExecutor } from '@nrwl/devkit';
+import { firstValueFrom, shareReplay, switchMap } from 'rxjs';
 
 import {
   getConfigFileLocationFromContext,
@@ -29,27 +30,35 @@ export default async function runServe(
     docPageConfigsFileLocation
   );
 
-  // run compiler once
-  try {
-    await compiler.runOnce();
-  } catch (err) {
-    console.error(err);
-    return { success: false };
-  }
+  const compilerWatch = compiler.watch().pipe(shareReplay(1));
 
-  // then run `ng serve`
-  const result = await Promise.race(
-    // Add compiler watch here when ready
-    [
-      runExecutor(
-        { project: context.projectName ?? '', target: 'serve' },
-        { watch: true },
-        context
-      ),
-      compiler.watch(),
-    ]
+  // Run angular serve executor after first initial event from compiler watcher
+  const angularServeExecutor = firstValueFrom(
+    compilerWatch.pipe(
+      switchMap(() =>
+        runExecutor(
+          { project: context.projectName ?? '', target: 'serve' },
+          { watch: true },
+          context
+        )
+      )
+    )
   );
 
+  // convert the compiler watch ending events to executor resolutions
+  const compilerWatchPromise = new Promise<{ success: boolean }>((resolve) => {
+    compilerWatch.subscribe({
+      error: () => resolve({ success: false }),
+      complete: () => resolve({ success: true }),
+    });
+  });
+
+  const result = await Promise.race([
+    angularServeExecutor,
+    compilerWatchPromise,
+  ]);
+
+  // Check to see if the angular serve finished or the compiler watcher
   if (isAsyncIterator(result)) {
     for await (const res of result) {
       if (!res.success) return res;
