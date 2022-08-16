@@ -16,6 +16,8 @@ import {
   merge,
   firstValueFrom,
   concat,
+  take,
+  shareReplay,
 } from 'rxjs';
 
 import {
@@ -94,6 +96,12 @@ export class DocPageConfigsCompiler {
       handledFileEvents = this.handleFileEventsRuntime(fileEvents);
     }
 
+    handledFileEvents = handledFileEvents.pipe(shareReplay(1));
+
+    handledFileEvents.pipe(take(1)).subscribe(() => {
+      console.log(chalk.blue('Watching doc-portal files for changes...\n'));
+    });
+
     return handledFileEvents;
   }
 
@@ -132,7 +140,7 @@ export class DocPageConfigsCompiler {
   private buildInitialFileEvent(
     patterns: (string | GlobPattern)[]
   ): Observable<RawInitEvent> {
-    this.log(chalk.blue('Searching for component document page files...\n'));
+    this.log(chalk.blue('Searching for component document page files...'));
     const startTime = Date.now();
 
     return forkJoin(
@@ -145,7 +153,9 @@ export class DocPageConfigsCompiler {
       map((filePaths): RawInitEvent => ({ type: 'init', filePaths })),
       tap(() => {
         const endTime = Date.now();
-        this.log(chalk.green(`Searching complete in ${endTime - startTime}ms`));
+        this.log(
+          chalk.green(`Searching complete in ${endTime - startTime}ms\n`)
+        );
       })
     );
   }
@@ -221,7 +231,7 @@ export class DocPageConfigsCompiler {
     try {
       if (fileEvent.type === 'init') {
         const payload: EventPayload[] = [];
-        this.log(chalk.blue('Compiling component document page files...\n'));
+        this.log(chalk.blue('Compiling component document page files...'));
         const startTime = Number(new Date());
         for (const filePath of fileEvent.filePaths) {
           const title = await extractTitleFromDocPageFile(filePath);
