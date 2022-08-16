@@ -1,18 +1,27 @@
 cdp-nav {
+  height: 100%;
+  overflow: auto;
+
   .side-navigation-bar {
-    grid-area: nav;
     width: auto;
-    border-right: 2px solid black;
+    border-right: 2px solid var(--cdp-border-color);
     height: 100%;
+    display: grid;
+    overflow: auto;
+    grid-template-rows: max-content 1fr;
 
     .filter-input {
       width: calc(100% - 10px);
       border: none;
       outline: none;
-      padding: 5px 0;
+      padding: 0 0;
       padding-left: 10px;
-      border-bottom: 2px solid black;
-      font-size: 16px;
+      background: var(--cdp-background-color);
+      color: var(--cdp-font-color);
+      border-bottom: 2px solid var(--cdp-border-color);
+      font-size: 18px;
+
+      height: 40px;
     }
 
     ul {
@@ -21,6 +30,11 @@ cdp-nav {
       margin-left: 15px;
       padding: 0;
       width: calc(100% - 15px);
+
+      &.side-nav-menu-root {
+        overflow: auto;
+        height: 100%;
+      }
 
       li {
         width: 100%;
@@ -31,7 +45,7 @@ cdp-nav {
           padding: 10px 20px;
           width: calc(100% - 40px);
           display: inline-block;
-          color: black;
+          color: var(--cdp-font-color);
 
           &:hover {
             background-color: #868686;

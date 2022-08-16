@@ -20,7 +20,7 @@ cdp-playground {
   }
 
   .form-view {
-    border-top: 2px solid black;
+    border-top: 2px solid var(--cdp-border-color);
     display: grid;
     grid-auto-rows: max-content;
     place-items: center;

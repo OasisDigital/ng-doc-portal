@@ -1,0 +1,35 @@
+cdp-toolbar {
+  height: 40px;
+  width: 100%;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: max-content;
+  border-bottom: 2px solid var(--cdp-border-color);
+  overflow-x: auto;
+
+  &.hide {
+    visibility: hidden;
+    height: 0;
+    border: 0;
+  }
+
+  select.cdp-select {
+    height: 40px;
+    border: none;
+    font-size: 18px;
+    outline: none;
+    cursor: pointer;
+    background: var(--cdp-background-color);
+    color: var(--cdp-font-color);
+
+    option {
+      font-size: 18px;
+      padding: 5px 0;
+    }
+  }
+
+  * {
+    padding: 0px 5px;
+    border-right: 2px solid var(--cdp-border-color) !important;
+  }
+}

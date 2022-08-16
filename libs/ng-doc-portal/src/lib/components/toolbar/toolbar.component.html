@@ -1,0 +1,9 @@
+<select
+  *ngIf="!!this.themeOptions?.length"
+  class="cdp-select"
+  [formControl]="themeControl"
+>
+  <option *ngFor="let themeOption of themeOptions" [value]="themeOption.value">
+    {{ themeOption.display }}
+  </option>
+</select>

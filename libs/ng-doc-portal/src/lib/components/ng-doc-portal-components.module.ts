@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
+import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { HighlightModule } from 'ngx-highlightjs';
 
@@ -11,6 +12,7 @@ import { MarkdownComponent } from './markdown/markdown.component';
 import { SideNavComponent } from './side-nav/side-nav.component';
 import { TabItemComponent } from './tab-item/tab-item.component';
 import { TabMenuComponent } from './tab-menu/tab-menu.component';
+import { ToolbarComponent } from './toolbar/toolbar.component';
 
 @NgModule({
   imports: [
@@ -19,6 +21,7 @@ import { TabMenuComponent } from './tab-menu/tab-menu.component';
     RouterModule,
     HttpClientModule,
     ComponentPlaygroundModule,
+    ReactiveFormsModule,
   ],
   declarations: [
     TabMenuComponent,
@@ -27,6 +30,7 @@ import { TabMenuComponent } from './tab-menu/tab-menu.component';
     SideNavComponent,
     MarkdownComponent,
     EmbedIframeComponent,
+    ToolbarComponent,
   ],
   exports: [
     TabMenuComponent,
@@ -35,6 +39,7 @@ import { TabMenuComponent } from './tab-menu/tab-menu.component';
     SideNavComponent,
     MarkdownComponent,
     EmbedIframeComponent,
+    ToolbarComponent,
     ComponentPlaygroundModule,
   ],
 })

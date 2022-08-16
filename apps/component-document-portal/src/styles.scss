@@ -1,1 +1,14 @@
 /* You can add global styles to this file, and also import other style files */
+html {
+  &.dark-theme {
+    --cdp-font-color: white;
+    --cdp-background-color: #363636;
+    --cdp-border-color: white;
+  }
+
+  &.light-theme {
+    --cdp-font-color: black;
+    --cdp-background-color: white;
+    --cdp-border-color: black;
+  }
+}

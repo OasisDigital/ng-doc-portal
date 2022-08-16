@@ -1,28 +1,33 @@
 cdp-tab-menu {
   display: grid;
   margin-left: -20px;
+  overflow: auto;
+  height: 100%;
+  grid-template-rows: max-content 1fr;
 
-  .tabHeader {
+  .tab-header {
     display: grid;
     grid-auto-flow: column;
     justify-content: start;
-    background-color: rgb(255, 255, 255);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+    background-color: var(--cdp-background-color);
+    border-bottom: 1px solid var(--cdp-border-color);
 
     div {
       cursor: pointer;
-      padding: 1rem;
+      padding: 10px;
+
+      font-size: 17px;
 
       &.highlight {
-        border-bottom: 2px solid #3f51b5;
+        border-bottom: 2px solid var(--cdp-border-color);
       }
     }
   }
 
-  .tabContent {
-    background-color: rgb(255, 255, 255);
-    height: 100%;
+  .tab-content {
+    background-color: var(--cdp-background-color);
     padding-left: 20px;
     padding-top: 5px;
+    overflow: auto;
   }
 }

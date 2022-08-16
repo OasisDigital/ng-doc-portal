@@ -9,9 +9,27 @@ cdp-feature {
     grid-template-columns: minmax(0, auto) 1fr;
     grid-template-areas: 'nav content';
 
-    .router-content {
+    .nav-content {
       grid-area: content;
-      padding-left: 20px;
+      height: 100%;
+      display: grid;
+      grid-template-rows: minmax(0, max-content) 1fr;
+      grid-template-areas: 'toolbar' 'content';
+      overflow: auto;
+
+      .router-content {
+        padding-left: 20px;
+        grid-area: content;
+        overflow: auto;
+      }
+
+      cdp-toolbar {
+        grid-area: toolbar;
+      }
+    }
+
+    cdp-nav {
+      grid-area: nav;
     }
   }
 

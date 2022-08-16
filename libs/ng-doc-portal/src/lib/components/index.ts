@@ -10,6 +10,8 @@ export * from './code-reveal/code-reveal.component';
 export * from './side-nav/side-nav.component';
 export * from './markdown/markdown.component';
 export * from './embed-iframe/embed-iframe.component';
+export * from './toolbar/toolbar.component';
+export * from './toolbar/toolbar-tokens';
 
 // main module
 export * from './ng-doc-portal-components.module';

@@ -1,4 +1,4 @@
-<div class="tabHeader">
+<div class="tab-header">
   <div
     *ngFor="let tab of tabs"
     [class.highlight]="activeTab?.title === tab.title"
@@ -8,6 +8,6 @@
   </div>
 </div>
 
-<div class="tabContent" *ngIf="activeTab">
+<div class="tab-content" *ngIf="activeTab">
   <ng-container *ngTemplateOutlet="activeTab.templateRef"></ng-container>
 </div>

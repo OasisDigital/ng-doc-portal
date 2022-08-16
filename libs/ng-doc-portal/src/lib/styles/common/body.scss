@@ -6,3 +6,12 @@ body {
   height: 100vh;
   width: 100vw;
 }
+
+html {
+  color: var(--cdp-font-color);
+  background: var(--cdp-background-color);
+
+  --cdp-font-color: black;
+  --cdp-background-color: white;
+  --cdp-border-color: black;
+}

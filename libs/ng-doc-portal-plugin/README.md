@@ -217,6 +217,73 @@ export default docPageConfig;
 
 Since the `ng-doc-portal` system piggy backs off of an angular application you can simply add your custom styles to the root `styles.scss` file or in the `style` property of the angular app's `project.json` build config.
 
+## Theming
+
+### Setup Theme Selection System
+
+If you want to sync your theming system with your ng doc portal application you can make use of the `cdpProvideThemeOptions` in the `app.module.ts` of your ng doc portal application. You will need to give this method a list of theme options to display in a dropdown menu in our toolbar. Any theme selections will be stored in localstorage and should rehydrate upon refresh.
+
+Example below:
+
+```ts
+@NgModule({
+  declarations: [AppComponent],
+  imports: [
+    BrowserModule,
+    NgDocPortalModule.forRoot(docPageConfigs, compilerMode),
+  ],
+  providers: [
+    // Add the below method call to your `providers` list
+    cdpProvideThemeOptions([
+      { value: 'light-theme', display: 'Light Theme' },
+      { value: 'dark-theme', display: 'Dark Theme' },
+    ]),
+  ],
+  bootstrap: [AppComponent],
+})
+export class AppModule {}
+```
+
+The `ThemeOption` interface that you provide to the `cdpProvideThemeOptions` function is below:
+
+```ts
+interface ThemeOption {
+  display: string;
+  value: string;
+  default?: boolean;
+}
+```
+
+The `default` property will set the theme as the default selected theme (if there isn't already one). Otherwise the first theme in the list will be the default.
+
+### Syncing Ng Doc Portal Application With Your Theme Styles
+
+The ng doc portal application uses the follow css variables for colors:
+
+```
+--cdp-font-color
+--cdp-background-color
+--cdp-border-color
+```
+
+Feel free to override these with your own colors based on the selected theme like below:
+
+```scss
+html {
+  &.dark-theme {
+    --cdp-font-color: white;
+    --cdp-background-color: #363636;
+    --cdp-border-color: white;
+  }
+
+  &.light-theme {
+    --cdp-font-color: black;
+    --cdp-background-color: white;
+    --cdp-border-color: black;
+  }
+}
+```
+
 ## Ng Doc Portal's Component Library
 
 The `ng-doc-portal` package ships with a small component-library that will help you document your component and display this information.
