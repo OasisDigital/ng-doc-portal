@@ -12,7 +12,7 @@ cdp-code-reveal {
       line-height: 1.5em;
       font-size: 14px;
       min-height: 100%;
-      padding: 1em 4em 2em 1.2em;
+      padding: 1em 5.2em 2em 1.2em;
 
       &.hljs-line-numbers {
         padding: 0 !important;
@@ -27,7 +27,6 @@ cdp-code-reveal {
   }
 
   .hljs {
-    padding: 10px;
     border: 1px solid gray;
     border-radius: 4px;
     transition: border ease 1s;
