@@ -1,14 +1,16 @@
 {
   "name": "@oasisdigital/ng-doc-portal",
   "description": "Component documentation portal system written natively in Angular",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "peerDependencies": {
     "@angular/common": "^14.0.0",
     "@angular/core": "^14.0.0",
     "@angular/forms": "^14.0.0",
     "@angular/router": "^14.0.0",
     "@angular/platform-browser": "^14.0.0",
-    "tslib": "^2.3.0",
+    "tslib": "^2.3.0"
+  },
+  "dependencies": {
     "marked": "^4.0.15",
     "ngx-highlightjs": "^7.0.0",
     "prettier": "^2.6.2"
