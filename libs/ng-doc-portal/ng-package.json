@@ -4,5 +4,6 @@
   "lib": {
     "entryFile": "src/index.ts"
   },
-  "assets": ["./src/lib/styles/**/*"]
+  "assets": ["./src/lib/styles/**/*"],
+  "allowedNonPeerDependencies": ["marked", "ngx-highlightjs", "prettier"]
 }

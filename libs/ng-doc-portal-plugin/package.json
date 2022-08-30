@@ -17,13 +17,6 @@
     "@phenomnomnominal/tsquery": "^5.0.0",
     "date-fns": "^2.28.0"
   },
-  "allowedNonPeerDependencies": [
-    "chalk",
-    "chokidar",
-    "glob-promise",
-    "@phenomnomnominal/tsquery",
-    "date-fns"
-  ],
   "publishConfig": {
     "access": "public"
   },

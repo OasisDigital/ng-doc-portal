@@ -15,11 +15,6 @@
     "ngx-highlightjs": "^7.0.0",
     "prettier": "^2.6.2"
   },
-  "allowedNonPeerDependencies": [
-    "marked",
-    "ngx-highlightjs",
-    "prettier"
-  ],
   "exports": {
     "./styles": {
       "sass": "./src/libs/styles/ng-doc-portal.scss"
