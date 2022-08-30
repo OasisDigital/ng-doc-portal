@@ -7,16 +7,23 @@
   "executors": "./executors.json",
   "peerDependencies": {
     "@nrwl/angular": "^14.2.4",
-    "@nrwl/devkit": "^14.3.6"
+    "@nrwl/devkit": "^14.3.6",
+    "prettier": "^2.6.2"
   },
   "dependencies": {
     "chalk": "^4.1.2",
     "chokidar": "^3.5.3",
     "glob-promise": "^4.2.2",
     "@phenomnomnominal/tsquery": "^5.0.0",
-    "date-fns": "^2.28.0",
-    "prettier": "^2.6.2"
+    "date-fns": "^2.28.0"
   },
+  "allowedNonPeerDependencies": [
+    "chalk",
+    "chokidar",
+    "glob-promise",
+    "@phenomnomnominal/tsquery",
+    "date-fns"
+  ],
   "publishConfig": {
     "access": "public"
   },
