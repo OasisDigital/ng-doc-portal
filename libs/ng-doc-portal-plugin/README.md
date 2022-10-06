@@ -264,6 +264,8 @@ The ng doc portal application uses the follow css variables for colors:
 --cdp-font-color
 --cdp-background-color
 --cdp-border-color
+--cdp-nav-active-color
+--cdp-nav-highlight-color
 ```
 
 Feel free to override these with your own colors based on the selected theme like below:
@@ -274,12 +276,16 @@ html {
     --cdp-font-color: white;
     --cdp-background-color: #363636;
     --cdp-border-color: white;
+    --cdp-nav-active-color: #6e6e6e;
+    --cdp-nav-highlight-color: #adadad;
   }
 
   &.light-theme {
     --cdp-font-color: black;
     --cdp-background-color: white;
     --cdp-border-color: black;
+    --cdp-nav-active-color: #b9b9b9;
+    --cdp-nav-highlight-color: #868686;
   }
 }
 ```

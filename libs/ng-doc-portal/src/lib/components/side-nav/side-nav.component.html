@@ -30,7 +30,9 @@
       </ul>
     </ng-container>
     <ng-container *ngIf="!routeMenu.items">
-      <a [routerLink]="routeMenu.route">{{ routeMenu.title }}</a>
+      <a [routerLink]="routeMenu.route" routerLinkActive="active">
+        {{ routeMenu.title }}
+      </a>
     </ng-container>
   </li>
 </ng-template>

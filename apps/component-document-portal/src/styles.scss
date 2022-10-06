@@ -4,11 +4,15 @@ html {
     --cdp-font-color: white;
     --cdp-background-color: #363636;
     --cdp-border-color: white;
+    --cdp-nav-active-color: #6e6e6e;
+    --cdp-nav-highlight-color: #adadad;
   }
 
   &.light-theme {
     --cdp-font-color: black;
     --cdp-background-color: white;
     --cdp-border-color: black;
+    --cdp-nav-active-color: #b9b9b9;
+    --cdp-nav-highlight-color: #868686;
   }
 }

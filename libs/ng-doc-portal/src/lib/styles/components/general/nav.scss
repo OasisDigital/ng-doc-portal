@@ -47,8 +47,12 @@ cdp-nav {
           display: inline-block;
           color: var(--cdp-font-color);
 
+          &.active {
+            background-color: var(--cdp-nav-active-color);
+          }
+
           &:hover {
-            background-color: #868686;
+            background-color: var(--cdp-nav-highlight-color);
           }
         }
       }
