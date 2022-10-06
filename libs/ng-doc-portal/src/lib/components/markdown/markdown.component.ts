@@ -7,7 +7,6 @@ import { lastValueFrom } from 'rxjs';
 @Component({
   selector: 'cdp-markdown',
   template: `<div [innerHTML]="parsedHtml"></div>`,
-  styleUrls: ['./markdown.component.scss'],
 })
 export class MarkdownComponent {
   parsedHtml: SafeHtml | undefined;

@@ -24,7 +24,6 @@ interface PlaygroundControl {
 @Component({
   selector: 'cdp-playground',
   templateUrl: './component-playground.component.html',
-  styleUrls: ['./component-playground.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ComponentPlaygroundComponent implements OnDestroy {

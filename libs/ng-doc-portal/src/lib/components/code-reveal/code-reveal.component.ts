@@ -25,7 +25,6 @@ import {
 @Component({
   selector: 'cdp-code-reveal',
   templateUrl: './code-reveal.component.html',
-  styleUrls: ['./code-reveal.component.scss'],
 })
 export class CodeRevealComponent implements AfterViewInit, OnDestroy {
   @Input() language = 'html';

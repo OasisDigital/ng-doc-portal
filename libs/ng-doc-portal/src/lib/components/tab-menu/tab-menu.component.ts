@@ -14,7 +14,6 @@ import { TabItemComponent } from '../tab-item/tab-item.component';
 @Component({
   selector: 'cdp-tab-menu',
   templateUrl: './tab-menu.component.html',
-  styleUrls: ['./tab-menu.component.scss'],
 })
 export class TabMenuComponent implements AfterViewInit, OnDestroy {
   @ContentChildren(TabItemComponent) tabMenuItems: QueryList<TabItemComponent> =

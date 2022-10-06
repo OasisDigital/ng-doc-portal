@@ -14,9 +14,8 @@ cdp-tab-menu {
 
     div {
       cursor: pointer;
-      padding: 10px;
-
-      font-size: 17px;
+      padding: 8px;
+      font-size: 20px;
 
       &.highlight {
         border-bottom: 2px solid var(--cdp-border-color);

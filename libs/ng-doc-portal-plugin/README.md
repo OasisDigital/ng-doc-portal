@@ -290,6 +290,32 @@ html {
 }
 ```
 
+## Custom Title
+
+By default we setup a Title for the UI in the top left corner. This will have the default text of 'Doc Portal'.
+
+If you want to set a custom title you may do so by providing the `cdpProvideTitle` function in the root module of the doc portal application.
+
+This function takes in either a plain string value or a custom Component class. If you provide a custom component class you will need to make sure the content fits inside a height of 40px.
+
+Example of custom plain string title:
+
+```ts
+providers: [
+  // Add the below method call to your `providers` list
+  cdpProvideTitle('My Custom Title'),
+];
+```
+
+Example of custom component title:
+
+```ts
+providers: [
+  // Add the below method call to your `providers` list
+  cdpProvideTitle(MyCustomTitleComponent),
+];
+```
+
 ## Ng Doc Portal's Component Library
 
 The `ng-doc-portal` package ships with a small component-library that will help you document your component and display this information.

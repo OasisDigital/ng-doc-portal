@@ -8,7 +8,6 @@ import {
 @Component({
   selector: 'cdp-nav',
   templateUrl: './side-nav.component.html',
-  styleUrls: ['./side-nav.component.scss'],
 })
 export class SideNavComponent {
   @Input() set configs(value: DocConfigRecord) {

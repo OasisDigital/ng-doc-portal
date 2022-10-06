@@ -8,7 +8,15 @@ cdp-nav {
     height: 100%;
     display: grid;
     overflow: auto;
-    grid-template-rows: max-content 1fr;
+    grid-template-rows: max-content max-content 1fr;
+
+    .title {
+      height: 40px;
+      text-align: center;
+      display: grid;
+      place-items: center;
+      border-bottom: 2px solid var(--cdp-border-color);
+    }
 
     .filter-input {
       width: calc(100% - 10px);

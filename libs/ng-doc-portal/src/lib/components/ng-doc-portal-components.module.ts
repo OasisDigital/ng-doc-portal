@@ -12,6 +12,7 @@ import { MarkdownComponent } from './markdown/markdown.component';
 import { SideNavComponent } from './side-nav/side-nav.component';
 import { TabItemComponent } from './tab-item/tab-item.component';
 import { TabMenuComponent } from './tab-menu/tab-menu.component';
+import { TitleComponent } from './title/title.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 
 @NgModule({
@@ -31,6 +32,7 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
     MarkdownComponent,
     EmbedIframeComponent,
     ToolbarComponent,
+    TitleComponent,
   ],
   exports: [
     TabMenuComponent,
@@ -41,6 +43,7 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
     EmbedIframeComponent,
     ToolbarComponent,
     ComponentPlaygroundModule,
+    TitleComponent,
   ],
 })
 export class NgDocPortalComponentsModule {}

@@ -13,7 +13,7 @@ import {
   CDP_THEME_OPTIONS_TOKEN,
   ThemeOption,
   THEME_KEY,
-} from './toolbar-tokens';
+} from './toolbar-token';
 
 @Component({
   selector: 'cdp-toolbar',
