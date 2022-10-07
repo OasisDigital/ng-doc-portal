@@ -7,3 +7,7 @@
     {{ themeOption.display }}
   </option>
 </select>
+<ng-container
+  *ngFor="let plugin of plugins"
+  [ngComponentOutlet]="plugin"
+></ng-container>

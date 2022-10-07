@@ -4,23 +4,27 @@ import {
   Component,
   ElementRef,
   Inject,
+  OnDestroy,
   Optional,
+  Type,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { concat, merge, of, pairwise } from 'rxjs';
 
 import {
   CDP_THEME_OPTIONS_TOKEN,
+  CDP_TOOLBAR_PLUGINS_TOKEN,
   ThemeOption,
   THEME_KEY,
-} from './toolbar-token';
+} from './toolbar-tokens';
 
 @Component({
   selector: 'cdp-toolbar',
   templateUrl: './toolbar.component.html',
 })
-export class ToolbarComponent {
+export class ToolbarComponent implements OnDestroy {
   themeControl = new FormControl('', { nonNullable: true });
+  resizeObserver: ResizeObserver;
 
   public get hasChildElements() {
     this.cdr.detectChanges();
@@ -28,9 +32,12 @@ export class ToolbarComponent {
   }
 
   constructor(
-    private ref: ElementRef,
+    private ref: ElementRef<HTMLElement>,
     private cdr: ChangeDetectorRef,
     @Inject(DOCUMENT) document: Document,
+    @Optional()
+    @Inject(CDP_TOOLBAR_PLUGINS_TOKEN)
+    public plugins?: Type<any>[],
     @Optional()
     @Inject(CDP_THEME_OPTIONS_TOKEN)
     public themeOptions?: ThemeOption[]
@@ -76,5 +83,23 @@ export class ToolbarComponent {
           }
         });
     }
+
+    this.resizeObserver = new ResizeObserver(() =>
+      setTimeout(() => this.setOverflowingClass(), 100)
+    );
+    this.resizeObserver.observe(this.ref.nativeElement);
+  }
+
+  setOverflowingClass() {
+    const element = this.ref.nativeElement;
+    if (element.scrollWidth > element.offsetWidth) {
+      element.classList.add('overflowing');
+    } else {
+      element.classList.remove('overflowing');
+    }
+  }
+
+  ngOnDestroy() {
+    this.resizeObserver.disconnect();
   }
 }

@@ -2,7 +2,7 @@
 
 The `@oasisdigital/ng-doc-portal-plugin` package allows you to create your own component documentation portal natively in Angular. This system makes use of the latest features of Angular (stand-alone components and lazy loading components) to provide an ergonomic development experience for documenting your angular components. Everything is built natively in angular so there are no hoops to jump through or different libraries/frameworks/syntaxes to learn!
 
-This package is meant to be used in tangent with the `@oasisdigital/ng-doc-portal` package inside of an Nx Workspace.
+> This package is meant to be used in tangent with the `@oasisdigital/ng-doc-portal` package inside of an Nx Workspace.
 
 ## Installation
 
@@ -30,11 +30,13 @@ By default the newly generated application will come with one example doc page n
 
 To start serving your new application you can run `nx cdp-serve {name-of-application}`.
 
-To build your application you can run `nx cdp-serve {name-of-application}`.
+To build your application you can run `nx cdp-build {name-of-application}`.
+
+> This is using the normal angular serve/build underneath, but the `cdp-*` commands also do some pre-processing beforehand for your document page files.
 
 ## Configuring Your `ng-doc-portal` Application
 
-By default their will be a `ng-doc-portal-config.json` at the root of the your generated `ng-doc-portal` application. This file allows you to set all the top-level configuration in one spot.
+By default there will be a `ng-doc-portal-config.json` at the root of the your generated `ng-doc-portal` application. This file allows you to set all the top-level configuration in one spot.
 
 ### Page Globbing
 
@@ -77,7 +79,7 @@ More examples below:
 
 You can add a prefixed group to any glob pattern object by adding the `titlePrefix` property. This will automatically prefix the globbed pages with the group in the side navigation system.
 
-This will not overwrite any groups you can explicitly defined in the page's title property. It will only prefix the title.
+> This will not overwrite any groups you explicitly defined in the page's title property. It will only prefix the title.
 
 ```json
 {
@@ -96,7 +98,7 @@ This will not overwrite any groups you can explicitly defined in the page's titl
 
 ## Adding Your Own Doc Page
 
-In principle you can add your own doc pages anywhere inside the Nx Workspace. Though you will possibly need to update your globbing configuration.
+In principle you can add your own doc pages anywhere inside the Nx Workspace. Although you will possibly need to update your globbing configuration.
 
 To create a new doc page you can either make use of this plugins generator with the following command
 `nx g @oasisdigital/ng-doc-portal-plugin:doc-page` or manually create your own angular component file with the correct file extension.
@@ -296,7 +298,7 @@ By default we setup a Title for the UI in the top left corner. This will have th
 
 If you want to set a custom title you may do so by providing the `cdpProvideTitle` function in the root module of the doc portal application.
 
-This function takes in either a plain string value or a custom Component class. If you provide a custom component class you will need to make sure the content fits inside a height of 40px.
+This function takes in either a plain string value or a custom Component class. If you provide a custom component class you will need to make sure the content fits inside a height of 48px.
 
 Example of custom plain string title:
 
@@ -315,6 +317,21 @@ providers: [
   cdpProvideTitle(MyCustomTitleComponent),
 ];
 ```
+
+## Custom Toolbar Plugins
+
+This system allows you to insert your own custom components into the doc portal's main toolbar/action bar. If you make use of the doc portal theming plugin this is the same toolbar it shows up in.
+
+In order to provide your components you can setup the below code in your `app.modules.ts` providers:
+
+```ts
+providers: [
+  // Add the below method call to your `providers` list
+  cdpProvideToolbarPlugins([MyCustomPluginComponent]),
+];
+```
+
+The `cdpProvideToolbarPlugins` takes in an array of components as it's argument. These components will need to fit in a default height of 40-48px (depending on if there is horizontal overflow or not). The width of the component is not limited.
 
 ## Ng Doc Portal's Component Library
 
