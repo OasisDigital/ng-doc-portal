@@ -1,4 +1,3 @@
-import { DOCUMENT } from '@angular/common';
 import {
   ChangeDetectorRef,
   Component,
@@ -9,22 +8,21 @@ import {
   Type,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { concat, merge, of, pairwise } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 
-import {
-  CDP_THEME_OPTIONS_TOKEN,
-  CDP_TOOLBAR_PLUGINS_TOKEN,
-  ThemeOption,
-  THEME_KEY,
-} from './toolbar-tokens';
+import { ThemeService } from '../../services/theme-service';
+import { CDP_THEME_OPTIONS_TOKEN, ThemeOption } from '../../services/tokens';
+
+import { CDP_TOOLBAR_PLUGINS_TOKEN } from './toolbar-tokens';
 
 @Component({
   selector: 'cdp-toolbar',
   templateUrl: './toolbar.component.html',
 })
 export class ToolbarComponent implements OnDestroy {
-  themeControl = new FormControl('', { nonNullable: true });
+  themeControl: FormControl<string>;
   resizeObserver: ResizeObserver;
+  destroy = new Subject<void>();
 
   public get hasChildElements() {
     this.cdr.detectChanges();
@@ -34,7 +32,7 @@ export class ToolbarComponent implements OnDestroy {
   constructor(
     private ref: ElementRef<HTMLElement>,
     private cdr: ChangeDetectorRef,
-    @Inject(DOCUMENT) document: Document,
+    private themeService: ThemeService,
     @Optional()
     @Inject(CDP_TOOLBAR_PLUGINS_TOKEN)
     public plugins?: Type<any>[],
@@ -42,47 +40,19 @@ export class ToolbarComponent implements OnDestroy {
     @Inject(CDP_THEME_OPTIONS_TOKEN)
     public themeOptions?: ThemeOption[]
   ) {
-    if (this.themeOptions?.length) {
-      let defaultThemeValue = this.themeOptions.find(
-        (theme) => theme.default
-      )?.value;
-      if (!defaultThemeValue) {
-        defaultThemeValue = this.themeOptions[0].value;
-      }
-
-      try {
-        const storedTheme = localStorage.getItem(THEME_KEY);
-        if (storedTheme) {
-          defaultThemeValue = storedTheme;
-        }
-      } catch (e) {
-        // Do nothing
-      }
-
-      this.themeControl.patchValue(defaultThemeValue);
-
-      merge(
-        concat(of(null), of(defaultThemeValue)),
-        this.themeControl.valueChanges
-      )
-        .pipe(pairwise())
-        .subscribe(([oldTheme, newTheme]) => {
-          if (document.documentElement) {
-            if (oldTheme) {
-              document.documentElement.classList.remove(oldTheme);
-            }
-            if (newTheme) {
-              document.documentElement.classList.add(newTheme);
-
-              try {
-                localStorage.setItem(THEME_KEY, newTheme);
-              } catch (e) {
-                // Do nothing
-              }
-            }
-          }
-        });
-    }
+    this.themeControl = new FormControl(this.themeService.getTheme() ?? '', {
+      nonNullable: true,
+    });
+    this.themeService.theme
+      .pipe(takeUntil(this.destroy))
+      .subscribe((theme) =>
+        this.themeControl.setValue(theme, { emitEvent: false })
+      );
+    this.themeControl.valueChanges
+      .pipe(takeUntil(this.destroy))
+      .subscribe((theme) => {
+        this.themeService.setTheme(theme);
+      });
 
     this.resizeObserver = new ResizeObserver(() =>
       setTimeout(() => this.setOverflowingClass(), 100)
@@ -100,6 +70,8 @@ export class ToolbarComponent implements OnDestroy {
   }
 
   ngOnDestroy() {
+    this.destroy.next();
+    this.destroy.complete();
     this.resizeObserver.disconnect();
   }
 }

@@ -292,6 +292,22 @@ html {
 }
 ```
 
+### Accessing and Setting Theme Value Manually
+
+The theme system has an exposed `ThemeService` that you can access at any time via Dependency Injection to fetch the current theme value synchronously or asynchronously. You can also update the theme value at any time as well.
+
+The API for the `ThemeService` is below:
+
+```ts
+theme: Observable<string>;
+
+themeOptions: ThemeOption[] | undefined;
+
+getTheme(): string | undefined;
+
+setTheme(newTheme: string): void;
+```
+
 ## Custom Title
 
 By default we setup a Title for the UI in the top left corner. This will have the default text of 'Doc Portal'.
