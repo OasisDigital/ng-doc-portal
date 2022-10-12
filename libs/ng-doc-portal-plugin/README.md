@@ -253,10 +253,17 @@ interface ThemeOption {
   display: string;
   value: string;
   default?: boolean;
+  hljsTheme?: string;
 }
 ```
 
+The `display` property is used for the text in the select dropdown option that is created.
+
+The `value` is both used for the select dropdown option and is the class that will be applied to the `<html>` element for the application.
+
 The `default` property will set the theme as the default selected theme (if there isn't already one). Otherwise the first theme in the list will be the default.
+
+The `hljsTheme` property allows for custom css sheets to be applied to the HLJS syntax highlighting system for the `code-snippet` component. The value should be an href to a valid css HLJS theme css file. An example would be: `assets/github.css`. We recommend placing the css file in your Doc Portal's assets folder for easy linking. A list of available themes (or examples to make your own) can be found here: https://github.com/highlightjs/highlight.js/tree/main/src/styles
 
 ### Syncing Ng Doc Portal Application With Your Theme Styles
 
@@ -394,19 +401,53 @@ Example below:
 A potential url for the above template could look like:
 `/general-button?tab=overview`
 
-### Code Reveal
+### Code Snippet
 
-The `<cdp-code-reveal>` component allows you to have syntax highlighting on a code snippet and allows for copying the code snippet to your clipboard. You will need to specify the language the code uses in the `lang` property.
+The `<cdp-code-snippet>` component allows you to display syntax highlighted code with an option to easily get the displayed code onto your clipboard.
 
-Example below:
+There are three different approaches to displaying your code with syntax highlighting.
+
+1. `<cdp-code-snippet>` with `<textarea></textarea>` inside it housing your code
 
 ```html
-<cdp-code-reveal lang="html">
-  <button>Example Buttons</button>
-</cdp-code-reveal>
+<cdp-code-snippet>
+  <textarea>
+    <!-- Your Code To Display Here -->
+  </textarea>
+</cdp-code-snippet>
 ```
 
-As an additional note the `<cdp-code-reveal>` component also will parse the code snippet for proper syntax. If the code is incorrect you will see a "build" error where the code snippet would normally be.
+2. `<cdp-code-snippet>` with `code` input binding assigned to string housing your code
+
+```html
+<cdp-code-snippet [code]="yourCodeStringVariable"></cdp-code-snippet>
+```
+
+3. `cdpCodeSnippet` directive on a `<textarea></textarea>` element housing your code
+
+```html
+<textarea cdpCodeSnippet>
+  <!-- Your Code To Display Here -->
+</textarea>
+```
+
+#### Setting the Code Language
+
+By default the code "language" is set to HTML/Angular template. If you want to override this provide a value for the `lang` input attribute. The options we support are currently: `'html' | 'typescript' | 'css' | 'scss'`. `'html'` is treated the same as an angular template would be.
+
+```html
+<cdp-code-snippet lang="typescript">
+  <textarea>
+    function myFunction() {
+      console.log('Hello World!');
+    }
+  </textarea>
+</cdp-code-snippet>
+```
+
+#### Angular Template Bindings Helper
+
+If you are displaying Angular template code with any bindings (inputs, outputs, interpolation) then you will want to add the `ngNonBindable` attribute to your `<cdp-code-snippet>` element or your `<textarea>` with the `cdpCodeSnippet` directive on it.
 
 ### Iframe Embed
 

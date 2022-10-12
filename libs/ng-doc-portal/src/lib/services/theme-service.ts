@@ -1,5 +1,6 @@
 import { DOCUMENT } from '@angular/common';
 import { Inject, Injectable, Optional } from '@angular/core';
+import { HighlightLoader } from 'ngx-highlightjs';
 import { ReplaySubject } from 'rxjs';
 
 import { CDP_THEME_OPTIONS_TOKEN, ThemeOption, THEME_KEY } from './tokens';
@@ -11,6 +12,7 @@ export class ThemeService {
   theme = this._theme.asObservable();
 
   constructor(
+    private hljsLoader: HighlightLoader,
     @Inject(DOCUMENT) private document: Document,
     @Optional()
     @Inject(CDP_THEME_OPTIONS_TOKEN)
@@ -54,6 +56,17 @@ export class ThemeService {
         }
 
         this.currentTheme = newTheme;
+      }
+    }
+
+    const hljsTheme = this.themeOptions?.find(
+      (themeOption) => themeOption.value === newTheme
+    )?.hljsTheme;
+    if (hljsTheme) {
+      if ((this.hljsLoader as any)._themeLinkElement) {
+        this.hljsLoader.setTheme(hljsTheme);
+      } else {
+        (this.hljsLoader as any).loadTheme(hljsTheme);
       }
     }
 

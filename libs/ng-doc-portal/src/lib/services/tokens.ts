@@ -8,6 +8,7 @@ export interface ThemeOption {
   display: string;
   value: string;
   default?: boolean;
+  hljsTheme?: string;
 }
 
 export function cdpProvideThemeOptions(options: ThemeOption[]): Provider {

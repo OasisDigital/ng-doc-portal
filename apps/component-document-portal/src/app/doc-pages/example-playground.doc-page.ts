@@ -15,7 +15,23 @@ import { TestComponent } from './test.component';
     <cdp-tab-menu>
       <cdp-tab-item title="Overview">
         <h1>Playground Test Component</h1>
-        <p></p>
+        <cdp-code-snippet lang="typescript">
+          <textarea>
+            function() {
+              asd;
+            }
+          </textarea
+          >
+        </cdp-code-snippet>
+        <cdp-code-snippet ngNonBindable>
+          <textarea>
+            <cdp-tab-item (click) = "doSomething()" *ngFor="let a of b">
+              {{ asdasd }}
+            </cdp-tab-item>
+          </textarea
+          >
+        </cdp-code-snippet>
+        <cdp-code-snippet [code]="snippet"></cdp-code-snippet>
       </cdp-tab-item>
       <cdp-tab-item title="Playground">
         <cdp-playground [config]="playgroundComponentConfig"></cdp-playground>
@@ -24,6 +40,11 @@ import { TestComponent } from './test.component';
   `,
 })
 export class ExamplePlaygroundPageComponent {
+  snippet = `
+    <cdp-tab-item (click) = "doSomething()" *ngFor="let a of b">
+      {{ asdasd }}
+    </cdp-tab-item>
+  `;
   playgroundComponentConfig: ComponentPlaygroundConfig = {
     component: TestComponent,
     inputs: [

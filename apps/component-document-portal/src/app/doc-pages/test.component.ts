@@ -1,6 +1,8 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
+  standalone: true,
+  selector: 'app-test',
   template: `
     <p>The Text: {{ text }}</p>
     <p>pet: {{ pet }}</p>

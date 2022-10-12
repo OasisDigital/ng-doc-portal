@@ -20,8 +20,16 @@ import { compilerMode, docPageConfigs } from './doc-page-configs';
   ],
   providers: [
     cdpProvideThemeOptions([
-      { value: 'light-theme', display: 'Light Theme' },
-      { value: 'dark-theme', display: 'Dark Theme' },
+      {
+        value: 'light-theme',
+        display: 'Light Theme',
+        hljsTheme: 'assets/github.css',
+      },
+      {
+        value: 'dark-theme',
+        display: 'Dark Theme',
+        hljsTheme: 'assets/github-dark-dimmed.css',
+      },
     ]),
     cdpProvideTitle(CustomTitleComponent),
     cdpProvideToolbarPlugins([CustomPluginComponent]),

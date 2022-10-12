@@ -11,11 +11,12 @@ import {
     <h1>Input Component Document Page</h1>
     <input placeholder="Example Input" />
 
-    <cdp-code-reveal lang="html">
+    <textarea cdpCodeSnippet ngNonBindable>
       <label>Hello World</label>
       <input placeholder="Example Input" />
       <button>Example Button</button>
-    </cdp-code-reveal>
+    </textarea
+    >
   `,
 })
 export class InputDocumentPageComponent {}

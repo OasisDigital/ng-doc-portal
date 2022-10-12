@@ -254,12 +254,10 @@ import {
           tortor pretium viverra suspendisse potenti.
         </p>
       </cdp-tab-item>
-      <cdp-tab-item title="Examples">
-        <button>Example Button</button>
-        <cdp-code-reveal lang="html">
-          <button>Example Buttons</button>
-        </cdp-code-reveal>
-      </cdp-tab-item>
+      <textarea cdpCodeSnippet>
+        <button>Example Buttons</button>
+      </textarea
+      >
     </cdp-tab-menu>
   `,
 })

@@ -5,7 +5,8 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { HighlightModule } from 'ngx-highlightjs';
 
-import { CodeRevealComponent } from './code-reveal/code-reveal.component';
+import { CodeSnippetComponent } from './code-snippet/code-snippet.component';
+import { CodeSnippetDirective } from './code-snippet/code-snippet.directive';
 import { ComponentPlaygroundModule } from './component-playground/component-playground.module';
 import { EmbedIframeComponent } from './embed-iframe/embed-iframe.component';
 import { MarkdownComponent } from './markdown/markdown.component';
@@ -27,23 +28,25 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
   declarations: [
     TabMenuComponent,
     TabItemComponent,
-    CodeRevealComponent,
+    CodeSnippetComponent,
     SideNavComponent,
     MarkdownComponent,
     EmbedIframeComponent,
     ToolbarComponent,
     TitleComponent,
+    CodeSnippetDirective,
   ],
   exports: [
     TabMenuComponent,
     TabItemComponent,
-    CodeRevealComponent,
+    CodeSnippetComponent,
     SideNavComponent,
     MarkdownComponent,
     EmbedIframeComponent,
     ToolbarComponent,
     ComponentPlaygroundModule,
     TitleComponent,
+    CodeSnippetDirective,
   ],
 })
 export class NgDocPortalComponentsModule {}

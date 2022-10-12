@@ -1,4 +1,12 @@
-cdp-code-reveal {
+@import '~highlight.js/styles/github.css';
+
+cdp-code-snippet {
+  div.hljs {
+    padding: 1em;
+    width: max-content;
+    word-wrap: break-word;
+  }
+
   pre {
     display: flex;
     margin-top: 0;
@@ -7,7 +15,7 @@ cdp-code-reveal {
     word-wrap: break-word;
     position: relative;
 
-    code {
+    code.hljs {
       flex: 1;
       line-height: 1.5em;
       font-size: 14px;
