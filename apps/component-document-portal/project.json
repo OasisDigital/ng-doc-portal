@@ -4,19 +4,35 @@
   "sourceRoot": "apps/component-document-portal/src",
   "prefix": "component-document-portal",
   "targets": {
-    "cdp-build": {
+    "build": {
       "executor": "@oasisdigital/ng-doc-portal-plugin:build",
       "options": {
         "configFile": "apps/component-document-portal/ng-doc-portal-config.json"
+      },
+      "configurations": {
+        "production": {
+          "ng-config-target": "production"
+        },
+        "configuration": {
+          "ng-config-target": "development"
+        }
       }
     },
-    "cdp-serve": {
+    "serve": {
       "executor": "@oasisdigital/ng-doc-portal-plugin:serve",
       "options": {
         "configFile": "apps/component-document-portal/ng-doc-portal-config.json"
+      },
+      "configurations": {
+        "production": {
+          "ng-config-target": "production"
+        },
+        "configuration": {
+          "ng-config-target": "development"
+        }
       }
     },
-    "build": {
+    "ng-build": {
       "executor": "@angular-devkit/build-angular:browser",
       "outputs": ["{options.outputPath}"],
       "options": {
@@ -57,23 +73,17 @@
       },
       "defaultConfiguration": "production"
     },
-    "serve": {
+    "ng-serve": {
       "executor": "@angular-devkit/build-angular:dev-server",
       "configurations": {
         "production": {
-          "browserTarget": "component-document-portal:build:production"
+          "browserTarget": "component-document-portal:ng-build:production"
         },
         "development": {
-          "browserTarget": "component-document-portal:build:development"
+          "browserTarget": "component-document-portal:ng-build:development"
         }
       },
       "defaultConfiguration": "development"
-    },
-    "extract-i18n": {
-      "executor": "@angular-devkit/build-angular:extract-i18n",
-      "options": {
-        "browserTarget": "component-document-portal:build"
-      }
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",

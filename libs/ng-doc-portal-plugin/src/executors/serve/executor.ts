@@ -2,6 +2,7 @@ import { ExecutorContext, runExecutor } from '@nrwl/devkit';
 import { firstValueFrom, shareReplay, switchMap } from 'rxjs';
 
 import {
+  getAngularConfigTarget,
   getConfigFileLocationFromContext,
   getDocPageConfigsFileLocationFromContext,
 } from '../../util/context';
@@ -10,13 +11,15 @@ import { DocPageConfigsCompiler } from '../compiler/doc-page-configs-compiler';
 import { ServeExecutorSchema } from './schema';
 
 export default async function runServe(
-  _options: ServeExecutorSchema,
+  options: ServeExecutorSchema,
   context: ExecutorContext
 ) {
   // create compiler
-  const configLocation = getConfigFileLocationFromContext(context);
-  const docPageConfigsFileLocation =
-    getDocPageConfigsFileLocationFromContext(context);
+  const configLocation = getConfigFileLocationFromContext(options, context);
+  const docPageConfigsFileLocation = getDocPageConfigsFileLocationFromContext(
+    options,
+    context
+  );
 
   const compiler = new DocPageConfigsCompiler(
     'lazy',
@@ -28,12 +31,18 @@ export default async function runServe(
 
   // Run angular serve executor after first initial event from compiler watcher
 
+  const configuration = getAngularConfigTarget(options, context);
+
   // We let this run and ignore it
   firstValueFrom(
     compilerWatch.pipe(
       switchMap(() =>
         runExecutor(
-          { project: context.projectName ?? '', target: 'serve' },
+          {
+            project: context.projectName ?? '',
+            target: 'ng-serve',
+            configuration,
+          },
           { watch: true },
           context
         )

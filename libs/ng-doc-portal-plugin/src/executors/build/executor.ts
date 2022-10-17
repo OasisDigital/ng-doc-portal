@@ -1,6 +1,7 @@
 import { ExecutorContext, runExecutor } from '@nrwl/devkit';
 
 import {
+  getAngularConfigTarget,
   getConfigFileLocationFromContext,
   getDocPageConfigsFileLocationFromContext,
 } from '../../util/context';
@@ -9,13 +10,15 @@ import { DocPageConfigsCompiler } from '../compiler/doc-page-configs-compiler';
 import { BuildExecutorSchema } from './schema';
 
 export default async function buildExecutor(
-  _options: BuildExecutorSchema,
+  options: BuildExecutorSchema,
   context: ExecutorContext
 ) {
   // create compiler
-  const configLocation = getConfigFileLocationFromContext(context);
-  const docPageConfigsFileLocation =
-    getDocPageConfigsFileLocationFromContext(context);
+  const configLocation = getConfigFileLocationFromContext(options, context);
+  const docPageConfigsFileLocation = getDocPageConfigsFileLocationFromContext(
+    options,
+    context
+  );
 
   const compiler = new DocPageConfigsCompiler(
     'lazy',
@@ -31,9 +34,11 @@ export default async function buildExecutor(
     return { success: false };
   }
 
+  const configuration = getAngularConfigTarget(options, context);
+
   // run ng build
   const result = await runExecutor(
-    { project: context.projectName ?? '', target: 'build' },
+    { project: context.projectName ?? '', target: 'ng-build', configuration },
     {},
     context
   );

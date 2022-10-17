@@ -1,1 +1,3 @@
-export interface BuildExecutorSchema {} // eslint-disable-line
+import { SchemaBase } from '../../util/schema-base';
+
+export type BuildExecutorSchema = SchemaBase;

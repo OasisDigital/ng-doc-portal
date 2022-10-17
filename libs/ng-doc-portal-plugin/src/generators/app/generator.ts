@@ -88,15 +88,47 @@ function updateProjectExecutors(tree: Tree, options: NormalizedSchema) {
 
     projectConfig.targets = {
       ...projectConfig.targets,
-      ['cdp-build']: {
+      ['ng-build']: { ...projectConfig.targets['build'] },
+      ['ng-serve']: { ...projectConfig.targets['serve'] },
+      ['build']: {
         executor: '@oasisdigital/ng-doc-portal-plugin:build',
         options: targetOptions,
+        configurations: {
+          production: {
+            'ng-config-target': 'production',
+          },
+          configuration: {
+            'ng-config-target': 'development',
+          },
+        },
       },
-      ['cdp-serve']: {
+      ['serve']: {
         executor: '@oasisdigital/ng-doc-portal-plugin:serve',
         options: targetOptions,
+        configurations: {
+          production: {
+            'ng-config-target': 'production',
+          },
+          configuration: {
+            'ng-config-target': 'development',
+          },
+        },
       },
     };
+
+    // Need to replace the default build targets that point to `build` to `ng-build` in `ng-serve`
+    if (projectConfig.targets['ng-serve'].configurations) {
+      Object.keys(projectConfig.targets['ng-serve'].configurations).forEach(
+        (configKey) => {
+          const ngServeTarget = projectConfig.targets?.['ng-serve'] as any;
+          (projectConfig.targets as any)['ng-serve'].configurations[
+            configKey
+          ].browserTarget = ngServeTarget.configurations[
+            configKey
+          ].browserTarget.replace(':build:', ':ng-build:');
+        }
+      );
+    }
 
     updateProjectConfiguration(tree, options.projectName, projectConfig);
   }
@@ -107,6 +139,16 @@ function removeProjectBuildBudgets(tree: Tree, options: NormalizedSchema) {
 
   if (projectConfig.targets) {
     delete projectConfig.targets.build.configurations?.production.budgets;
+
+    updateProjectConfiguration(tree, options.projectName, projectConfig);
+  }
+}
+
+function removeExtractI18N(tree: Tree, options: NormalizedSchema) {
+  const projectConfig = readProjectConfiguration(tree, options.projectName);
+
+  if (projectConfig.targets && projectConfig.targets?.['extract-i18n']) {
+    delete projectConfig.targets['extract-i18n'];
 
     updateProjectConfiguration(tree, options.projectName, projectConfig);
   }
@@ -153,6 +195,7 @@ export default async function (
   updateProjectStyles(tree, normalizedOptions);
   updateProjectExecutors(tree, normalizedOptions);
   removeProjectBuildBudgets(tree, normalizedOptions);
+  removeExtractI18N(tree, normalizedOptions);
   updateGitIgnore(tree);
   await formatFiles(tree);
 }

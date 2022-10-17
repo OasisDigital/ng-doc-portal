@@ -28,11 +28,15 @@ By default the newly generated application will come with one example doc page n
 
 ## Serve/Build `ng-doc-portal` Application
 
-To start serving your new application you can run `nx cdp-serve {name-of-application}`.
+To start serving your new application you can run `nx serve {name-of-application}`.
 
-To build your application you can run `nx cdp-build {name-of-application}`.
+To build your application you can run `nx build {name-of-application}`.
 
-> This is using the normal angular serve/build underneath, but the `cdp-*` commands also do some pre-processing beforehand for your document page files.
+### Adjusting the Angular Build/Serve Configuration Target
+
+The `serve` and `build` commands are runnning the normal Angular serve/build underneath aliased to `ng-serve` and `ng-build` along with our custom compiler.
+
+If you would like to specify which Angular configuration to use for your build/serve commands please adjust the `ng-config-target` property of the `configurations` object in your app's `project.json` build/serve objects.
 
 ## Configuring Your `ng-doc-portal` Application
 
