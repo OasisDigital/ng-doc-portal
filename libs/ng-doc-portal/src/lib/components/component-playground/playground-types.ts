@@ -58,6 +58,7 @@ export interface PlaygroundSelectControlConfig
   extends PlaygroundControlConfigBase {
   type: PlaygroundControlConfigType.Select;
   options: PlaygroundControlOption[];
+  multiple?: boolean;
 }
 
 export interface PlaygroundCheckboxControlConfig
@@ -113,7 +114,23 @@ export type PlaygroundControlConfig =
   | PlaygroundDateTimeControlConfig
   | PlaygroundColorPickerControlConfig;
 
+export interface PlaygroundClassBindingControlConfig {
+  classes: string[];
+  default?: string | string[];
+  multiple?: boolean;
+}
+
+export interface PlaygroundTextContentControlConfig {
+  default: string;
+}
+
 export interface ComponentPlaygroundConfig {
   component: Type<any>;
-  inputs: PlaygroundControlConfig[];
+  textContentBinding?:
+    | string
+    | Node[][]
+    | true
+    | PlaygroundTextContentControlConfig;
+  classBinding?: string | string[] | PlaygroundClassBindingControlConfig;
+  inputs?: PlaygroundControlConfig[];
 }

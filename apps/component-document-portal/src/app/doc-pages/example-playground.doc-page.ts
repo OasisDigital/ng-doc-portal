@@ -47,6 +47,10 @@ export class ExamplePlaygroundPageComponent {
   `;
   playgroundComponentConfig: ComponentPlaygroundConfig = {
     component: TestComponent,
+    classBinding: {
+      classes: ['foo', 'bar', 'baz', 'test', 'test2', 'test3'],
+      multiple: true,
+    },
     inputs: [
       {
         label: 'Text Input',
@@ -59,6 +63,7 @@ export class ExamplePlaygroundPageComponent {
         property: 'pet',
         type: PlaygroundControlConfigType.Select,
         value: 'dog',
+        multiple: true,
         options: [
           {
             display: 'Dog',

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import {
   NgDocPortalComponentsModule,
   DocPageConfig,
+  ComponentPlaygroundConfig,
 } from '@oasisdigital/ng-doc-portal';
 
 @Component({
@@ -14,6 +15,11 @@ import {
         <button>Example Button</button>
 
         <p>The button is used to get actions from the user by click</p>
+
+        <textarea cdpCodeSnippet>
+          <button>Example Buttons</button>
+        </textarea
+        >
 
         <p>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
@@ -254,14 +260,22 @@ import {
           tortor pretium viverra suspendisse potenti.
         </p>
       </cdp-tab-item>
-      <textarea cdpCodeSnippet>
-        <button>Example Buttons</button>
-      </textarea
-      >
+      <cdp-tab-item title="Playground">
+        <cdp-playground [config]="playgroundConfig"></cdp-playground>
+      </cdp-tab-item>
     </cdp-tab-menu>
   `,
 })
-export class ButtonDocumentPageComponent {}
+export class ButtonDocumentPageComponent {
+  playgroundConfig: ComponentPlaygroundConfig = {
+    component: ButtonComponent,
+    textContentBinding: { default: 'Hello World!' },
+    classBinding: {
+      classes: ['foo', 'bar', 'baz', 'test', 'test2', 'test3'],
+      multiple: true,
+    },
+  };
+}
 
 const docPageConfig: DocPageConfig = {
   title: 'General/Button',
@@ -269,3 +283,9 @@ const docPageConfig: DocPageConfig = {
 };
 
 export default docPageConfig;
+
+@Component({
+  selector: 'app-custom-button',
+  template: ` <button><ng-content></ng-content></button> `,
+})
+export class ButtonComponent {}

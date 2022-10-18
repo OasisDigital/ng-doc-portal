@@ -509,7 +509,11 @@ export class ExamplePlaygroundPageComponent {
 <cdp-playground [config]="playgroundComponentConfig"></cdp-playground>
 ```
 
-The config object requires a `component` property to know which component to work with in the playground. After this is set you will need to configure the `inputs` array property to create form fields that hook into your component's input(s).
+The config object requires a `component` property to know which component to work with in the playground.
+
+### Input/Property Binding
+
+By configuring the `inputs` property of your playground config object you can have form fields that hook into your component's input(s) or other class properties.
 
 There is currently support for the following form controls:
 
@@ -570,5 +574,115 @@ export class ExamplePlaygroundPageComponent {
       },
     ],
   };
+}
+```
+
+### Text Content Binding
+
+If you add the `textContentBinding` property to your playground config object you can allow for projecting strings or other native html elements into your component's `ng-content`.
+
+#### Static Text
+
+```ts
+{
+  ...
+  textContentBinding: 'My Text Content!'
+}
+```
+
+#### Dynamic Text Form Field
+
+No default value:
+
+```ts
+{
+  ...
+  textContentBinding: true
+}
+```
+
+Has default value:
+
+```ts
+{
+  ...
+  textContentBinding: { default: 'Hello World!' }
+}
+```
+
+#### HTML Node Binding
+
+```ts
+const node = document.createElement('div');
+
+{
+  ...
+  textContentBinding: [[node]]
+}
+```
+
+### Class Binding
+
+If you add the `classBinding` property to your playground config object you can have static or dynamic classes added to your component element.
+
+#### Static Class
+
+You can either provide a string (with space separated classes) or an array of string classes.
+
+Examples below:
+
+```ts
+{
+  ...
+  classBinding: 'my-class'
+}
+```
+
+```ts
+{
+  ...
+  classBinding: 'foo bar'
+}
+```
+
+```ts
+{
+  ...
+  classBinding: ['foo', 'bar']
+}
+```
+
+### Dynamic Class Field
+
+You will have to provide the class list for the select field. You can optionally set a default value with a `string` or `string[]` and/or allow for multiple class selections with the `multiple` property.
+
+Examples below:
+
+```ts
+{
+  ...
+  classBinding: {
+    classes: ['foo', 'bar']
+  }
+}
+```
+
+```ts
+{
+  ...
+  classBinding: {
+    classes: ['foo', 'bar'],
+    default: 'bar'
+  }
+}
+```
+
+```ts
+{
+  ...
+  classBinding: {
+    classes: ['foo', 'bar'],
+    multiselect: true
+  }
 }
 ```

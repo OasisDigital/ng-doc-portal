@@ -1,15 +1,46 @@
 <div class="component-view">
   <div class="component-display">
     <ng-container
-      *ngIf="component"
-      [cdpRenderComponent]="component"
-      (componentRefCreated)="setupComponentInputValueChanges($event)"
+      *ngIf="renderComponentConfig"
+      [cdpRenderComponent]="renderComponentConfig"
+      (componentRefCreated)="initializeComponentBindings($event)"
     ></ng-container>
   </div>
 </div>
-<div class="form-view">
+<div
+  class="form-view"
+  *ngIf="playgroundControls.length > 0 || classBindingControl"
+>
+  <div class="form-control" *ngIf="textContentControl">
+    <label for="text-content-binding">Text Content:</label>
+    <input id="text-content-binding" [formControl]="textContentControl" />
+  </div>
+  <div
+    class="form-control class-binding-control"
+    *ngIf="classBindingControl && classBindingControlConfig"
+  >
+    <label for="class-binding">Class Binding:</label>
+    <select
+      id="class-binding"
+      [formControl]="classBindingControl"
+      [multiple]="classBindingControlConfig.multiple"
+      [size]="
+        classBindingControlConfig.multiple
+          ? clamp(classBindingControlConfig.classes.length, 5)
+          : undefined
+      "
+    >
+      <option
+        *ngFor="let class of classBindingControlConfig.classes"
+        [value]="class"
+      >
+        {{ class }}
+      </option>
+    </select>
+  </div>
   <div
     class="form-control"
+    [ngClass]="'playground-' + playgroundControl.config.type + '-control'"
     *ngFor="let playgroundControl of playgroundControls"
   >
     <ng-container
@@ -76,6 +107,12 @@
       <select
         [id]="playgroundControl.config.property"
         [formControl]="playgroundControl.formControl"
+        [multiple]="playgroundControl.config.multiple"
+        [size]="
+          playgroundControl.config.multiple
+            ? clamp(playgroundControl.config.options.length, 5)
+            : undefined
+        "
       >
         <option
           *ngFor="let option of playgroundControl.config.options"

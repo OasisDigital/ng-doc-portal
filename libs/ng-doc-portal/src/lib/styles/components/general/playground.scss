@@ -28,10 +28,26 @@ cdp-playground {
     row-gap: 20px;
 
     .form-control {
+      width: 100%;
+
+      * {
+        font-size: 18px;
+      }
+
       label {
+        font-size: 20px;
+        font-weight: bold;
         margin-right: 10px;
       }
-      width: 100%;
+
+      select[multiple] {
+        overflow-y: auto;
+      }
+
+      &.class-binding-control,
+      &.playground-select-control {
+        display: flex;
+      }
     }
   }
 }
