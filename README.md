@@ -1,71 +1,40 @@
-# Component Document Portal
+# Angular Document Portal Project
 
-Component document portal proof of concept written in Angular 13 with nx workspace wrapper.
+This is the root of the nx workspace containing the two packages:
 
-## Document Page Files
+- [`ng-doc-portal`](./libs/ng-doc-portal/README.md)
+- [`ng-doc-portal-plugin`](./libs/ng-doc-portal-plugin/README.md)
 
-A sample `.doc-page.ts` file is displayed below.
+## [`ng-doc-portal`](./libs/ng-doc-portal/README.md) Overview
 
-```ts
-import { Component, NgModule } from '@angular/core';
+This part of the repo is dedicated to the angular application that runs and displays the document pages.
 
-import { DocPageConfig } from '@doc-page-config/types';
+This contains the component set we provide, root module/routing system, DI configuration system and css styling.
 
-@Component({
-  template: `
-    <h1>Button Component Document Page</h1>
-    <button>Example Button</button>
-  `,
-})
-export class ButtonDocumentPageComponent {}
+## [`ng-doc-portal-plugin`](./libs/ng-doc-portal-plugin/README.md) Overview
 
-// This can probably go away when Optional Modules is in Angular
-@NgModule({
-  declarations: [],
-  imports: [],
-  providers: [],
-})
-class DocumentPageModule {}
+This part of the repo contains the `nx` generators/executors we have developed.
 
-const docPageConfig: DocPageConfig = {
-  title: 'Group/Button',
-  docPage: ButtonDocumentPageComponent,
-};
+The executors are responsible for running our custom compiler along with a normal angular serve/build.
 
-export default docPageConfig;
-```
+The generators are responsible for creating a default `ng-doc-portal` configured angular application or generating a single `.doc-page` file.
 
-## Possible Improvements to the Document Page Files
+## Getting Setup
 
-- Once Angular supports Optional Modules, the `ngModule` export could be removed from the config; letting the component itself handle the typical module declarations, imports, and providers.
+Run `npm install` to get the project setup.
 
-## Document Page Config Compiler
+## Running Example Application
 
-The compiler can be run with `node doc-page-configs-compiler.js` or `npm run gen:doc-page-configs`.
+Run `npm start` to run the example `ng-doc-portal` application.
 
-There are optional `watch` and `silent` modes provided as environment or command line arguments.
+## Building Example Application
 
-`node doc-page-configs-compiler.js --watch` will run the compiler in "watch" mode. This can also be run with `npm run gen:doc-page-configs:watch`.
+Run `npm build` to build the example `ng-doc-portal` application.
 
-`node doc-page-configs-compiler.js --silent` will disable all logging to the console. This can also be run with `npm run gen:doc-page-configs:silent`.
+## Publishing
 
-## Running the Component Document Portal Application
+Adjust the version in both packages' `package.json` file.
 
-You can either run `npm run gen:doc-page-configs:watch` and `npm run serve:cdp` in different terminals or run `npm run start:cdp`. The `npm run start:cdp` command will run the Document Page Config Compiler in silent mode to not conflict with the angular compiler logging.
+Run `npm build:packages` to build the compiled output.
 
-Any changes to the `.doc-page.ts` files will result in two compilation loops of the Angular application.
-
-## Possible Improvements to the Compiler
-
-This was made in a span of mostly 1 day. There could be better processes for consuming the `.doc-page.ts` files. I attempted to write the compiler in TS, but the way I was compiling my TS it was complaining about es module imports in the `.doc-page.ts` files with the Angular imports when doing a dynamic `import()` of the file from the globbing.
-
-Because of this I just opted to write the compiler in straight nodeJS and do a work around for the above. The compiler just reads the raw TS code from the file and transpiles it to a raw JS string. This raw JS string is then saved to a temporary `.mjs` file, dynamically imported into the compiler runtime, and then the `.mjs` file is deleted.
-
-## Generating Document Pages for Performance Testing
-
-To generate large numbers of Document Pages you can do `npm run gen:perf-testing`. If you want to modify the amount of files generate (default 100) you can do `npm run gen:perf-testing -- --amount {amount here}`.
-
-Example of generating 1000 files:
-`npm run gen:perf-testing -- --amount 1000`
-
-Which took ~6000ms (rounded up to near 1000ms) to initially generate the config list file on a solid grade desktop machine. The watch recompilations average anywhere from 10-50ms (after the 500ms debounce of potential multiple file changes).
+Open up the two dist folders for the packages and run `npm publish`.
