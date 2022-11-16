@@ -142,13 +142,10 @@ export class DocPageConfigsCompiler {
     this.log(chalk.blue('Searching for component document page files...'));
     const startTime = Date.now();
 
-    const patternStrings = patterns.map((strOrGlobPattern) =>
-      typeof strOrGlobPattern === 'string'
-        ? strOrGlobPattern
-        : strOrGlobPattern.pattern
-    );
+    const patternStrings = convertPatternOrGlobPatternArray(patterns);
 
     // TODO: Might be good to use `objectMode` in future for title mapping
+    // Can pair with `glob-to-regexp` package to check objectMode path to glob pattern
     return from(
       fg(patternStrings, {
         unique: true,
@@ -174,31 +171,23 @@ export class DocPageConfigsCompiler {
   private buildWatcher(
     patterns: (string | GlobPattern)[]
   ): Observable<RawFileEvent> {
-    return merge(
-      ...patterns.map(
-        (globPattern) =>
-          new Observable<RawFileEvent>((observer) => {
-            const pattern =
-              typeof globPattern === 'string'
-                ? globPattern
-                : globPattern.pattern;
+    return new Observable<RawFileEvent>((observer) => {
+      const patternStrings = convertPatternOrGlobPatternArray(patterns);
 
-            const watch = chokidar
-              .watch(pattern, {
-                ignored: 'node_modules',
-                ignoreInitial: true,
-              })
-              .on('all', async (event, rawFilePath) => {
-                observer.next(this.buildRawFileEvent(rawFilePath, event));
-              });
+      const watch = chokidar
+        .watch(patternStrings, {
+          ignored: 'node_modules',
+          ignoreInitial: true,
+        })
+        .on('all', async (event, rawFilePath) => {
+          observer.next(this.buildRawFileEvent(rawFilePath, event));
+        });
 
-            return () => {
-              watch.unwatch(pattern);
-              watch.close();
-            };
-          })
-      )
-    );
+      return () => {
+        watch.unwatch(patternStrings);
+        watch.close();
+      };
+    });
   }
 
   /**
@@ -321,4 +310,12 @@ export class DocPageConfigsCompiler {
       console.log(message);
     }
   }
+}
+
+function convertPatternOrGlobPatternArray(patterns: (string | GlobPattern)[]) {
+  return patterns.map((strOrGlobPattern) =>
+    typeof strOrGlobPattern === 'string'
+      ? strOrGlobPattern
+      : strOrGlobPattern.pattern
+  );
 }
