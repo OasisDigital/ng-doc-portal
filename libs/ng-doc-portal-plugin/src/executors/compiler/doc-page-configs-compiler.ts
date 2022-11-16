@@ -1,7 +1,7 @@
 import { readJsonFile } from '@nrwl/devkit';
 import * as chalk from 'chalk';
 import * as chokidar from 'chokidar';
-import * as glob from 'glob-promise';
+import * as fg from 'fast-glob';
 import {
   concatMap,
   debounceTime,
@@ -12,7 +12,6 @@ import {
   scan,
   tap,
   switchMap,
-  forkJoin,
   merge,
   firstValueFrom,
   concat,
@@ -143,13 +142,21 @@ export class DocPageConfigsCompiler {
     this.log(chalk.blue('Searching for component document page files...'));
     const startTime = Date.now();
 
-    return forkJoin(
-      patterns.map((val) => {
-        const pattern = typeof val === 'string' ? val : val.pattern;
-        return from(glob.promise(pattern, { ignore: 'node_modules' }));
+    const patternStrings = patterns.map((strOrGlobPattern) =>
+      typeof strOrGlobPattern === 'string'
+        ? strOrGlobPattern
+        : strOrGlobPattern.pattern
+    );
+
+    // TODO: Might be good to use `objectMode` in future for title mapping
+    return from(
+      fg(patternStrings, {
+        unique: true,
+        dot: true,
+        onlyFiles: true,
+        ignore: ['node_modules'],
       })
     ).pipe(
-      map((filePathsArr) => filePathsArr.flat()),
       map((filePaths): RawInitEvent => ({ type: 'init', filePaths })),
       tap(() => {
         const endTime = Date.now();

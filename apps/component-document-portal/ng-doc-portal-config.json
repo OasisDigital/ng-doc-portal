@@ -5,6 +5,10 @@
       "titlePrefix": "General"
     },
     {
+      "pattern": "apps/component-document-portal/src/app/generated/*.doc-page.ts",
+      "titlePrefix": "Generated"
+    },
+    {
       "pattern": "apps/component-document-portal/src/app/starting-example.doc-page.ts",
       "titlePrefix": "Example"
     }
