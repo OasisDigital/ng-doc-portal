@@ -1,11 +1,12 @@
 {
+  "name": "ng-doc-portal",
   "projectType": "library",
   "sourceRoot": "libs/ng-doc-portal/src",
   "prefix": "cdp",
   "targets": {
     "build": {
       "executor": "@nrwl/angular:package",
-      "outputs": ["dist/libs/ng-doc-portal"],
+      "outputs": ["{workspaceRoot}/dist/libs/ng-doc-portal"],
       "options": {
         "project": "libs/ng-doc-portal/ng-package.json"
       },
@@ -21,7 +22,7 @@
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["coverage/libs/ng-doc-portal"],
+      "outputs": ["{workspaceRoot}/coverage/libs/ng-doc-portal"],
       "options": {
         "jestConfig": "libs/ng-doc-portal/jest.config.ts",
         "passWithNoTests": true

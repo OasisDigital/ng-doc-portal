@@ -3,11 +3,11 @@
   "description": "Component documentation portal system written natively in Angular",
   "version": "0.8.0",
   "peerDependencies": {
-    "@angular/common": "^14.0.0",
-    "@angular/core": "^14.0.0",
-    "@angular/forms": "^14.0.0",
-    "@angular/router": "^14.0.0",
-    "@angular/platform-browser": "^14.0.0",
+    "@angular/common": "^14.2.11",
+    "@angular/core": "^14.2.11",
+    "@angular/forms": "^14.2.11",
+    "@angular/router": "^14.2.11",
+    "@angular/platform-browser": "^14.2.11",
     "tslib": "^2.3.0"
   },
   "dependencies": {

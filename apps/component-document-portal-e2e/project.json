@@ -1,4 +1,5 @@
 {
+  "name": "component-document-portal-e2e",
   "$schema": "..\\..\\node_modules\\nx\\schemas\\project-schema.json",
   "sourceRoot": "apps/component-document-portal-e2e/src",
   "projectType": "application",

@@ -6,8 +6,8 @@
   "generators": "./generators.json",
   "executors": "./executors.json",
   "peerDependencies": {
-    "@nrwl/angular": "^14.2.4",
-    "@nrwl/devkit": "^14.3.6",
+    "@nrwl/angular": "^15.1.1",
+    "@nrwl/devkit": "^15.1.1",
     "prettier": "^2.6.2"
   },
   "dependencies": {
