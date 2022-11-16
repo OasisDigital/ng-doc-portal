@@ -5,9 +5,11 @@ import yargs from 'yargs/yargs';
 import { existsSync } from 'fs';
 import fs from 'fs/promises';
 
-const yargOptions = yargs(hideBin(process.argv)).argv;
+const yargOptions = yargs(hideBin(process.argv))
+  .option('amount', { alias: 'a', type: 'number', default: 100 })
+  .parse() as { amount: number };
 
-const amountOfFiles = Number(process.env.amount ?? yargOptions.amount ?? 100);
+const amountOfFiles = Number(process.env.amount ?? yargOptions.amount);
 
 const directoryLocation =
   './apps/component-document-portal/src/app/generated-pages';
@@ -26,6 +28,8 @@ const directoryLocation =
   import { DocPageConfig, NgDocPortalComponentsModule } from '@oasisdigital/ng-doc-portal';
 
   @Component({
+    standalone: true,
+    imports: [NgDocPortalComponentsModule],
     template: \`
       <cdp-tab-menu>
         <cdp-tab-item title="Overview">
@@ -39,26 +43,20 @@ const directoryLocation =
         </cdp-tab-item>
         <cdp-tab-item title="Examples">
           <button>Example ${docPageId}</button>
-          <cdp-code-reveal lang="html">
+
+          <textarea cdpCodeSnippet>
             <button>Example ${docPageId}</button>
-          </cdp-code-reveal>
+          </textarea
+          >
         </cdp-tab-item>
       </cdp-tab-menu>
     \`,
   })
   export class DocumentPageComponent {}
 
-  // This can probably go away when Optional Modules is in Angular
-  @NgModule({
-    declarations: [DocumentPageComponent],
-    imports: [NgDocPortalComponentsModule],
-  })
-  class DocumentPageModule {}
-
   const docPageConfig: DocPageConfig = {
     title: 'Generated/${docPageId}',
     docPageComponent: DocumentPageComponent,
-    ngModule: DocumentPageModule,
   };
 
   export default docPageConfig;
