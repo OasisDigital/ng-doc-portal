@@ -11,11 +11,12 @@
     "prettier": "^2.6.2"
   },
   "dependencies": {
+    "@phenomnomnominal/tsquery": "^5.0.0",
     "chalk": "^4.1.2",
     "chokidar": "^3.5.3",
+    "date-fns": "^2.28.0",
     "fast-glob": "^3.2.12",
-    "@phenomnomnominal/tsquery": "^5.0.0",
-    "date-fns": "^2.28.0"
+    "minimatch": "^5.1.0"
   },
   "publishConfig": {
     "access": "public"

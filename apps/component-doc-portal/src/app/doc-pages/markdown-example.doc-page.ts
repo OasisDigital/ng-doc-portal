@@ -30,7 +30,7 @@ export class MarkdownExampleDocumentPageComponent {
 
 const docPageConfig: DocPageConfig = {
   title: 'General/Markdown Example',
-  docPageComponent: MarkdownExampleDocumentPageComponent,
+  component: MarkdownExampleDocumentPageComponent,
 };
 
 export default docPageConfig;

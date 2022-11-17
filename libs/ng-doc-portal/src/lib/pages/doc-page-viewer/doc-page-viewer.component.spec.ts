@@ -2,7 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
 import { firstValueFrom, ReplaySubject } from 'rxjs';
 
-import { DocPageConfigService } from '../../services/doc-page-config.service';
+import { DocPageConfigService } from '../../services/doc-page-loaders.service';
 import { docPageRouteParam } from '../../util/constants';
 
 import { DocPageViewerComponent } from './doc-page-viewer.component';

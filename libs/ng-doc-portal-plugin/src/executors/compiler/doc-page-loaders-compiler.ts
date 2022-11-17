@@ -12,7 +12,6 @@ import {
   scan,
   tap,
   switchMap,
-  merge,
   firstValueFrom,
   concat,
   take,
@@ -28,25 +27,23 @@ import {
   GlobPattern,
 } from './types';
 import {
-  accumulateFilePaths,
+  convertPatternOrGlobPatternArray,
   accumulatePayloads,
-  createRuntimeConfig,
   extractTitleFromDocPageFile,
   formatContent,
-  generateDocPageConfig,
+  generateDocPageLoader,
   timeNow,
   wrapTypescriptBoilerplate,
 } from './util';
 
 import { existsSync, writeFileSync } from 'fs';
 
-export class DocPageConfigsCompiler {
+export class DocPageLoadersCompiler {
   private globPatterns: (string | GlobPattern)[];
 
   constructor(
-    private readonly mode: 'lazy' | 'runtime',
     private readonly configFileLocation: string,
-    private readonly docPageConfigsFileLocation: string,
+    private readonly docPageLoadersFileLocation: string,
     private readonly silenced = false
   ) {
     if (!existsSync(this.configFileLocation)) {
@@ -70,32 +67,22 @@ export class DocPageConfigsCompiler {
   }
 
   async runOnce() {
-    const initialFileEvent = this.buildInitialFileEvent(this.globPatterns);
+    const initialFileEvent = this.buildInitialFileEvent();
 
-    let handledFileEvents: Observable<void>;
-    if (this.mode === 'lazy') {
-      handledFileEvents = this.handleFileEventsLazy(initialFileEvent);
-    } else {
-      handledFileEvents = this.handleFileEventsRuntime(initialFileEvent);
-    }
+    const handledFileEvents = this.handleFileEvents(initialFileEvent);
 
     return await firstValueFrom(handledFileEvents);
   }
 
   watch() {
     const fileEvents = concat(
-      this.buildInitialFileEvent(this.globPatterns),
-      this.buildWatcher(this.globPatterns)
+      this.buildInitialFileEvent(),
+      this.buildWatcher()
     );
 
-    let handledFileEvents: Observable<void>;
-    if (this.mode === 'lazy') {
-      handledFileEvents = this.handleFileEventsLazy(fileEvents);
-    } else {
-      handledFileEvents = this.handleFileEventsRuntime(fileEvents);
-    }
-
-    handledFileEvents = handledFileEvents.pipe(shareReplay(1));
+    const handledFileEvents = this.handleFileEvents(fileEvents).pipe(
+      shareReplay(1)
+    );
 
     handledFileEvents.pipe(take(1)).subscribe(() => {
       console.log(chalk.blue('Watching doc-portal files for changes...\n'));
@@ -104,29 +91,19 @@ export class DocPageConfigsCompiler {
     return handledFileEvents;
   }
 
-  handleFileEventsLazy(obs: Observable<RawFileEvent>) {
+  handleFileEvents(obs: Observable<RawFileEvent>) {
     return obs.pipe(
-      concatMap(this.addPayloadToEvent.bind(this)),
+      concatMap((event) => this.addPayloadToEvent(event)),
       filter((fileEvent): fileEvent is ProcessedFileEvent => !!fileEvent),
       scan(accumulatePayloads, new Array<EventPayload>()),
       debounceTime(500),
-      map(this.detectAndHandleDuplicateTitles.bind(this)),
+      map((payloads) => this.detectAndHandleDuplicateTitles(payloads)),
       map((eventPayloads) =>
         eventPayloads.map((eventPayload) =>
-          generateDocPageConfig(eventPayload.filePath, eventPayload.title)
+          generateDocPageLoader(eventPayload.filePath, eventPayload.title)
         )
       ),
       map(wrapTypescriptBoilerplate),
-      map(formatContent),
-      switchMap((content) => this.writeDynamicPageContentToFile(content))
-    );
-  }
-
-  handleFileEventsRuntime(obs: Observable<RawFileEvent>) {
-    return obs.pipe(
-      scan(accumulateFilePaths, new Array<string>()),
-      debounceTime(500),
-      map(createRuntimeConfig),
       map(formatContent),
       switchMap((content) => this.writeDynamicPageContentToFile(content))
     );
@@ -136,16 +113,12 @@ export class DocPageConfigsCompiler {
    * Build an Observable that emits the initial list of file paths.
    * @private
    */
-  private buildInitialFileEvent(
-    patterns: (string | GlobPattern)[]
-  ): Observable<RawInitEvent> {
+  private buildInitialFileEvent(): Observable<RawInitEvent> {
     this.log(chalk.blue('Searching for component document page files...'));
     const startTime = Date.now();
 
-    const patternStrings = convertPatternOrGlobPatternArray(patterns);
+    const patternStrings = convertPatternOrGlobPatternArray(this.globPatterns);
 
-    // TODO: Might be good to use `objectMode` in future for title mapping
-    // Can pair with `glob-to-regexp` package to check objectMode path to glob pattern
     return from(
       fg(patternStrings, {
         unique: true,
@@ -168,11 +141,11 @@ export class DocPageConfigsCompiler {
    * Generate an Observable of the raw file events.
    * @private
    */
-  private buildWatcher(
-    patterns: (string | GlobPattern)[]
-  ): Observable<RawFileEvent> {
+  private buildWatcher(): Observable<RawFileEvent> {
     return new Observable<RawFileEvent>((observer) => {
-      const patternStrings = convertPatternOrGlobPatternArray(patterns);
+      const patternStrings = convertPatternOrGlobPatternArray(
+        this.globPatterns
+      );
 
       const watch = chokidar
         .watch(patternStrings, {
@@ -215,7 +188,7 @@ export class DocPageConfigsCompiler {
   }
 
   /**
-   * Process a raw file event, adding config string payloads.
+   * Process a raw file event, adding loader string payloads.
    *
    * @param fileEvent The raw file event that describe which file(s)
    * is affected and what is happening.
@@ -230,7 +203,10 @@ export class DocPageConfigsCompiler {
         this.log(chalk.blue('Compiling component document page files...'));
         const startTime = Number(new Date());
         for (const filePath of fileEvent.filePaths) {
-          const title = await extractTitleFromDocPageFile(filePath);
+          const title = await extractTitleFromDocPageFile(
+            filePath,
+            this.globPatterns
+          );
           payload.push({ filePath, title });
         }
         const endTime = Number(new Date());
@@ -244,7 +220,10 @@ export class DocPageConfigsCompiler {
         return { ...fileEvent, payload };
       } else if (fileEvent.type === 'add' || fileEvent.type === 'change') {
         const startTime = Date.now();
-        const title = await extractTitleFromDocPageFile(fileEvent.filePath);
+        const title = await extractTitleFromDocPageFile(
+          fileEvent.filePath,
+          this.globPatterns
+        );
         const endTime = Date.now();
         this.log(
           chalk.blue(
@@ -287,19 +266,19 @@ export class DocPageConfigsCompiler {
   }
 
   /**
-   * Generate a file to hold the config content.
+   * Generate a file to hold the loader content.
    *
-   * @param content The config content generated from our path files
+   * @param content The loader content generated from our path files
    * @private
    */
   private async writeDynamicPageContentToFile(content: string) {
     try {
-      writeFileSync(this.docPageConfigsFileLocation, content);
+      writeFileSync(this.docPageLoadersFileLocation, content);
     } catch (e) {
       console.error(e);
       this.log(
         chalk.red(
-          `\n\nUnexpected error occurred while generating doc-page-configs.ts\n`
+          `\n\nUnexpected error occurred while generating doc-page-loaders.ts\n`
         )
       );
     }
@@ -310,12 +289,4 @@ export class DocPageConfigsCompiler {
       console.log(message);
     }
   }
-}
-
-function convertPatternOrGlobPatternArray(patterns: (string | GlobPattern)[]) {
-  return patterns.map((strOrGlobPattern) =>
-    typeof strOrGlobPattern === 'string'
-      ? strOrGlobPattern
-      : strOrGlobPattern.pattern
-  );
 }

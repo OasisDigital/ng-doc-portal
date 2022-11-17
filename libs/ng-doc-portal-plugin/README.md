@@ -143,7 +143,7 @@ export class ExamplePageComponent {}
 
 const docPageConfig: DocPageConfig = {
   title: 'My Custom Example Page Title',
-  docPageComponent: ExamplePageComponent,
+  component: ExamplePageComponent,
 };
 
 export default docPageConfig;
@@ -167,7 +167,7 @@ export class ExamplePageComponent {}
 
 const docPageConfig: DocPageConfig = {
   title: 'My Custom Group/My Custom Example Page Title',
-  docPageComponent: ExamplePageComponent,
+  component: ExamplePageComponent,
 };
 
 export default docPageConfig;
@@ -213,7 +213,7 @@ export class ButtonDocumentPageComponent {}
 
 const docPageConfig: DocPageConfig = {
   title: 'General/Button',
-  docPageComponent: ButtonDocumentPageComponent,
+  component: ButtonDocumentPageComponent,
 };
 
 export default docPageConfig;
@@ -234,10 +234,7 @@ Example below:
 ```ts
 @NgModule({
   declarations: [AppComponent],
-  imports: [
-    BrowserModule,
-    NgDocPortalModule.forRoot(docPageConfigs, compilerMode),
-  ],
+  imports: [BrowserModule, NgDocPortalModule.forRoot(docPageLoaders)],
   providers: [
     // Add the below method call to your `providers` list
     ngDocPortalProvideThemeOptions([
@@ -277,8 +274,8 @@ The ng doc portal application uses the follow css variables for colors:
 --ngdp-font-color
 --ngdp-background-color
 --ngdp-border-color
---ngdp-nav-active-color
---ngdp-nav-highlight-color
+--ngdp-side-nav-active-color
+--ngdp-side-nav-highlight-color
 ```
 
 Feel free to override these with your own colors based on the selected theme like below:
@@ -289,16 +286,16 @@ html {
     --ngdp-font-color: white;
     --ngdp-background-color: #363636;
     --ngdp-border-color: white;
-    --ngdp-nav-active-color: #6e6e6e;
-    --ngdp-nav-highlight-color: #adadad;
+    --ngdp-side-nav-active-color: #6e6e6e;
+    --ngdp-side-nav-highlight-color: #adadad;
   }
 
   &.light-theme {
     --ngdp-font-color: black;
     --ngdp-background-color: white;
     --ngdp-border-color: black;
-    --ngdp-nav-active-color: #b9b9b9;
-    --ngdp-nav-highlight-color: #868686;
+    --ngdp-side-nav-active-color: #b9b9b9;
+    --ngdp-side-nav-highlight-color: #868686;
   }
 }
 ```
@@ -495,11 +492,11 @@ Hello World!
 
 The `<ngdp-playground>` component allows you to place your component in a playground form system. Here you can configure form fields that automatically hook into a component's input properties.
 
-You will need to set the `config` property to a valid `ComponentPlaygroundConfig` object variable on the doc page class.
+You will need to set the `config` property to a valid `NgDocPortalPlaygroundConfig` object variable on the doc page class.
 
 ```ts
 export class ExamplePlaygroundPageComponent {
-  playgroundComponentConfig: ComponentPlaygroundConfig = {
+  playgroundComponentConfig: NgDocPortalPlaygroundConfig = {
     ...
   }
 }
@@ -532,24 +529,24 @@ There is currently support for the following form controls:
 Full Example Below:
 
 ```html
-<ngdp-playground [config]="playgroundComponentConfig"></ngdp-playground>
+<ngdp-playground [config]="playgroundConfig"></ngdp-playground>
 ```
 
 ```ts
 export class ExamplePlaygroundPageComponent {
-  playgroundComponentConfig: ComponentPlaygroundConfig = {
+  playgroundConfig: NgDocPortalPlaygroundConfig = {
     component: TestComponent,
     inputs: [
       {
         label: 'Text Input',
         property: 'text',
-        type: PlaygroundControlConfigType.Text,
+        type: PlaygroundControlType.Text,
         value: 'blah',
       },
       {
         label: 'Select a Pet',
         property: 'pet',
-        type: PlaygroundControlConfigType.Select,
+        type: PlaygroundControlType.Select,
         value: 'dog',
         options: [
           {
@@ -569,7 +566,7 @@ export class ExamplePlaygroundPageComponent {
       {
         label: 'Color',
         property: 'color',
-        type: PlaygroundControlConfigType.ColorPicker,
+        type: PlaygroundControlType.ColorPicker,
         value: '#363636',
       },
     ],

@@ -40,6 +40,7 @@ export type RawFileEvent =
   | RawAddEvent
   | RawChangeEvent
   | UnlinkEvent;
+
 export type ProcessedFileEvent =
   | ProcessedInitEvent
   | ProcessedAddEvent

@@ -1,0 +1,32 @@
+ngdp-main-feature {
+  height: 100%;
+  width: 100%;
+
+  display: grid;
+  grid-template-columns: minmax(0, auto) 1fr;
+  grid-template-areas: 'side-nav content';
+
+  .nav-content {
+    grid-area: content;
+    height: 100%;
+    display: grid;
+    grid-template-rows: minmax(0, max-content) 1fr;
+    grid-template-areas: 'toolbar' 'content';
+    overflow: auto;
+
+    .router-content {
+      padding-left: 20px;
+      grid-area: content;
+      overflow: auto;
+    }
+
+    ngdp-toolbar {
+      grid-area: toolbar;
+    }
+  }
+
+  ngdp-side-nav {
+    grid-area: side-nav;
+    max-width: 350px;
+  }
+}

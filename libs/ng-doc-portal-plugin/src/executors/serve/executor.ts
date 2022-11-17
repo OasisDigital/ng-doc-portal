@@ -4,9 +4,9 @@ import { firstValueFrom, shareReplay, switchMap } from 'rxjs';
 import {
   getAngularConfigTarget,
   getConfigFileLocationFromContext,
-  getDocPageConfigsFileLocationFromContext,
+  getDocPageLoadersFileLocationFromContext,
 } from '../../util/context';
-import { DocPageConfigsCompiler } from '../compiler/doc-page-configs-compiler';
+import { DocPageLoadersCompiler } from '../compiler/doc-page-loaders-compiler';
 
 import { ServeExecutorSchema } from './schema';
 
@@ -16,15 +16,14 @@ export default async function runServe(
 ) {
   // create compiler
   const configLocation = getConfigFileLocationFromContext(options, context);
-  const docPageConfigsFileLocation = getDocPageConfigsFileLocationFromContext(
+  const docPageLoadersFileLocation = getDocPageLoadersFileLocationFromContext(
     options,
     context
   );
 
-  const compiler = new DocPageConfigsCompiler(
-    'lazy',
+  const compiler = new DocPageLoadersCompiler(
     configLocation,
-    docPageConfigsFileLocation
+    docPageLoadersFileLocation
   );
 
   const compilerWatch = compiler.watch().pipe(shareReplay(1));

@@ -1,0 +1,10 @@
+<ngdp-side-nav></ngdp-side-nav>
+<div class="nav-content">
+  <ngdp-toolbar
+    #toolbar
+    [class.hide]="!toolbar.hasChildElements"
+  ></ngdp-toolbar>
+  <div class="router-content">
+    <router-outlet></router-outlet>
+  </div>
+</div>

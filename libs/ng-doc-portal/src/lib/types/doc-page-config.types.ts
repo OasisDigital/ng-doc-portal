@@ -1,25 +1,16 @@
 import { Type } from '@angular/core';
 
-export interface DynamicDocPageConfig {
-  mode: 'lazy';
+export interface DocPageLoader {
   title: string;
-  loadConfig: () => Promise<DocPageConfig>;
-}
-
-export interface RuntimeDocPageConfig {
-  mode: 'runtime';
-  title: string;
-  config: DocPageConfig;
-}
-
-export interface DocConfig {
-  loadConfig: () => Promise<DocPageConfig>;
+  fetch: () => Promise<Type<any> | DocPageConfig>;
 }
 
 export interface DocPageConfig {
   title: string;
-  docPageComponent: Type<any>;
+  component: Type<any>;
 }
+
+export type DocPageLoaderRecord = Record<string, DocPageLoader>;
 
 export type DocPageRoutes = (DocPageMetadata | DocPagesMenu)[];
 
@@ -34,13 +25,3 @@ export interface DocPageMetadata {
   title: string;
   route: string;
 }
-
-export type CompilerMode = 'lazy' | 'runtime';
-
-export type LazyDocConfigRecord = Record<string, DynamicDocPageConfig>;
-export type RuntimeDocConfigArray = (() => Promise<DocPageConfig>)[];
-
-export type DocConfigRecord = Record<
-  string,
-  DynamicDocPageConfig | RuntimeDocPageConfig
->;

@@ -1,11 +1,8 @@
 {
   "globPatterns": [
+    "apps/component-doc-portal/src/app/doc-pages/*.doc-page.ts",
     {
-      "pattern": "apps/component-doc-portal/src/app/doc-pages/*.doc-page.ts",
-      "titlePrefix": "General"
-    },
-    {
-      "pattern": "apps/component-doc-portal/src/app/generated/*.doc-page.ts",
+      "pattern": "apps/component-doc-portal/src/app/generated-pages/*.doc-page.ts",
       "titlePrefix": "Generated"
     },
     {

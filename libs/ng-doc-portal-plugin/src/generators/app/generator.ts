@@ -156,10 +156,10 @@ function removeExtractI18N(tree: Tree, options: NormalizedSchema) {
 
 async function updateGitIgnore(tree: Tree) {
   if (tree.exists('.gitignore')) {
-    const entry = '**/doc-page-configs.ts';
+    const entry = '**/doc-page-loaders.ts';
 
     let content = tree.read('.gitignore', 'utf-8') ?? '';
-    if (/\*\*\/doc-page-configs\.ts/gm.test(content)) {
+    if (/\*\*\/doc-page-loaders\.ts/gm.test(content)) {
       return;
     }
 

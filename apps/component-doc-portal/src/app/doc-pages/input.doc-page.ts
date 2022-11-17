@@ -23,7 +23,7 @@ export class InputDocumentPageComponent {}
 
 const docPageConfig: DocPageConfig = {
   title: 'Forms/Input',
-  docPageComponent: InputDocumentPageComponent,
+  component: InputDocumentPageComponent,
 };
 
 export default docPageConfig;

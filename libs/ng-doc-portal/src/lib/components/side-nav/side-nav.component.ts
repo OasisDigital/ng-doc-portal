@@ -1,50 +1,68 @@
-import { Component, Input } from '@angular/core';
+import { Component, Inject, OnDestroy } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { map, Observable, Subject, takeUntil } from 'rxjs';
 
 import {
+  DocPageLoaderRecord,
   DocPageRoutes,
-  DocConfigRecord,
 } from '../../types/doc-page-config.types';
+import { DOC_PAGE_LOADERS_TOKEN } from '../../util/injection-tokens';
+
+const filterQueryParamKey = 'filter';
 
 @Component({
-  selector: 'ngdp-nav',
+  selector: 'ngdp-side-nav',
   templateUrl: './side-nav.component.html',
 })
-export class SideNavComponent {
-  @Input() set configs(value: DocConfigRecord) {
-    this.docConfigRecord = value;
-    this.docPageRoutes = filterAndGenerateDocPageRoutes(
-      this.docConfigRecord,
-      this.currentFilter
+export class SideNavComponent implements OnDestroy {
+  filteredRoutes: Observable<DocPageRoutes>;
+  filterControl: FormControl<string | null>;
+  destroy = new Subject<void>();
+
+  constructor(
+    @Inject(DOC_PAGE_LOADERS_TOKEN)
+    docPageLoaders: DocPageLoaderRecord,
+    route: ActivatedRoute,
+    router: Router
+  ) {
+    this.filterControl = new FormControl(
+      route.snapshot.queryParamMap.get(filterQueryParamKey)
+    );
+
+    this.filterControl.valueChanges
+      .pipe(takeUntil(this.destroy))
+      .subscribe((value) => {
+        const filter = value || undefined;
+        router.navigate([], {
+          queryParams: { filter },
+          queryParamsHandling: 'merge',
+        });
+      });
+
+    this.filteredRoutes = route.queryParamMap.pipe(
+      map((params) => params.get(filterQueryParamKey)),
+      map((filter) => {
+        if (!filter) {
+          return createDocPageRoutes(docPageLoaders);
+        } else {
+          const filteredLoaders = filterLoaders(docPageLoaders, filter);
+          return createDocPageRoutes(filteredLoaders);
+        }
+      })
     );
   }
 
-  private docConfigRecord: DocConfigRecord = {};
-  private currentFilter = '';
-  docPageRoutes: DocPageRoutes = [];
-
-  filterConfig(event: any) {
-    this.currentFilter = (event.target.value as string)
-      .toLowerCase()
-      .replace(/[\s/-]/g, '');
-    this.docPageRoutes = filterAndGenerateDocPageRoutes(
-      this.docConfigRecord,
-      this.currentFilter
-    );
+  ngOnDestroy() {
+    this.destroy.next();
+    this.destroy.complete();
   }
 }
 
-function filterAndGenerateDocPageRoutes(
-  config: DocConfigRecord,
-  filter: string
-) {
-  const filteredConfig = filterConfigs(config, filter);
-  return createDocPageRoutes(filteredConfig);
-}
-
-function filterConfigs(configs: DocConfigRecord, filter: string) {
-  const filtered: DocConfigRecord = Object.assign(
+export function filterLoaders(loaders: DocPageLoaderRecord, filter: string) {
+  const filtered: DocPageLoaderRecord = Object.assign(
     {},
-    ...Object.entries(configs)
+    ...Object.entries(loaders)
       .filter(
         ([k, v]) =>
           k.replace(/[-]/g, '').includes(filter) ||
@@ -91,13 +109,13 @@ function createRoutesStructure(
 }
 
 export function createDocPageRoutes(
-  docPageConfigs: DocConfigRecord
+  docPageLoaders: DocPageLoaderRecord
 ): DocPageRoutes {
   const docPageRoutes: DocPageRoutes = [];
-  for (const route in docPageConfigs) {
+  for (const route in docPageLoaders) {
     createRoutesStructure(
       docPageRoutes,
-      docPageConfigs[route].title.split('/'),
+      docPageLoaders[route].title.split('/'),
       route
     );
   }

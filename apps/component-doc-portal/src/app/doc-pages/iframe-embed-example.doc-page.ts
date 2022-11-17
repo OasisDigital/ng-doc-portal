@@ -25,7 +25,7 @@ export class IframeEmbedExampleComponent {}
 
 const docPageConfig: DocPageConfig = {
   title: 'General/Iframe Embed Example',
-  docPageComponent: IframeEmbedExampleComponent,
+  component: IframeEmbedExampleComponent,
 };
 
 export default docPageConfig;

@@ -4,15 +4,15 @@ html {
     --ngdp-font-color: white;
     --ngdp-background-color: #363636;
     --ngdp-border-color: white;
-    --ngdp-nav-active-color: #6e6e6e;
-    --ngdp-nav-highlight-color: #adadad;
+    --ngdp-side-nav-active-color: #6e6e6e;
+    --ngdp-side-nav-highlight-color: #adadad;
   }
 
   &.light-theme {
     --ngdp-font-color: black;
     --ngdp-background-color: white;
     --ngdp-border-color: black;
-    --ngdp-nav-active-color: #b9b9b9;
-    --ngdp-nav-highlight-color: #868686;
+    --ngdp-side-nav-active-color: #b9b9b9;
+    --ngdp-side-nav-highlight-color: #868686;
   }
 }

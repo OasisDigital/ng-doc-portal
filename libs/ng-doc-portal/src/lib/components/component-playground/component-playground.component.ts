@@ -16,10 +16,10 @@ import {
 import { startWith, Subject, takeUntil } from 'rxjs';
 
 import {
-  ComponentPlaygroundConfig,
+  NgDocPortalPlaygroundConfig,
   PlaygroundClassBindingControlConfig,
   PlaygroundControlConfig,
-  PlaygroundControlConfigType,
+  PlaygroundControlType,
   PlaygroundTextContentControlConfig,
 } from './playground-types';
 import { RenderComponentConfig } from './render-component.directive';
@@ -50,9 +50,9 @@ export class ComponentPlaygroundComponent implements OnDestroy {
   clamp = Math.min;
 
   TypeGuards = PlaygroundControlTemplateTypeGuards;
-  ControlTypes = PlaygroundControlConfigType;
+  ControlTypes = PlaygroundControlType;
 
-  @Input() set config(config: ComponentPlaygroundConfig) {
+  @Input() set config(config: NgDocPortalPlaygroundConfig) {
     this.destroyControlsValueChanges.next();
     this.renderComponentConfig = {
       component: config.component,

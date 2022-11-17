@@ -5,14 +5,14 @@
   <input
     class="filter-input"
     type="text"
-    (keyup)="filterConfig($event)"
     placeholder="Filter Pages"
+    [formControl]="filterControl"
   />
   <ul class="side-nav-menu-root">
     <ng-container
       *ngTemplateOutlet="
         recursiveRoutesMenuTemplate;
-        context: { routes: docPageRoutes }
+        context: { routes: filteredRoutes | async }
       "
     ></ng-container>
   </ul>

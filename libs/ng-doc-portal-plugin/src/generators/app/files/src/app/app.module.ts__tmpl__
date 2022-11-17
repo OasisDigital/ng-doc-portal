@@ -4,13 +4,13 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgDocPortalModule } from '@oasisdigital/ng-doc-portal';
 
 import { AppComponent } from './app.component';
-import { compilerMode, docPageConfigs } from './doc-page-configs';
+import { compilerMode, docPageLoaders } from './doc-page-loaders';
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
     BrowserModule,
-    NgDocPortalModule.forRoot(docPageConfigs, compilerMode),
+    NgDocPortalModule.forRoot(docPageLoaders, compilerMode),
   ],
   bootstrap: [AppComponent],
 })

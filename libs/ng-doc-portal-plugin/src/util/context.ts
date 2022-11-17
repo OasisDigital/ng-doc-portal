@@ -26,12 +26,12 @@ export function getConfigFileLocationFromContext(
   return configFileLocation ?? defaultconfigFileLocation;
 }
 
-export function getDocPageConfigsFileLocationFromContext(
+export function getDocPageLoadersFileLocationFromContext(
   _options: SchemaBase,
   context: ExecutorContext
 ) {
   const projectRelativeRoot = context.workspace.projects[
     context.projectName ?? ''
   ].root.replace(/\\/g, '/');
-  return `${projectRelativeRoot}/src/app/doc-page-configs.ts`;
+  return `${projectRelativeRoot}/src/app/doc-page-loaders.ts`;
 }

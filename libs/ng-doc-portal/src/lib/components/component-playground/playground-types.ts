@@ -1,6 +1,6 @@
 import { Type } from '@angular/core';
 
-export enum PlaygroundControlConfigType {
+export enum PlaygroundControlType {
   Text = 'text',
   TextArea = 'textarea',
   Number = 'number',
@@ -22,19 +22,19 @@ interface PlaygroundControlConfigBase {
 
 export interface PlaygroundTextControlConfig
   extends PlaygroundControlConfigBase {
-  type: PlaygroundControlConfigType.Text;
+  type: PlaygroundControlType.Text;
   placeholder?: string;
 }
 
 export interface PlaygroundTextAreaControlConfig
   extends PlaygroundControlConfigBase {
-  type: PlaygroundControlConfigType.TextArea;
+  type: PlaygroundControlType.TextArea;
   placeholder?: string;
 }
 
 export interface PlaygroundNumberControlConfig
   extends PlaygroundControlConfigBase {
-  type: PlaygroundControlConfigType.Number;
+  type: PlaygroundControlType.Number;
   placeholder?: string;
   min?: number;
   max?: number;
@@ -42,7 +42,7 @@ export interface PlaygroundNumberControlConfig
 
 export interface PlaygroundRangeControlConfig
   extends PlaygroundControlConfigBase {
-  type: PlaygroundControlConfigType.Range;
+  type: PlaygroundControlType.Range;
   placeholder?: string;
   min?: number;
   max?: number;
@@ -56,25 +56,25 @@ export interface PlaygroundControlOption {
 
 export interface PlaygroundSelectControlConfig
   extends PlaygroundControlConfigBase {
-  type: PlaygroundControlConfigType.Select;
+  type: PlaygroundControlType.Select;
   options: PlaygroundControlOption[];
   multiple?: boolean;
 }
 
 export interface PlaygroundCheckboxControlConfig
   extends PlaygroundControlConfigBase {
-  type: PlaygroundControlConfigType.Checkbox;
+  type: PlaygroundControlType.Checkbox;
 }
 
 export interface PlaygroundRadioGroupControlConfig
   extends PlaygroundControlConfigBase {
-  type: PlaygroundControlConfigType.RadioGroup;
+  type: PlaygroundControlType.RadioGroup;
   options: PlaygroundControlOption[];
 }
 
 export interface PlaygroundDateControlConfig
   extends PlaygroundControlConfigBase {
-  type: PlaygroundControlConfigType.Date;
+  type: PlaygroundControlType.Date;
   placeholder?: string;
   min?: string;
   max?: string;
@@ -82,7 +82,7 @@ export interface PlaygroundDateControlConfig
 
 export interface PlaygroundTimeControlConfig
   extends PlaygroundControlConfigBase {
-  type: PlaygroundControlConfigType.Time;
+  type: PlaygroundControlType.Time;
   placeholder?: string;
   min?: string;
   max?: string;
@@ -90,7 +90,7 @@ export interface PlaygroundTimeControlConfig
 
 export interface PlaygroundDateTimeControlConfig
   extends PlaygroundControlConfigBase {
-  type: PlaygroundControlConfigType.DateTime;
+  type: PlaygroundControlType.DateTime;
   placeholder?: string;
   min?: string;
   max?: string;
@@ -98,7 +98,7 @@ export interface PlaygroundDateTimeControlConfig
 
 export interface PlaygroundColorPickerControlConfig
   extends PlaygroundControlConfigBase {
-  type: PlaygroundControlConfigType.ColorPicker;
+  type: PlaygroundControlType.ColorPicker;
 }
 
 export type PlaygroundControlConfig =
@@ -124,7 +124,7 @@ export interface PlaygroundTextContentControlConfig {
   default: string;
 }
 
-export interface ComponentPlaygroundConfig {
+export interface NgDocPortalPlaygroundConfig {
   component: Type<any>;
   textContentBinding?:
     | string

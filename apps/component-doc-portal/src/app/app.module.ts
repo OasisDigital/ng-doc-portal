@@ -10,14 +10,11 @@ import {
 import { AppComponent } from './app.component';
 import { CustomPluginComponent } from './custom-plugin.component';
 import { CustomTitleComponent } from './custom-title-component';
-import { compilerMode, docPageConfigs } from './doc-page-configs';
+import { docPageLoaders } from './doc-page-loaders';
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [
-    BrowserModule,
-    NgDocPortalModule.forRoot(docPageConfigs, compilerMode),
-  ],
+  imports: [BrowserModule, NgDocPortalModule.forRoot(docPageLoaders)],
   providers: [
     ngDocPortalProvideThemeOptions([
       {

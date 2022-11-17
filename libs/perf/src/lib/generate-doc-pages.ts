@@ -22,7 +22,7 @@ const directoryLocation = './apps/component-doc-portal/src/app/generated-pages';
   for (let i = 1; i <= amountOfFiles; i++) {
     const docPageId = uniqueId();
     const docPageContent = `
-  import { Component, NgModule } from '@angular/core';
+  import { Component } from '@angular/core';
 
   import { DocPageConfig, NgDocPortalComponentsModule } from '@oasisdigital/ng-doc-portal';
 
@@ -54,8 +54,8 @@ const directoryLocation = './apps/component-doc-portal/src/app/generated-pages';
   export class DocumentPageComponent {}
 
   const docPageConfig: DocPageConfig = {
-    title: 'Generated/${docPageId}',
-    docPageComponent: DocumentPageComponent,
+    title: '${docPageId}',
+    component: DocumentPageComponent,
   };
 
   export default docPageConfig;

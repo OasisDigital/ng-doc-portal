@@ -12,7 +12,7 @@ export class LabelDocumentPageComponent {}
 
 const docPageConfig: DocPageConfig = {
   title: 'General/Label',
-  docPageComponent: LabelDocumentPageComponent,
+  component: LabelDocumentPageComponent,
 };
 
 export default docPageConfig;

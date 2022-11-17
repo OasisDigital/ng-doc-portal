@@ -5,27 +5,20 @@ import { HIGHLIGHT_OPTIONS } from 'ngx-highlightjs';
 
 import { NgDocPortalComponentsModule } from './components/ng-doc-portal-components.module';
 import { DocPageViewerComponent } from './pages/doc-page-viewer/doc-page-viewer.component';
-import { HomePageComponent } from './pages/home-page/home-page.component';
-import { ComponentDocumentPortalFeatureComponent } from './pages/main-feature/component-doc-portal-feature.component';
-import {
-  CompilerMode,
-  LazyDocConfigRecord,
-  RuntimeDocConfigArray,
-} from './types/doc-page-config.types';
+import { MainFeatureComponent } from './pages/main-feature/main-feature.component';
+import { NoSelectionPageComponent } from './pages/no-selection-page/no-selection-page.component';
+import { DocPageLoaderRecord } from './types/doc-page-config.types';
 import { docPageRouteParam } from './util/constants';
-import {
-  COMPILER_MODE_TOKEN,
-  DOC_PAGE_CONFIG_TOKEN,
-} from './util/injection-tokens';
+import { DOC_PAGE_LOADERS_TOKEN } from './util/injection-tokens';
 
 const routes: Routes = [
   {
     path: '',
-    component: ComponentDocumentPortalFeatureComponent,
+    component: MainFeatureComponent,
     children: [
       {
         path: '',
-        component: HomePageComponent,
+        component: NoSelectionPageComponent,
       },
       {
         path: `:${docPageRouteParam}`,
@@ -33,7 +26,7 @@ const routes: Routes = [
       },
       {
         path: '**',
-        component: HomePageComponent,
+        component: NoSelectionPageComponent,
       },
     ],
   },
@@ -41,8 +34,8 @@ const routes: Routes = [
 
 @NgModule({
   declarations: [
-    ComponentDocumentPortalFeatureComponent,
-    HomePageComponent,
+    MainFeatureComponent,
+    NoSelectionPageComponent,
     DocPageViewerComponent,
   ],
   imports: [
@@ -62,19 +55,14 @@ const routes: Routes = [
 })
 export class NgDocPortalModule {
   static forRoot(
-    docPageConfigs: RuntimeDocConfigArray | LazyDocConfigRecord,
-    compilerMode: CompilerMode
+    docPageConfigs: DocPageLoaderRecord
   ): ModuleWithProviders<NgDocPortalModule> {
     return {
       ngModule: NgDocPortalModule,
       providers: [
         {
-          provide: DOC_PAGE_CONFIG_TOKEN,
+          provide: DOC_PAGE_LOADERS_TOKEN,
           useValue: docPageConfigs,
-        },
-        {
-          provide: COMPILER_MODE_TOKEN,
-          useValue: compilerMode,
         },
       ],
     };

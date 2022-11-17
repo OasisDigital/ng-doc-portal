@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import {
   NgDocPortalComponentsModule,
   DocPageConfig,
-  PlaygroundControlConfigType,
-  ComponentPlaygroundConfig,
+  PlaygroundControlType,
+  NgDocPortalPlaygroundConfig,
 } from '@oasisdigital/ng-doc-portal';
 
 import { TestComponent } from './test.component';
@@ -45,7 +45,7 @@ export class ExamplePlaygroundPageComponent {
       {{ asdasd }}
     </ngdp-tab-item>
   `;
-  playgroundComponentConfig: ComponentPlaygroundConfig = {
+  playgroundComponentConfig: NgDocPortalPlaygroundConfig = {
     component: TestComponent,
     classBinding: {
       classes: ['foo', 'bar', 'baz', 'test', 'test2', 'test3'],
@@ -55,13 +55,13 @@ export class ExamplePlaygroundPageComponent {
       {
         label: 'Text Input',
         property: 'text',
-        type: PlaygroundControlConfigType.Text,
+        type: PlaygroundControlType.Text,
         value: 'blah',
       },
       {
         label: 'Select a Pet',
         property: 'pet',
-        type: PlaygroundControlConfigType.Select,
+        type: PlaygroundControlType.Select,
         value: 'dog',
         multiple: true,
         options: [
@@ -82,7 +82,7 @@ export class ExamplePlaygroundPageComponent {
       {
         label: 'Color',
         property: 'color',
-        type: PlaygroundControlConfigType.ColorPicker,
+        type: PlaygroundControlType.ColorPicker,
         value: '#363636',
       },
     ],
@@ -91,7 +91,7 @@ export class ExamplePlaygroundPageComponent {
 
 const docPageConfig: DocPageConfig = {
   title: 'General/Playground Example',
-  docPageComponent: ExamplePlaygroundPageComponent,
+  component: ExamplePlaygroundPageComponent,
 };
 
 export default docPageConfig;

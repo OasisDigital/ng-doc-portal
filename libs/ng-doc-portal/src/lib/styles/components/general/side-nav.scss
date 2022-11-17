@@ -1,4 +1,4 @@
-ngdp-nav {
+ngdp-side-nav {
   height: 100%;
   overflow: auto;
 
@@ -56,11 +56,11 @@ ngdp-nav {
           color: var(--ngdp-font-color);
 
           &.active {
-            background-color: var(--ngdp-nav-active-color);
+            background-color: var(--ngdp-side-nav-active-color);
           }
 
           &:hover {
-            background-color: var(--ngdp-nav-highlight-color);
+            background-color: var(--ngdp-side-nav-highlight-color);
           }
         }
       }

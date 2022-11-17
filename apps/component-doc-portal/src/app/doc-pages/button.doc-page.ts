@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import {
   NgDocPortalComponentsModule,
   DocPageConfig,
-  ComponentPlaygroundConfig,
+  NgDocPortalPlaygroundConfig,
 } from '@oasisdigital/ng-doc-portal';
 
 @Component({
@@ -267,7 +267,7 @@ import {
   `,
 })
 export class ButtonDocumentPageComponent {
-  playgroundConfig: ComponentPlaygroundConfig = {
+  playgroundConfig: NgDocPortalPlaygroundConfig = {
     component: ButtonComponent,
     textContentBinding: { default: 'Hello World!' },
     classBinding: {
@@ -279,7 +279,7 @@ export class ButtonDocumentPageComponent {
 
 const docPageConfig: DocPageConfig = {
   title: 'General/Button',
-  docPageComponent: ButtonDocumentPageComponent,
+  component: ButtonDocumentPageComponent,
 };
 
 export default docPageConfig;
