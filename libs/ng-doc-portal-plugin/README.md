@@ -60,8 +60,8 @@ More examples below:
 ```json
 {
   "globPatterns": [
-    "apps/component-document-portal/src/app/doc-pages/*.doc-page.ts",
-    "apps/component-document-portal/src/app/starting-example.doc-page.ts"
+    "apps/component-doc-portal/src/app/doc-pages/*.doc-page.ts",
+    "apps/component-doc-portal/src/app/starting-example.doc-page.ts"
   ]
 }
 ```
@@ -70,10 +70,10 @@ More examples below:
 {
   "globPatterns": [
     {
-      "pattern": "apps/component-document-portal/src/app/doc-pages/*.doc-page.ts"
+      "pattern": "apps/component-doc-portal/src/app/doc-pages/*.doc-page.ts"
     },
     {
-      "pattern": "apps/component-document-portal/src/app/starting-example.doc-page.ts"
+      "pattern": "apps/component-doc-portal/src/app/starting-example.doc-page.ts"
     }
   ]
 }
@@ -89,11 +89,11 @@ You can add a prefixed group to any glob pattern object by adding the `titlePref
 {
   "globPatterns": [
     {
-      "pattern": "apps/component-document-portal/src/app/doc-pages/*.doc-page.ts",
+      "pattern": "apps/component-doc-portal/src/app/doc-pages/*.doc-page.ts",
       "titlePrefix": "General"
     },
     {
-      "pattern": "apps/component-document-portal/src/app/starting-example.doc-page.ts",
+      "pattern": "apps/component-doc-portal/src/app/starting-example.doc-page.ts",
       "titlePrefix": "Example"
     }
   ]

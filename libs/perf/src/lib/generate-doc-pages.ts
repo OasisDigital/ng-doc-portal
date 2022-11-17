@@ -11,8 +11,7 @@ const yargOptions = yargs(hideBin(process.argv))
 
 const amountOfFiles = Number(process.env.amount ?? yargOptions.amount);
 
-const directoryLocation =
-  './apps/component-document-portal/src/app/generated-pages';
+const directoryLocation = './apps/component-doc-portal/src/app/generated-pages';
 
 (async () => {
   if (existsSync(directoryLocation)) {

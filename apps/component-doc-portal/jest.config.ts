@@ -1,6 +1,6 @@
 /* eslint-disable */
 export default {
-  displayName: 'component-document-portal',
+  displayName: 'component-doc-portal',
 
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   globals: {
@@ -9,7 +9,7 @@ export default {
       stringifyContentPathRegex: '\\.(html|svg)$',
     },
   },
-  coverageDirectory: '../../coverage/apps/component-document-portal',
+  coverageDirectory: '../../coverage/apps/component-doc-portal',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': 'jest-preset-angular',
   },

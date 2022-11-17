@@ -29,7 +29,7 @@
       "style": "scss"
     }
   },
-  "defaultProject": "component-document-portal",
+  "defaultProject": "component-doc-portal",
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
   "targetDefaults": {
     "build": {

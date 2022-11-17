@@ -4,7 +4,7 @@ import { DocPageConfigService } from '../../services/doc-page-config.service';
 
 @Component({
   selector: 'ngdp-feature',
-  templateUrl: './component-document-portal-feature.component.html',
+  templateUrl: './component-doc-portal-feature.component.html',
 })
 export class ComponentDocumentPortalFeatureComponent {
   filteredConfig: any;

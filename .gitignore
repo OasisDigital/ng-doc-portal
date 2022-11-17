@@ -1,7 +1,7 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
 # Compiled ouputs for compiler performance testing
-apps/component-document-portal/src/app/generated-pages
+apps/component-doc-portal/src/app/generated-pages
 
 # compiled output
 /dist

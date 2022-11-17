@@ -4,8 +4,8 @@
   "license": "MIT",
   "scripts": {
     "nx": "nx",
-    "start": "nx run component-document-portal:serve",
-    "build": "nx run component-document-portal:build",
+    "start": "nx run component-doc-portal:serve",
+    "build": "nx run component-doc-portal:build",
     "generate:doc-page": "nx g @oasisdigital/ng-doc-portal-plugin:doc-page",
     "generate:app": "nx g @oasisdigital/ng-doc-portal-plugin:app",
     "gen:perf-testing": "ts-node --project libs/perf/tsconfig.lib.json -r dotenv/config libs/perf/src/lib/generate-doc-pages.ts",

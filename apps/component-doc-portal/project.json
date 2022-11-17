@@ -1,14 +1,14 @@
 {
-  "name": "component-document-portal",
+  "name": "component-doc-portal",
   "$schema": "..\\..\\node_modules\\nx\\schemas\\project-schema.json",
   "projectType": "application",
-  "sourceRoot": "apps/component-document-portal/src",
-  "prefix": "component-document-portal",
+  "sourceRoot": "apps/component-doc-portal/src",
+  "prefix": "component-doc-portal",
   "targets": {
     "build": {
       "executor": "@oasisdigital/ng-doc-portal-plugin:build",
       "options": {
-        "configFile": "apps/component-document-portal/ng-doc-portal-config.json"
+        "configFile": "apps/component-doc-portal/ng-doc-portal-config.json"
       },
       "configurations": {
         "production": {
@@ -22,7 +22,7 @@
     "serve": {
       "executor": "@oasisdigital/ng-doc-portal-plugin:serve",
       "options": {
-        "configFile": "apps/component-document-portal/ng-doc-portal-config.json"
+        "configFile": "apps/component-doc-portal/ng-doc-portal-config.json"
       },
       "configurations": {
         "production": {
@@ -37,19 +37,19 @@
       "executor": "@angular-devkit/build-angular:browser",
       "outputs": ["{options.outputPath}"],
       "options": {
-        "outputPath": "dist/apps/component-document-portal",
-        "index": "apps/component-document-portal/src/index.html",
-        "main": "apps/component-document-portal/src/main.ts",
-        "polyfills": "apps/component-document-portal/src/polyfills.ts",
-        "tsConfig": "apps/component-document-portal/tsconfig.app.json",
+        "outputPath": "dist/apps/component-doc-portal",
+        "index": "apps/component-doc-portal/src/index.html",
+        "main": "apps/component-doc-portal/src/main.ts",
+        "polyfills": "apps/component-doc-portal/src/polyfills.ts",
+        "tsConfig": "apps/component-doc-portal/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
         "assets": [
-          "apps/component-document-portal/src/favicon.ico",
-          "apps/component-document-portal/src/assets"
+          "apps/component-doc-portal/src/favicon.ico",
+          "apps/component-doc-portal/src/assets"
         ],
         "styles": [
           "libs/ng-doc-portal/src/lib/styles/ng-doc-portal.scss",
-          "apps/component-document-portal/src/styles.scss"
+          "apps/component-doc-portal/src/styles.scss"
         ],
         "scripts": []
       },
@@ -57,8 +57,8 @@
         "production": {
           "fileReplacements": [
             {
-              "replace": "apps/component-document-portal/src/environments/environment.ts",
-              "with": "apps/component-document-portal/src/environments/environment.prod.ts"
+              "replace": "apps/component-doc-portal/src/environments/environment.ts",
+              "with": "apps/component-doc-portal/src/environments/environment.prod.ts"
             }
           ],
           "outputHashing": "all"
@@ -78,10 +78,10 @@
       "executor": "@angular-devkit/build-angular:dev-server",
       "configurations": {
         "production": {
-          "browserTarget": "component-document-portal:ng-build:production"
+          "browserTarget": "component-doc-portal:ng-build:production"
         },
         "development": {
-          "browserTarget": "component-document-portal:ng-build:development"
+          "browserTarget": "component-doc-portal:ng-build:development"
         }
       },
       "defaultConfiguration": "development"
@@ -90,16 +90,16 @@
       "executor": "@nrwl/linter:eslint",
       "options": {
         "lintFilePatterns": [
-          "apps/component-document-portal/src/**/*.ts",
-          "apps/component-document-portal/src/**/*.html"
+          "apps/component-doc-portal/src/**/*.ts",
+          "apps/component-doc-portal/src/**/*.html"
         ]
       }
     },
     "test": {
       "executor": "@nrwl/jest:jest",
-      "outputs": ["{workspaceRoot}/coverage/apps/component-document-portal"],
+      "outputs": ["{workspaceRoot}/coverage/apps/component-doc-portal"],
       "options": {
-        "jestConfig": "apps/component-document-portal/jest.config.ts",
+        "jestConfig": "apps/component-doc-portal/jest.config.ts",
         "passWithNoTests": true
       }
     }

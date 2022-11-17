@@ -82,7 +82,7 @@ function updateProjectExecutors(tree: Tree, options: NormalizedSchema) {
   if (projectConfig.targets) {
     const targetOptions = {
       configFile: `apps/${
-        options.name || 'component-document-portal'
+        options.name || 'component-doc-portal'
       }/ng-doc-portal-config.json`,
     };
 
@@ -177,7 +177,7 @@ export default async function (
   const normalizedOptions = normalizeOptions(tree, options);
 
   await applicationGenerator(tree, {
-    name: options.name || 'component-document-portal',
+    name: options.name || 'component-doc-portal',
     tags: normalizedOptions.parsedTags.join(','),
     directory: options.directory,
     e2eTestRunner: 'none' as any,

@@ -2,7 +2,7 @@ import {
   DynamicDocPageConfig,
   DocPagesMenu,
   DocPageMetadata,
-} from '@ngdp/component-document-portal/util-types';
+} from '@ngdp/component-doc-portal/util-types';
 
 import { createDocPageRoutes } from './side-nav.component';
 

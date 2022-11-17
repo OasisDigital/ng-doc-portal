@@ -6,7 +6,7 @@ import { HIGHLIGHT_OPTIONS } from 'ngx-highlightjs';
 import { NgDocPortalComponentsModule } from './components/ng-doc-portal-components.module';
 import { DocPageViewerComponent } from './pages/doc-page-viewer/doc-page-viewer.component';
 import { HomePageComponent } from './pages/home-page/home-page.component';
-import { ComponentDocumentPortalFeatureComponent } from './pages/main-feature/component-document-portal-feature.component';
+import { ComponentDocumentPortalFeatureComponent } from './pages/main-feature/component-doc-portal-feature.component';
 import {
   CompilerMode,
   LazyDocConfigRecord,
