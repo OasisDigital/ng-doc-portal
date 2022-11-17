@@ -20,7 +20,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@cdp/perf": ["libs/perf/src/index.ts"],
+      "@ngdp/perf": ["libs/perf/src/index.ts"],
       "@oasisdigital/ng-doc-portal": ["libs/ng-doc-portal/src/index.ts"],
       "@oasisdigital/ng-doc-portal-plugin": [
         "libs/ng-doc-portal-plugin/src/index.ts"

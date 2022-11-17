@@ -15,7 +15,7 @@ describe('ng-doc-portal-plugin e2e', () => {
   // are not dependant on one another.
   beforeAll(() => {
     ensureNxProject(
-      '@cdp/ng-doc-portal-plugin',
+      '@ngdp/ng-doc-portal-plugin',
       'dist/libs/ng-doc-portal-plugin'
     );
   });
@@ -29,7 +29,7 @@ describe('ng-doc-portal-plugin e2e', () => {
   it('should create ng-doc-portal-plugin', async () => {
     const project = uniq('ng-doc-portal-plugin');
     await runNxCommandAsync(
-      `generate @cdp/ng-doc-portal-plugin:ng-doc-portal-plugin ${project}`
+      `generate @ngdp/ng-doc-portal-plugin:ng-doc-portal-plugin ${project}`
     );
     const result = await runNxCommandAsync(`build ${project}`);
     expect(result.stdout).toContain('Executor ran');
@@ -39,7 +39,7 @@ describe('ng-doc-portal-plugin e2e', () => {
     it('should create src in the specified directory', async () => {
       const project = uniq('ng-doc-portal-plugin');
       await runNxCommandAsync(
-        `generate @cdp/ng-doc-portal-plugin:ng-doc-portal-plugin ${project} --directory subdir`
+        `generate @ngdp/ng-doc-portal-plugin:ng-doc-portal-plugin ${project} --directory subdir`
       );
       expect(() =>
         checkFilesExist(`libs/subdir/${project}/src/index.ts`)
@@ -51,11 +51,11 @@ describe('ng-doc-portal-plugin e2e', () => {
     it('should add tags to the project', async () => {
       const projectName = uniq('ng-doc-portal-plugin');
       ensureNxProject(
-        '@cdp/ng-doc-portal-plugin',
+        '@ngdp/ng-doc-portal-plugin',
         'dist/libs/ng-doc-portal-plugin'
       );
       await runNxCommandAsync(
-        `generate @cdp/ng-doc-portal-plugin:ng-doc-portal-plugin ${projectName} --tags e2etag,e2ePackage`
+        `generate @ngdp/ng-doc-portal-plugin:ng-doc-portal-plugin ${projectName} --tags e2etag,e2ePackage`
       );
       const project = readJson(`libs/${projectName}/project.json`);
       expect(project.tags).toEqual(['e2etag', 'e2ePackage']);

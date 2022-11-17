@@ -1,10 +1,10 @@
-cdp-nav {
+ngdp-nav {
   height: 100%;
   overflow: auto;
 
   .side-navigation-bar {
     width: auto;
-    border-right: 2px solid var(--cdp-border-color);
+    border-right: 2px solid var(--ngdp-border-color);
     height: 100%;
     display: grid;
     overflow: auto;
@@ -15,7 +15,7 @@ cdp-nav {
       text-align: center;
       display: grid;
       place-items: center;
-      border-bottom: 2px solid var(--cdp-border-color);
+      border-bottom: 2px solid var(--ngdp-border-color);
     }
 
     .filter-input {
@@ -24,9 +24,9 @@ cdp-nav {
       outline: none;
       padding: 0 0;
       padding-left: 10px;
-      background: var(--cdp-background-color);
-      color: var(--cdp-font-color);
-      border-bottom: 2px solid var(--cdp-border-color);
+      background: var(--ngdp-background-color);
+      color: var(--ngdp-font-color);
+      border-bottom: 2px solid var(--ngdp-border-color);
       font-size: 18px;
 
       height: 40px;
@@ -53,14 +53,14 @@ cdp-nav {
           padding: 10px 20px;
           width: calc(100% - 40px);
           display: inline-block;
-          color: var(--cdp-font-color);
+          color: var(--ngdp-font-color);
 
           &.active {
-            background-color: var(--cdp-nav-active-color);
+            background-color: var(--ngdp-nav-active-color);
           }
 
           &:hover {
-            background-color: var(--cdp-nav-highlight-color);
+            background-color: var(--ngdp-nav-highlight-color);
           }
         }
       }

@@ -31,8 +31,8 @@ const directoryLocation =
     standalone: true,
     imports: [NgDocPortalComponentsModule],
     template: \`
-      <cdp-tab-menu>
-        <cdp-tab-item title="Overview">
+      <ngdp-tab-menu>
+        <ngdp-tab-item title="Overview">
           <h1>${docPageId} Component Document Page</h1>
 
           <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Morbi at felis posuere mauris lobortis porta nec eu nisl. Pellentesque malesuada nisi sed arcu maximus, eu congue mi vulputate. Praesent justo arcu, convallis ac diam at, placerat gravida mauris. Vestibulum sit amet velit massa. Nam ut enim et dui dapibus varius dignissim vitae libero. Phasellus eget leo non risus volutpat ullamcorper eget in nibh. Quisque accumsan dolor vel odio feugiat, nec congue diam vehicula. Mauris mattis quis dolor quis varius. Cras erat ante, rhoncus non sem id, tincidunt hendrerit orci. Pellentesque sagittis semper tortor at convallis. Sed venenatis id mi eu placerat. Aliquam vel leo sed ligula porttitor facilisis. Curabitur eu gravida nibh. Vivamus mi nunc, semper eget nibh blandit, consectetur facilisis risus. Fusce aliquam pellentesque massa, non eleifend odio finibus quis.
@@ -40,16 +40,16 @@ const directoryLocation =
           Integer volutpat erat nec augue tempus hendrerit. Donec dictum orci a scelerisque varius. Nam rutrum felis a lacus sollicitudin, sed egestas eros fringilla. Ut vel neque tempor, dapibus ante id, sodales quam. Aliquam pharetra scelerisque lectus, quis lacinia augue ornare pretium. Sed nec commodo lectus. Sed ac fermentum turpis, nec vehicula libero. Integer mollis pharetra mauris vel fringilla. Phasellus suscipit eros eu nunc dapibus ornare. Nam sed laoreet ipsum.
 
           In at purus condimentum, egestas ipsum vel, sagittis est. Etiam sed orci rhoncus mi lobortis imperdiet id gravida neque. Sed at sollicitudin lorem, non cursus metus. Suspendisse potenti. Ut porta nunc id justo fermentum fermentum. Praesent nec diam rhoncus, pretium leo et, consectetur risus. Curabitur ac lorem ullamcorper, fermentum leo eget, mattis ante. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc suscipit eu nisl a eleifend. Proin vulputate nibh nec nisi tempus, quis aliquet tellus facilisis. Morbi tempor dolor ut dignissim maximus. Nullam tristique tincidunt eros in eleifend.</p>
-        </cdp-tab-item>
-        <cdp-tab-item title="Examples">
+        </ngdp-tab-item>
+        <ngdp-tab-item title="Examples">
           <button>Example ${docPageId}</button>
 
-          <textarea cdpCodeSnippet>
+          <textarea ngdpCodeSnippet>
             <button>Example ${docPageId}</button>
           </textarea
           >
-        </cdp-tab-item>
-      </cdp-tab-menu>
+        </ngdp-tab-item>
+      </ngdp-tab-menu>
     \`,
   })
   export class DocumentPageComponent {}

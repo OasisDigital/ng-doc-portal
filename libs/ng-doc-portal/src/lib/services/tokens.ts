@@ -1,8 +1,8 @@
 import { InjectionToken, Provider } from '@angular/core';
 
-export const CDP_THEME_OPTIONS_TOKEN = new InjectionToken<ThemeOption[]>(
-  'CDP_THEME_OPTIONS_TOKEN'
-);
+export const NG_DOC_PORTAL_THEME_OPTIONS_TOKEN = new InjectionToken<
+  ThemeOption[]
+>('NG_DOC_PORTAL_THEME_OPTIONS_TOKEN');
 
 export interface ThemeOption {
   display: string;
@@ -11,11 +11,13 @@ export interface ThemeOption {
   hljsTheme?: string;
 }
 
-export function cdpProvideThemeOptions(options: ThemeOption[]): Provider {
+export function ngDocPortalProvideThemeOptions(
+  options: ThemeOption[]
+): Provider {
   return {
-    provide: CDP_THEME_OPTIONS_TOKEN,
+    provide: NG_DOC_PORTAL_THEME_OPTIONS_TOKEN,
     useValue: options,
   };
 }
 
-export const THEME_KEY = 'cdp-cached-theme';
+export const THEME_KEY = 'ng-doc-portal-cached-theme';

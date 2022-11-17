@@ -12,7 +12,7 @@ import { map, Subject, takeUntil } from 'rxjs';
 import { TabItemComponent } from '../tab-item/tab-item.component';
 
 @Component({
-  selector: 'cdp-tab-menu',
+  selector: 'ngdp-tab-menu',
   templateUrl: './tab-menu.component.html',
 })
 export class TabMenuComponent implements AfterViewInit, OnDestroy {

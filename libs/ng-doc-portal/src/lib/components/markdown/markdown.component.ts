@@ -5,7 +5,7 @@ import { marked } from 'marked';
 import { lastValueFrom } from 'rxjs';
 
 @Component({
-  selector: 'cdp-markdown',
+  selector: 'ngdp-markdown',
   template: `<div [innerHTML]="parsedHtml"></div>`,
 })
 export class MarkdownComponent {

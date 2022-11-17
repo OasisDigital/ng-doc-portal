@@ -9,14 +9,14 @@ import {
   standalone: true,
   imports: [NgDocPortalComponentsModule],
   template: `
-    <cdp-tab-menu>
-      <cdp-tab-item title="Overview">
+    <ngdp-tab-menu>
+      <ngdp-tab-item title="Overview">
         <h1>Button Component Document Page</h1>
         <button>Example Button</button>
 
         <p>The button is used to get actions from the user by click</p>
 
-        <textarea cdpCodeSnippet>
+        <textarea ngdpCodeSnippet>
           <button>Example Buttons</button>
         </textarea
         >
@@ -259,11 +259,11 @@ import {
           et malesuada. Lectus nulla at volutpat diam ut venenatis tellus in. Ut
           tortor pretium viverra suspendisse potenti.
         </p>
-      </cdp-tab-item>
-      <cdp-tab-item title="Playground">
-        <cdp-playground [config]="playgroundConfig"></cdp-playground>
-      </cdp-tab-item>
-    </cdp-tab-menu>
+      </ngdp-tab-item>
+      <ngdp-tab-item title="Playground">
+        <ngdp-playground [config]="playgroundConfig"></ngdp-playground>
+      </ngdp-tab-item>
+    </ngdp-tab-menu>
   `,
 })
 export class ButtonDocumentPageComponent {

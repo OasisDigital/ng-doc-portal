@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import {
-  cdpProvideThemeOptions,
-  cdpProvideTitle,
-  cdpProvideToolbarPlugins,
+  ngDocPortalProvideThemeOptions,
+  ngDocPortalProvideTitle,
+  ngDocPortalProvideToolbarPlugins,
   NgDocPortalModule,
 } from '@oasisdigital/ng-doc-portal';
 
@@ -19,7 +19,7 @@ import { compilerMode, docPageConfigs } from './doc-page-configs';
     NgDocPortalModule.forRoot(docPageConfigs, compilerMode),
   ],
   providers: [
-    cdpProvideThemeOptions([
+    ngDocPortalProvideThemeOptions([
       {
         value: 'light-theme',
         display: 'Light Theme',
@@ -31,8 +31,8 @@ import { compilerMode, docPageConfigs } from './doc-page-configs';
         hljsTheme: 'assets/github-dark-dimmed.css',
       },
     ]),
-    cdpProvideTitle(CustomTitleComponent),
-    cdpProvideToolbarPlugins([CustomPluginComponent]),
+    ngDocPortalProvideTitle(CustomTitleComponent),
+    ngDocPortalProvideToolbarPlugins([CustomPluginComponent]),
   ],
   bootstrap: [AppComponent],
 })

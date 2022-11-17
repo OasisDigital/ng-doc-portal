@@ -3,7 +3,7 @@ import { Component } from '@angular/core';
 import { DocPageConfigService } from '../../services/doc-page-config.service';
 
 @Component({
-  selector: 'cdp-feature',
+  selector: 'ngdp-feature',
   templateUrl: './component-document-portal-feature.component.html',
 })
 export class ComponentDocumentPortalFeatureComponent {

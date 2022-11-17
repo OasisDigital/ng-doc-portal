@@ -1,12 +1,12 @@
 import { Directive, Input, TemplateRef } from '@angular/core';
 
 @Directive({
-  selector: '[cdpTabItem]',
+  selector: '[ngdpTabItem]',
 })
 export class TabItemDirective {
   private _title = '';
 
-  @Input() set cdpTabItem(title: string) {
+  @Input() set ngdpTabItem(title: string) {
     this._title = title;
   }
   get title(): string {

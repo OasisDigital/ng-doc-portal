@@ -31,7 +31,7 @@ interface PlaygroundControl {
 }
 
 @Component({
-  selector: 'cdp-playground',
+  selector: 'ngdp-playground',
   templateUrl: './component-playground.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

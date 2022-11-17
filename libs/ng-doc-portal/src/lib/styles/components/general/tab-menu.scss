@@ -1,4 +1,4 @@
-cdp-tab-menu {
+ngdp-tab-menu {
   display: grid;
   margin-left: -20px;
   overflow: auto;
@@ -9,8 +9,8 @@ cdp-tab-menu {
     display: grid;
     grid-auto-flow: column;
     justify-content: start;
-    background-color: var(--cdp-background-color);
-    border-bottom: 1px solid var(--cdp-border-color);
+    background-color: var(--ngdp-background-color);
+    border-bottom: 1px solid var(--ngdp-border-color);
 
     div {
       cursor: pointer;
@@ -18,13 +18,13 @@ cdp-tab-menu {
       font-size: 20px;
 
       &.highlight {
-        border-bottom: 2px solid var(--cdp-border-color);
+        border-bottom: 2px solid var(--ngdp-border-color);
       }
     }
   }
 
   .tab-content {
-    background-color: var(--cdp-background-color);
+    background-color: var(--ngdp-background-color);
     padding-left: 20px;
     padding-top: 5px;
     overflow: auto;

@@ -193,20 +193,20 @@ import {
   standalone: true,
   imports: [NgDocPortalComponentsModule], // <---- Added imports property here
   template: `
-    <cdp-tab-menu>
-      <cdp-tab-item title="Overview">
+    <ngdp-tab-menu>
+      <ngdp-tab-item title="Overview">
         <h1>Button Component Document Page</h1>
         <button>Example Button</button>
 
         <p>The button is used to get actions from the user by click</p>
-      </cdp-tab-item>
-      <cdp-tab-item title="Examples">
+      </ngdp-tab-item>
+      <ngdp-tab-item title="Examples">
         <button>Example Button</button>
-        <cdp-code-reveal lang="html">
+        <ngdp-code-reveal lang="html">
           <button>Example Buttons</button>
-        </cdp-code-reveal>
-      </cdp-tab-item>
-    </cdp-tab-menu>
+        </ngdp-code-reveal>
+      </ngdp-tab-item>
+    </ngdp-tab-menu>
   `,
 })
 export class ButtonDocumentPageComponent {}
@@ -227,7 +227,7 @@ Since the `ng-doc-portal` system piggy backs off of an angular application you c
 
 ### Setup Theme Selection System
 
-If you want to sync your theming system with your ng doc portal application you can make use of the `cdpProvideThemeOptions` in the `app.module.ts` of your ng doc portal application. You will need to give this method a list of theme options to display in a dropdown menu in our toolbar. Any theme selections will be stored in localstorage and should rehydrate upon refresh.
+If you want to sync your theming system with your ng doc portal application you can make use of the `ngDocPortalProvideThemeOptions` in the `app.module.ts` of your ng doc portal application. You will need to give this method a list of theme options to display in a dropdown menu in our toolbar. Any theme selections will be stored in localstorage and should rehydrate upon refresh.
 
 Example below:
 
@@ -240,7 +240,7 @@ Example below:
   ],
   providers: [
     // Add the below method call to your `providers` list
-    cdpProvideThemeOptions([
+    ngDocPortalProvideThemeOptions([
       { value: 'light-theme', display: 'Light Theme' },
       { value: 'dark-theme', display: 'Dark Theme' },
     ]),
@@ -250,7 +250,7 @@ Example below:
 export class AppModule {}
 ```
 
-The `ThemeOption` interface that you provide to the `cdpProvideThemeOptions` function is below:
+The `ThemeOption` interface that you provide to the `ngDocPortalProvideThemeOptions` function is below:
 
 ```ts
 interface ThemeOption {
@@ -274,11 +274,11 @@ The `hljsTheme` property allows for custom css sheets to be applied to the HLJS 
 The ng doc portal application uses the follow css variables for colors:
 
 ```
---cdp-font-color
---cdp-background-color
---cdp-border-color
---cdp-nav-active-color
---cdp-nav-highlight-color
+--ngdp-font-color
+--ngdp-background-color
+--ngdp-border-color
+--ngdp-nav-active-color
+--ngdp-nav-highlight-color
 ```
 
 Feel free to override these with your own colors based on the selected theme like below:
@@ -286,19 +286,19 @@ Feel free to override these with your own colors based on the selected theme lik
 ```scss
 html {
   &.dark-theme {
-    --cdp-font-color: white;
-    --cdp-background-color: #363636;
-    --cdp-border-color: white;
-    --cdp-nav-active-color: #6e6e6e;
-    --cdp-nav-highlight-color: #adadad;
+    --ngdp-font-color: white;
+    --ngdp-background-color: #363636;
+    --ngdp-border-color: white;
+    --ngdp-nav-active-color: #6e6e6e;
+    --ngdp-nav-highlight-color: #adadad;
   }
 
   &.light-theme {
-    --cdp-font-color: black;
-    --cdp-background-color: white;
-    --cdp-border-color: black;
-    --cdp-nav-active-color: #b9b9b9;
-    --cdp-nav-highlight-color: #868686;
+    --ngdp-font-color: black;
+    --ngdp-background-color: white;
+    --ngdp-border-color: black;
+    --ngdp-nav-active-color: #b9b9b9;
+    --ngdp-nav-highlight-color: #868686;
   }
 }
 ```
@@ -323,7 +323,7 @@ setTheme(newTheme: string): void;
 
 By default we setup a Title for the UI in the top left corner. This will have the default text of 'Doc Portal'.
 
-If you want to set a custom title you may do so by providing the `cdpProvideTitle` function in the root module of the doc portal application.
+If you want to set a custom title you may do so by providing the `ngDocPortalProvideTitle` function in the root module of the doc portal application.
 
 This function takes in either a plain string value or a custom Component class. If you provide a custom component class you will need to make sure the content fits inside a height of 48px.
 
@@ -332,7 +332,7 @@ Example of custom plain string title:
 ```ts
 providers: [
   // Add the below method call to your `providers` list
-  cdpProvideTitle('My Custom Title'),
+  ngDocPortalProvideTitle('My Custom Title'),
 ];
 ```
 
@@ -341,7 +341,7 @@ Example of custom component title:
 ```ts
 providers: [
   // Add the below method call to your `providers` list
-  cdpProvideTitle(MyCustomTitleComponent),
+  ngDocpPortalProvideTitle(MyCustomTitleComponent),
 ];
 ```
 
@@ -354,11 +354,11 @@ In order to provide your components you can setup the below code in your `app.mo
 ```ts
 providers: [
   // Add the below method call to your `providers` list
-  cdpProvideToolbarPlugins([MyCustomPluginComponent]),
+  ngDocPortalProvideToolbarPlugins([MyCustomPluginComponent]),
 ];
 ```
 
-The `cdpProvideToolbarPlugins` takes in an array of components as it's argument. These components will need to fit in a default height of 40-48px (depending on if there is horizontal overflow or not). The width of the component is not limited.
+The `ngDocPortalProvideToolbarPlugins` takes in an array of components as it's argument. These components will need to fit in a default height of 40-48px (depending on if there is horizontal overflow or not). The width of the component is not limited.
 
 ## Ng Doc Portal's Component Library
 
@@ -383,23 +383,23 @@ import { NgDocPortalComponentsModule } from '@oasisdigital/ng-doc-portal';
 
 ### Tab Menu
 
-The tab menu component system allows you to easily have tab-based navigation in your doc page. You will need to have a top level `cdp-tab-menu` and subsequent `cdp-tab-item` elements in your doc page template.
+The tab menu component system allows you to easily have tab-based navigation in your doc page. You will need to have a top level `ngdp-tab-menu` and subsequent `ngdp-tab-item` elements in your doc page template.
 
-The navigation will use `query-params` for the `title` properties you have set on your `cdp-tab-item` component instances.
+The navigation will use `query-params` for the `title` properties you have set on your `ngdp-tab-item` component instances.
 
 Example below:
 
 ```html
-<cdp-tab-menu>
-  <cdp-tab-item title="Overview">
+<ngdp-tab-menu>
+  <ngdp-tab-item title="Overview">
     <h1>Button Component Document Page</h1>
 
     <p>The button is used to get actions from the user by click</p>
-  </cdp-tab-item>
-  <cdp-tab-item title="Examples">
+  </ngdp-tab-item>
+  <ngdp-tab-item title="Examples">
     <button>Example Button</button>
-  </cdp-tab-item>
-</cdp-tab-menu>
+  </ngdp-tab-item>
+</ngdp-tab-menu>
 ```
 
 A potential url for the above template could look like:
@@ -407,30 +407,30 @@ A potential url for the above template could look like:
 
 ### Code Snippet
 
-The `<cdp-code-snippet>` component allows you to display syntax highlighted code with an option to easily get the displayed code onto your clipboard.
+The `<ngdp-code-snippet>` component allows you to display syntax highlighted code with an option to easily get the displayed code onto your clipboard.
 
 There are three different approaches to displaying your code with syntax highlighting.
 
-1. `<cdp-code-snippet>` with `<textarea></textarea>` inside it housing your code
+1. `<ngdp-code-snippet>` with `<textarea></textarea>` inside it housing your code
 
 ```html
-<cdp-code-snippet>
+<ngdp-code-snippet>
   <textarea>
     <!-- Your Code To Display Here -->
   </textarea>
-</cdp-code-snippet>
+</ngdp-code-snippet>
 ```
 
-2. `<cdp-code-snippet>` with `code` input binding assigned to string housing your code
+2. `<ngdp-code-snippet>` with `code` input binding assigned to string housing your code
 
 ```html
-<cdp-code-snippet [code]="yourCodeStringVariable"></cdp-code-snippet>
+<ngdp-code-snippet [code]="yourCodeStringVariable"></ngdp-code-snippet>
 ```
 
-3. `cdpCodeSnippet` directive on a `<textarea></textarea>` element housing your code
+3. `ngdpCodeSnippet` directive on a `<textarea></textarea>` element housing your code
 
 ```html
-<textarea cdpCodeSnippet>
+<textarea ngdpCodeSnippet>
   <!-- Your Code To Display Here -->
 </textarea>
 ```
@@ -440,41 +440,41 @@ There are three different approaches to displaying your code with syntax highlig
 By default the code "language" is set to HTML/Angular template. If you want to override this provide a value for the `lang` input attribute. The options we support are currently: `'html' | 'typescript' | 'css' | 'scss'`. `'html'` is treated the same as an angular template would be.
 
 ```html
-<cdp-code-snippet lang="typescript">
+<ngdp-code-snippet lang="typescript">
   <textarea>
     function myFunction() {
       console.log('Hello World!');
     }
   </textarea>
-</cdp-code-snippet>
+</ngdp-code-snippet>
 ```
 
 #### Angular Template Bindings Helper
 
-If you are displaying Angular template code with any bindings (inputs, outputs, interpolation) then you will want to add the `ngNonBindable` attribute to your `<cdp-code-snippet>` element or your `<textarea>` with the `cdpCodeSnippet` directive on it.
+If you are displaying Angular template code with any bindings (inputs, outputs, interpolation) then you will want to add the `ngNonBindable` attribute to your `<ngdp-code-snippet>` element or your `<textarea>` with the `ngdpCodeSnippet` directive on it.
 
 ### Iframe Embed
 
-The `<cdp-embed-iframe>` component allows you to embed sites into your doc page. You will simply need to set the `src` property.
+The `<ngdp-embed-iframe>` component allows you to embed sites into your doc page. You will simply need to set the `src` property.
 
 Example below:
 
 ```html
-<cdp-embed-iframe
+<ngdp-embed-iframe
   src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-></cdp-embed-iframe>
+></ngdp-embed-iframe>
 ```
 
 ### Markdown
 
-The `<cdp-markdown>` component lets you to render some markdown code inside your doc page. This can either be done with static markdown text or a file located in your assets or hosted elsewhere.
+The `<ngdp-markdown>` component lets you to render some markdown code inside your doc page. This can either be done with static markdown text or a file located in your assets or hosted elsewhere.
 
 Examples below:
 
 #### Hosted/Asset Markdown File
 
 ```html
-<cdp-markdown filePath="/assets/example-markdown.md"></cdp-markdown>
+<ngdp-markdown filePath="/assets/example-markdown.md"></ngdp-markdown>
 ```
 
 #### Static Markdown Text
@@ -488,12 +488,12 @@ Hello World!
 ```
 
 ```html
-<cdp-markdown [markdown]="markdownString"></cdp-markdown>
+<ngdp-markdown [markdown]="markdownString"></ngdp-markdown>
 ```
 
 ### Component Playground
 
-The `<cdp-playground>` component allows you to place your component in a playground form system. Here you can configure form fields that automatically hook into a component's input properties.
+The `<ngdp-playground>` component allows you to place your component in a playground form system. Here you can configure form fields that automatically hook into a component's input properties.
 
 You will need to set the `config` property to a valid `ComponentPlaygroundConfig` object variable on the doc page class.
 
@@ -506,7 +506,7 @@ export class ExamplePlaygroundPageComponent {
 ```
 
 ```html
-<cdp-playground [config]="playgroundComponentConfig"></cdp-playground>
+<ngdp-playground [config]="playgroundComponentConfig"></ngdp-playground>
 ```
 
 The config object requires a `component` property to know which component to work with in the playground.
@@ -532,7 +532,7 @@ There is currently support for the following form controls:
 Full Example Below:
 
 ```html
-<cdp-playground [config]="playgroundComponentConfig"></cdp-playground>
+<ngdp-playground [config]="playgroundComponentConfig"></ngdp-playground>
 ```
 
 ```ts

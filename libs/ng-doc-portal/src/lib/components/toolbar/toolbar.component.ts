@@ -11,12 +11,15 @@ import { FormControl } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
 
 import { ThemeService } from '../../services/theme-service';
-import { CDP_THEME_OPTIONS_TOKEN, ThemeOption } from '../../services/tokens';
+import {
+  NG_DOC_PORTAL_THEME_OPTIONS_TOKEN,
+  ThemeOption,
+} from '../../services/tokens';
 
-import { CDP_TOOLBAR_PLUGINS_TOKEN } from './toolbar-tokens';
+import { NG_DOC_PORTAL_TOOLBAR_PLUGINS_TOKEN } from './toolbar-tokens';
 
 @Component({
-  selector: 'cdp-toolbar',
+  selector: 'ngdp-toolbar',
   templateUrl: './toolbar.component.html',
 })
 export class ToolbarComponent implements OnDestroy {
@@ -34,10 +37,10 @@ export class ToolbarComponent implements OnDestroy {
     private cdr: ChangeDetectorRef,
     private themeService: ThemeService,
     @Optional()
-    @Inject(CDP_TOOLBAR_PLUGINS_TOKEN)
+    @Inject(NG_DOC_PORTAL_TOOLBAR_PLUGINS_TOKEN)
     public plugins?: Type<any>[],
     @Optional()
-    @Inject(CDP_THEME_OPTIONS_TOKEN)
+    @Inject(NG_DOC_PORTAL_THEME_OPTIONS_TOKEN)
     public themeOptions?: ThemeOption[]
   ) {
     this.themeControl = new FormControl(this.themeService.getTheme() ?? '', {

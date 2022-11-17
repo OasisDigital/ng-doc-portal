@@ -1,4 +1,4 @@
-cdp-feature {
+ngdp-feature {
   height: 100%;
   width: 100%;
 
@@ -23,12 +23,12 @@ cdp-feature {
         overflow: auto;
       }
 
-      cdp-toolbar {
+      ngdp-toolbar {
         grid-area: toolbar;
       }
     }
 
-    cdp-nav {
+    ngdp-nav {
       grid-area: nav;
     }
   }

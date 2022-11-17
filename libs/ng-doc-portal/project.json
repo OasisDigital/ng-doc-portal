@@ -2,7 +2,7 @@
   "name": "ng-doc-portal",
   "projectType": "library",
   "sourceRoot": "libs/ng-doc-portal/src",
-  "prefix": "cdp",
+  "prefix": "ngdp",
   "targets": {
     "build": {
       "executor": "@nrwl/angular:package",

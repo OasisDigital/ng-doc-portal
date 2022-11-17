@@ -2,7 +2,7 @@
   <div class="component-display">
     <ng-container
       *ngIf="renderComponentConfig"
-      [cdpRenderComponent]="renderComponentConfig"
+      [ngdpRenderComponent]="renderComponentConfig"
       (componentRefCreated)="initializeComponentBindings($event)"
     ></ng-container>
   </div>

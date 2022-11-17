@@ -8,12 +8,12 @@ body {
 }
 
 html {
-  color: var(--cdp-font-color);
-  background: var(--cdp-background-color);
+  color: var(--ngdp-font-color);
+  background: var(--ngdp-background-color);
 
-  --cdp-font-color: black;
-  --cdp-background-color: white;
-  --cdp-border-color: black;
-  --cdp-nav-active-color: #b9b9b9;
-  --cdp-nav-highlight-color: #868686;
+  --ngdp-font-color: black;
+  --ngdp-background-color: white;
+  --ngdp-border-color: black;
+  --ngdp-nav-active-color: #b9b9b9;
+  --ngdp-nav-highlight-color: #868686;
 }

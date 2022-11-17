@@ -14,10 +14,10 @@ export interface RenderComponentConfig {
 }
 
 @Directive({
-  selector: '[cdpRenderComponent]',
+  selector: '[ngdpRenderComponent]',
 })
 export class RenderComponentDirective {
-  @Input() set cdpRenderComponent(config: RenderComponentConfig) {
+  @Input() set ngdpRenderComponent(config: RenderComponentConfig) {
     this.vcr.clear();
     this.componentRefCreated.emit(
       this.vcr.createComponent(config.component, {

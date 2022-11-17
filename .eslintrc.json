@@ -40,11 +40,11 @@
               {
                 "group": "external",
                 "position": "after",
-                "pattern": "[!@cdp, !.**]"
+                "pattern": "[!@ngdp, !.**]"
               },
               {
                 "group": "internal",
-                "pattern": "@cdp/**"
+                "pattern": "@ngdp/**"
               }
             ],
             "groups": ["external", "internal", "parent", "sibling", "index"],

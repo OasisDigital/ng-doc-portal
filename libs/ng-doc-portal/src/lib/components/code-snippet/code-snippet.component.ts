@@ -27,7 +27,7 @@ import {
 } from 'rxjs';
 
 @Component({
-  selector: 'cdp-code-snippet',
+  selector: 'ngdp-code-snippet',
   templateUrl: './code-snippet.component.html',
 })
 export class CodeSnippetComponent
@@ -83,13 +83,13 @@ export class CodeSnippetComponent
   ngAfterViewInit() {
     if (this.content && this.content.nativeElement.children.length !== 0) {
       const throwErrorMessage =
-        new Error(`The \`<cdp-code-snippet>\` component expects to only have a \`<textarea>\` element as a direct child. Example below:
+        new Error(`The \`<ngdp-code-snippet>\` component expects to only have a \`<textarea>\` element as a direct child. Example below:
 
-    <cdp-code-snippet>
+    <ngdp-code-snippet>
       <textarea>
         <!-- Your Code For Display Here -->
       </textarea>
-    </cdp-code-snippet>
+    </ngdp-code-snippet>
 `);
       const errorMessage =
         'Error with provided code... See browser console for more information.';

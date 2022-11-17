@@ -3,7 +3,7 @@ import { Directive, ElementRef, Input, ViewContainerRef } from '@angular/core';
 import { CodeSnippetComponent } from './code-snippet.component';
 
 @Directive({
-  selector: '[cdpCodeSnippet]',
+  selector: '[ngdpCodeSnippet]',
 })
 export class CodeSnippetDirective {
   @Input() lang: 'html' | 'typescript' = 'html';
@@ -14,7 +14,7 @@ export class CodeSnippetDirective {
   ) {
     if (this.element.nativeElement.tagName !== 'TEXTAREA') {
       throw new Error(
-        'The `[cdpCodeSnippet] directive can only be used on the <textarea> element`'
+        'The `[ngdpCodeSnippet] directive can only be used on the <textarea> element`'
       );
     } else {
       // have to use a timeout here in case this directive is on a content projected element

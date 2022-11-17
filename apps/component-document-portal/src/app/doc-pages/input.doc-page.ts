@@ -11,7 +11,7 @@ import {
     <h1>Input Component Document Page</h1>
     <input placeholder="Example Input" />
 
-    <textarea cdpCodeSnippet ngNonBindable>
+    <textarea ngdpCodeSnippet ngNonBindable>
       <label>Hello World</label>
       <input placeholder="Example Input" />
       <button>Example Button</button>

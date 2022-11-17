@@ -1,11 +1,11 @@
 <ng-container *ngIf="!configService.loading; else loadingConfigs">
   <div class="configs-loaded-view">
-    <cdp-nav [configs]="filteredConfig"></cdp-nav>
+    <ngdp-nav [configs]="filteredConfig"></ngdp-nav>
     <div class="nav-content">
-      <cdp-toolbar
+      <ngdp-toolbar
         #toolbar
         [class.hide]="!toolbar.hasChildElements"
-      ></cdp-toolbar>
+      ></ngdp-toolbar>
       <div class="router-content">
         <router-outlet></router-outlet>
       </div>

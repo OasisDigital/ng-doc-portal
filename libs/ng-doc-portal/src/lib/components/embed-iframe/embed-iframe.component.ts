@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
-  selector: 'cdp-embed-iframe',
+  selector: 'ngdp-embed-iframe',
   templateUrl: './embed-iframe.component.html',
 })
 export class EmbedIframeComponent {

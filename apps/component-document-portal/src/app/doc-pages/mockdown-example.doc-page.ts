@@ -14,14 +14,14 @@ Hello World!
   standalone: true,
   imports: [NgDocPortalComponentsModule],
   template: `
-    <cdp-tab-menu>
-      <cdp-tab-item title="File Based">
-        <cdp-markdown filePath="/assets/test-markdown.md"></cdp-markdown>
-      </cdp-tab-item>
-      <cdp-tab-item title="Local String">
-        <cdp-markdown [markdown]="markdownString"></cdp-markdown>
-      </cdp-tab-item>
-    </cdp-tab-menu>
+    <ngdp-tab-menu>
+      <ngdp-tab-item title="File Based">
+        <ngdp-markdown filePath="/assets/test-markdown.md"></ngdp-markdown>
+      </ngdp-tab-item>
+      <ngdp-tab-item title="Local String">
+        <ngdp-markdown [markdown]="markdownString"></ngdp-markdown>
+      </ngdp-tab-item>
+    </ngdp-tab-menu>
   `,
 })
 export class MarkdownExampleDocumentPageComponent {

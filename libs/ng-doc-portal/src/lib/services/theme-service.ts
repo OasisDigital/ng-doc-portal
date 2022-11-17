@@ -3,7 +3,11 @@ import { Inject, Injectable, Optional } from '@angular/core';
 import { HighlightLoader } from 'ngx-highlightjs';
 import { ReplaySubject } from 'rxjs';
 
-import { CDP_THEME_OPTIONS_TOKEN, ThemeOption, THEME_KEY } from './tokens';
+import {
+  NG_DOC_PORTAL_THEME_OPTIONS_TOKEN,
+  ThemeOption,
+  THEME_KEY,
+} from './tokens';
 
 @Injectable({ providedIn: 'root' })
 export class ThemeService {
@@ -15,7 +19,7 @@ export class ThemeService {
     private hljsLoader: HighlightLoader,
     @Inject(DOCUMENT) private document: Document,
     @Optional()
-    @Inject(CDP_THEME_OPTIONS_TOKEN)
+    @Inject(NG_DOC_PORTAL_THEME_OPTIONS_TOKEN)
     public themeOptions?: ThemeOption[]
   ) {
     if (this.themeOptions?.length) {

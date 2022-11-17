@@ -6,7 +6,7 @@ import {
 } from '../../types/doc-page-config.types';
 
 @Component({
-  selector: 'cdp-nav',
+  selector: 'ngdp-nav',
   templateUrl: './side-nav.component.html',
 })
 export class SideNavComponent {

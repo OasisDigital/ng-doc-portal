@@ -1,4 +1,4 @@
-cdp-playground {
+ngdp-playground {
   height: 100%;
   display: grid;
   grid-template-rows: auto 1fr;
@@ -20,7 +20,7 @@ cdp-playground {
   }
 
   .form-view {
-    border-top: 2px solid var(--cdp-border-color);
+    border-top: 2px solid var(--ngdp-border-color);
     display: grid;
     grid-auto-rows: max-content;
     place-items: center;
