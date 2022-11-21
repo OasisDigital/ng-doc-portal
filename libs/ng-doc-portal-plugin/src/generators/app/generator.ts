@@ -76,6 +76,21 @@ function updateProjectStyles(tree: Tree, options: NormalizedSchema) {
   }
 }
 
+function updateProjectCommonJsDependencies(
+  tree: Tree,
+  options: NormalizedSchema
+) {
+  const projectConfig = readProjectConfiguration(tree, options.projectName);
+
+  if (projectConfig.targets) {
+    projectConfig.targets.build.options['allowedCommonJsDependencies'] = [
+      'prettier',
+    ];
+
+    updateProjectConfiguration(tree, options.projectName, projectConfig);
+  }
+}
+
 function updateProjectExecutors(tree: Tree, options: NormalizedSchema) {
   const projectConfig = readProjectConfiguration(tree, options.projectName);
 
@@ -193,6 +208,7 @@ export default async function (
   );
 
   updateProjectStyles(tree, normalizedOptions);
+  updateProjectCommonJsDependencies(tree, normalizedOptions);
   updateProjectExecutors(tree, normalizedOptions);
   removeProjectBuildBudgets(tree, normalizedOptions);
   removeExtractI18N(tree, normalizedOptions);

@@ -51,7 +51,10 @@
           "libs/ng-doc-portal/src/lib/styles/ng-doc-portal.scss",
           "apps/component-doc-portal/src/styles.scss"
         ],
-        "scripts": []
+        "scripts": [],
+        "allowedCommonJsDependencies": [
+          "prettier"
+        ]
       },
       "configurations": {
         "production": {
