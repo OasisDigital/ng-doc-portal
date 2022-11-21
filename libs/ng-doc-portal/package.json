@@ -1,6 +1,6 @@
 {
   "name": "@oasisdigital/ng-doc-portal",
-  "description": "Component documentation portal system written natively in Angular",
+  "description": "Documentation portal system written natively in Angular",
   "version": "0.8.0",
   "peerDependencies": {
     "@angular/common": "^15.0.0",
@@ -28,7 +28,8 @@
     "documentation",
     "portal",
     "component",
-    "components"
+    "components",
+    "library"
   ],
   "author": "Zachary Kipping <zjkipping@hotmail.com>",
   "contributors": [
@@ -37,5 +38,13 @@
       "email": "alisha.robinson@oasisdigital.com"
     }
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "homepage": "https://github.com/OasisDigital/ng-doc-portal/tree/main/libs/ng-doc-portal#readme",
+  "bugs": {
+    "url": "https://github.com/OasisDigital/ng-doc-portal/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OasisDigital/ng-doc-portal"
+  }
 }

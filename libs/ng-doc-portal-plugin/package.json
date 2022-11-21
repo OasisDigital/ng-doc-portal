@@ -37,5 +37,13 @@
       "email": "alisha.robinson@oasisdigital.com"
     }
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "homepage": "https://github.com/OasisDigital/ng-doc-portal/tree/main/libs/ng-doc-portal-plugin#readme",
+  "bugs": {
+    "url": "https://github.com/OasisDigital/ng-doc-portal/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OasisDigital/ng-doc-portal"
+  }
 }
