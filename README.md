@@ -1,4 +1,4 @@
-# Angular Document Portal Project
+# Ng Doc Portal Project
 
 This is the root of the nx workspace containing the two packages:
 
@@ -32,6 +32,8 @@ Run `npm start` to run the example `ng-doc-portal` application.
 Run `npm build` to build the example `ng-doc-portal` application.
 
 ## Publishing
+
+Currently there is no automation in place for adjusting the package versions & publishing. So, you will need to manually do the below:
 
 Adjust the version in both packages' `package.json` file.
 
