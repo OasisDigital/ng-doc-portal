@@ -19,9 +19,13 @@ export function accumulatePayloads(
   curr: ProcessedFileEvent
 ): EventPayload[] {
   if (curr.type === 'init') {
-    return curr.payload;
+    const list = sortFullPayloadList(curr.payload);
+    return list;
   } else if (curr.type === 'add') {
-    return [...acc, { filePath: curr.filePath, title: curr.title }];
+    return insertIntoSortedPayloadList(acc, {
+      filePath: curr.filePath,
+      title: curr.title,
+    });
   } else if (curr.type === 'unlink') {
     return acc.filter((f) => f.filePath !== curr.filePath);
   } else if (curr.type === 'change') {
@@ -38,6 +42,46 @@ export function accumulatePayloads(
   }
   // Can't happen, but needed for the compiler
   return [];
+}
+
+export function sortFullPayloadList(list: EventPayload[]) {
+  return list.sort(comparePayloadTitles);
+}
+
+export function insertIntoSortedPayloadList(
+  list: EventPayload[],
+  item: EventPayload
+) {
+  let index = 0;
+  let low = 0;
+  let mid = -1;
+  let high = list.length;
+  let c = 0;
+  while (low < high) {
+    mid = Math.floor((low + high) / 2);
+    c = comparePayloadTitles(list[mid], item);
+    if (c < 0) {
+      low = mid + 1;
+    } else if (c > 0) {
+      high = mid;
+    } else {
+      index = mid;
+      break;
+    }
+  }
+  index = low;
+  list.splice(index, 0, item);
+  return list;
+}
+
+export function comparePayloadTitles(a: EventPayload, b: EventPayload) {
+  if (a.title > b.title) {
+    return 1;
+  } else if (a.title < b.title) {
+    return -1;
+  } else {
+    return 0;
+  }
 }
 
 export function findTitlePrefixFromGlobPatterns(
