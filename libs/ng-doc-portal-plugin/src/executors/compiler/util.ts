@@ -76,7 +76,11 @@ export function generateTitleFromFilePath(filePath: string) {
   let title = '';
   for (let word of words) {
     word = word.charAt(0).toUpperCase() + word.substring(1);
-    title = `${title} ${word}`;
+    if (title) {
+      title = `${title} ${word}`;
+    } else {
+      title = word;
+    }
   }
   return title.charAt(0).toUpperCase() + title.substring(1);
 }
