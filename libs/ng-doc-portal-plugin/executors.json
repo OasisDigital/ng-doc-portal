@@ -4,12 +4,17 @@
     "build": {
       "implementation": "./src/executors/build/executor",
       "schema": "./src/executors/build/schema.json",
-      "description": "build executor"
+      "description": "Compiles the doc-page system and builds the angular app"
     },
     "serve": {
       "implementation": "./src/executors/serve/executor",
       "schema": "./src/executors/serve/schema.json",
-      "description": "serve executor"
+      "description": "Compiles and watching the doc-page system and serves the angular app"
+    },
+    "compile": {
+      "implementation": "./src/executors/compile/executor",
+      "schema": "./src/executors/compile/schema.json",
+      "description": "A single compile of the doc-page system"
     }
   }
 }

@@ -1,3 +1,3 @@
-import { SchemaBase } from '../../util/schema-base';
+import { BaseSchema } from '../../util/schema-base';
 
-export type BuildExecutorSchema = SchemaBase;
+export type BuildExecutorSchema = BaseSchema;

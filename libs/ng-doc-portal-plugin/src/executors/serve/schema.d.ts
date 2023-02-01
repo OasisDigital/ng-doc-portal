@@ -1,3 +1,3 @@
-import { SchemaBase } from '../../util/schema-base';
+import { BaseSchema } from '../../util/schema-base';
 
-export type ServeExecutorSchema = SchemaBase;
+export type ServeExecutorSchema = BaseSchema;

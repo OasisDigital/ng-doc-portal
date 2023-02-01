@@ -5,6 +5,12 @@
   "sourceRoot": "apps/component-doc-portal/src",
   "prefix": "component-doc-portal",
   "targets": {
+    "compile": {
+      "executor": "@oasisdigital/ng-doc-portal-plugin:compile",
+      "options": {
+        "configFile": "apps/component-doc-portal/ng-doc-portal-config.json"
+      }
+    },
     "build": {
       "executor": "@oasisdigital/ng-doc-portal-plugin:build",
       "options": {
@@ -12,10 +18,10 @@
       },
       "configurations": {
         "production": {
-          "ng-config-target": "production"
+          "ngConfigTarget": "production"
         },
         "configuration": {
-          "ng-config-target": "development"
+          "ngConfigTarget": "development"
         }
       }
     },
@@ -26,11 +32,25 @@
       },
       "configurations": {
         "production": {
-          "ng-config-target": "production"
+          "ngConfigTarget": "production"
         },
         "configuration": {
-          "ng-config-target": "development"
+          "ngConfigTarget": "development"
         }
+      }
+    },
+    "extract-i18n": {
+      "executor": "nx:run-commands",
+      "options": {
+        "commands": [
+          {
+            "command": "npx nx compile component-doc-portal"
+          },
+          {
+            "command": "npx nx ng-extract-i18n component-doc-portal"
+          }
+        ],
+        "parallel": false
       }
     },
     "ng-build": {
@@ -88,6 +108,12 @@
         }
       },
       "defaultConfiguration": "development"
+    },
+    "ng-extract-i18n": {
+      "executor": "@angular-devkit/build-angular:extract-i18n",
+      "options": {
+        "browserTarget": "component-doc-portal:ng-build"
+      }
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",

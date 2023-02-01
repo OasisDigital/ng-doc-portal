@@ -36,7 +36,7 @@ To build your application you can run `nx build {name-of-application}`.
 
 The `serve` and `build` commands are runnning the normal Angular serve/build underneath aliased to `ng-serve` and `ng-build` along with our custom compiler.
 
-If you would like to specify which Angular configuration to use for your build/serve commands please adjust the `ng-config-target` property of the `configurations` object in your app's `project.json` build/serve objects.
+If you would like to specify which Angular configuration to use for your build/serve commands please adjust the `ngConfigTarget` property of the `configurations` object in your app's `project.json` build/serve objects.
 
 ## Configuring Your `ng-doc-portal` Application
 

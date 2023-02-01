@@ -94,26 +94,30 @@ function updateProjectCommonJsDependencies(
 function updateProjectExecutors(tree: Tree, options: NormalizedSchema) {
   const projectConfig = readProjectConfiguration(tree, options.projectName);
 
+  const appName = options.name || 'component-doc-portal';
+
   if (projectConfig.targets) {
     const targetOptions = {
-      configFile: `apps/${
-        options.name || 'component-doc-portal'
-      }/ng-doc-portal-config.json`,
+      configFile: `apps/${appName}/ng-doc-portal-config.json`,
     };
 
     projectConfig.targets = {
       ...projectConfig.targets,
       ['ng-build']: { ...projectConfig.targets['build'] },
       ['ng-serve']: { ...projectConfig.targets['serve'] },
+      ['compile']: {
+        executor: '@oasisdigital/ng-doc-portal-plugin:compile',
+        options: targetOptions,
+      },
       ['build']: {
         executor: '@oasisdigital/ng-doc-portal-plugin:build',
         options: targetOptions,
         configurations: {
           production: {
-            'ng-config-target': 'production',
+            ngConfigTarget: 'production',
           },
           configuration: {
-            'ng-config-target': 'development',
+            ngConfigTarget: 'development',
           },
         },
       },
@@ -122,10 +126,10 @@ function updateProjectExecutors(tree: Tree, options: NormalizedSchema) {
         options: targetOptions,
         configurations: {
           production: {
-            'ng-config-target': 'production',
+            ngConfigTarget: 'production',
           },
           configuration: {
-            'ng-config-target': 'development',
+            ngConfigTarget: 'development',
           },
         },
       },
@@ -143,6 +147,34 @@ function updateProjectExecutors(tree: Tree, options: NormalizedSchema) {
           ].browserTarget.replace(':build:', ':ng-build:');
         }
       );
+    }
+
+    // If there is an 'extract-i18n' we need to re-work it
+    if (projectConfig.targets['extract-i18n']) {
+      projectConfig.targets['ng-extract-i18n'] = {
+        ...projectConfig.targets['extract-i18n'],
+        options: {
+          ...projectConfig.targets['extract-i18n'].options,
+          browserTarget: projectConfig.targets[
+            'extract-i18n'
+          ].options.browserTarget.replace(':build', ':ng-build'),
+        },
+      };
+
+      projectConfig.targets['extract-i18n'] = {
+        executor: 'nx:run-commands',
+        options: {
+          commands: [
+            {
+              command: `npx nx compile ${appName}`,
+            },
+            {
+              command: `npx nx ng-extract-i18n ${appName}`,
+            },
+          ],
+          parallel: false,
+        },
+      };
     }
 
     updateProjectConfiguration(tree, options.projectName, projectConfig);

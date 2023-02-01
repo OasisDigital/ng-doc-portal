@@ -1,37 +1,51 @@
 import { ExecutorContext } from '@nrwl/devkit';
 
-import { SchemaBase } from '../util/schema-base';
+import {
+  CompileSchema,
+  CompileWithAngularConfigTargetSchema,
+} from '../util/schema-base';
 
 export function getAngularConfigTarget(
-  options: SchemaBase,
+  options: CompileWithAngularConfigTargetSchema,
   _context: ExecutorContext
 ) {
-  return options['ng-config-target'];
+  return options['ngConfigTarget'];
 }
 
 export function getConfigFileLocationFromContext(
-  options: SchemaBase,
+  options: CompileSchema,
   context: ExecutorContext
 ) {
-  const projectRelativeRoot = context.workspace.projects[
-    context.projectName ?? ''
-  ].root.replace(/\\/g, '/');
-  const defaultconfigFileLocation = `${projectRelativeRoot}/ng-doc-portal-config.json`;
+  const projects = context.projectsConfigurations?.projects;
+  if (projects && context.projectName) {
+    const projectRelativeRoot = projects[context.projectName].root.replace(
+      /\\/g,
+      '/'
+    );
+    const defaultconfigFileLocation = `${projectRelativeRoot}/ng-doc-portal-config.json`;
 
-  let configFileLocation: string | undefined = options.configFile;
-  if (configFileLocation) {
-    configFileLocation = `${configFileLocation}`;
+    let configFileLocation: string | undefined = options.configFile;
+    if (configFileLocation) {
+      configFileLocation = `${configFileLocation}`;
+    }
+    return configFileLocation ?? defaultconfigFileLocation;
+  } else {
+    throw new Error("Unable to find project's configuration...");
   }
-
-  return configFileLocation ?? defaultconfigFileLocation;
 }
 
 export function getDocPageLoadersFileLocationFromContext(
-  _options: SchemaBase,
+  _options: CompileSchema,
   context: ExecutorContext
 ) {
-  const projectRelativeRoot = context.workspace.projects[
-    context.projectName ?? ''
-  ].root.replace(/\\/g, '/');
-  return `${projectRelativeRoot}/src/app/doc-page-loaders.ts`;
+  const projects = context.projectsConfigurations?.projects;
+  if (projects && context.projectName) {
+    const projectRelativeRoot = projects[context.projectName].root.replace(
+      /\\/g,
+      '/'
+    );
+    return `${projectRelativeRoot}/src/app/doc-page-loaders.ts`;
+  } else {
+    throw new Error("Unable to find project's configuration...");
+  }
 }

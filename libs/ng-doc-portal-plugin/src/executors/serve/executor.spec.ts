@@ -1,11 +1,17 @@
-import { ServeExecutorSchema } from './schema';
-import executor from './executor';
+import { ExecutorContext } from '@nrwl/devkit';
 
-const options: ServeExecutorSchema = {};
+import executor from './executor';
+import { ServeExecutorSchema } from './schema';
+
+const options: ServeExecutorSchema = {
+  configFile: 'apps/test-location',
+};
+
+const context: ExecutorContext = {} as any;
 
 describe('Serve Executor', () => {
   it('can run', async () => {
-    const output = await executor(options);
+    const output = await executor(options, context);
     expect(output.success).toBe(true);
   });
 });

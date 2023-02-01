@@ -1,15 +1,15 @@
 import { ExecutorContext } from '@nrwl/devkit';
 
 import executor from './executor';
-import { BuildExecutorSchema } from './schema';
+import { CompileExecutorSchema } from './schema';
 
-const options: BuildExecutorSchema = {
+const options: CompileExecutorSchema = {
   configFile: 'apps/test-location',
 };
 
 const context: ExecutorContext = {} as any;
 
-describe('Build Executor', () => {
+describe('Compile Executor', () => {
   it('can run', async () => {
     const output = await executor(options, context);
     expect(output.success).toBe(true);
