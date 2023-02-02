@@ -6,6 +6,7 @@ html {
     --ngdp-border-color: white;
     --ngdp-side-nav-active-color: #6e6e6e;
     --ngdp-side-nav-highlight-color: #adadad;
+    --ngdp-code-background-color: #4e4e4e;
   }
 
   &.light-theme {
@@ -14,5 +15,6 @@ html {
     --ngdp-border-color: black;
     --ngdp-side-nav-active-color: #b9b9b9;
     --ngdp-side-nav-highlight-color: #868686;
+    --ngdp-code-background-color: #eeeeee;
   }
 }

@@ -14,7 +14,7 @@ export class CodeSnippetDirective {
   ) {
     if (this.element.nativeElement.tagName !== 'TEXTAREA') {
       throw new Error(
-        'The `[ngdpCodeSnippet] directive can only be used on the <textarea> element`'
+        'The `[ngdpCodeSnippet]` directive can only be used on the <textarea> element'
       );
     } else {
       // have to use a timeout here in case this directive is on a content projected element

@@ -8,6 +8,7 @@ export * from './tab-menu/tab-menu.component';
 export * from './tab-item/tab-item.component';
 export * from './side-nav/side-nav.component';
 export * from './markdown/markdown.component';
+export * from './markdown/markdown.directive';
 export * from './embed-iframe/embed-iframe.component';
 export * from './toolbar/toolbar.component';
 export * from './toolbar/toolbar-tokens';

@@ -276,6 +276,7 @@ The ng doc portal application uses the follow css variables for colors:
 --ngdp-border-color
 --ngdp-side-nav-active-color
 --ngdp-side-nav-highlight-color
+--ngdp-code-background-color
 ```
 
 Feel free to override these with your own colors based on the selected theme like below:
@@ -288,6 +289,7 @@ html {
     --ngdp-border-color: white;
     --ngdp-side-nav-active-color: #6e6e6e;
     --ngdp-side-nav-highlight-color: #adadad;
+    --ngdp-code-background-color: #4e4e4e;
   }
 
   &.light-theme {
@@ -296,6 +298,7 @@ html {
     --ngdp-border-color: black;
     --ngdp-side-nav-active-color: #b9b9b9;
     --ngdp-side-nav-highlight-color: #868686;
+    --ngdp-code-background-color: #eeeeee;
   }
 }
 ```
@@ -487,6 +490,20 @@ Hello World!
 ```html
 <ngdp-markdown [markdown]="markdownString"></ngdp-markdown>
 ```
+
+#### Markdown Directive
+
+```html
+<pre ngdpMarkdown>
+  # Header
+  
+  Hello World!
+</pre>
+```
+
+> It should be noted that most markdown syntaxes should work within the html `<pre>` element. The only notable one that doesn't is the double space "line break" syntax. Please use a `\` at the end of a paragraph line to denote a "line break".
+
+> It also generally helps to use a separate `html` file for your doc-page component's template when making use of the `ngdpMarkdown` directive. This is due to the angular language service having issues with syntax highlighting some parts of markdown code inside the inline template of your component's Typescript file. This is especially the case when using the "backtick" character for code blocks/in-line snippets.
 
 ### Component Playground
 

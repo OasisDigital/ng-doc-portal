@@ -10,6 +10,7 @@ import { CodeSnippetDirective } from './code-snippet/code-snippet.directive';
 import { ComponentPlaygroundModule } from './component-playground/component-playground.module';
 import { EmbedIframeComponent } from './embed-iframe/embed-iframe.component';
 import { MarkdownComponent } from './markdown/markdown.component';
+import { MarkdownDirective } from './markdown/markdown.directive';
 import { SideNavComponent } from './side-nav/side-nav.component';
 import { TabItemComponent } from './tab-item/tab-item.component';
 import { TabMenuComponent } from './tab-menu/tab-menu.component';
@@ -31,6 +32,7 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
     CodeSnippetComponent,
     SideNavComponent,
     MarkdownComponent,
+    MarkdownDirective,
     EmbedIframeComponent,
     ToolbarComponent,
     TitleComponent,
@@ -42,6 +44,7 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
     CodeSnippetComponent,
     SideNavComponent,
     MarkdownComponent,
+    MarkdownDirective,
     EmbedIframeComponent,
     ToolbarComponent,
     ComponentPlaygroundModule,

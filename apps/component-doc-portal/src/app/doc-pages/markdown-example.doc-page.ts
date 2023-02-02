@@ -13,16 +13,7 @@ Hello World!
 @Component({
   standalone: true,
   imports: [NgDocPortalComponentsModule],
-  template: `
-    <ngdp-tab-menu>
-      <ngdp-tab-item title="File Based">
-        <ngdp-markdown filePath="/assets/test-markdown.md"></ngdp-markdown>
-      </ngdp-tab-item>
-      <ngdp-tab-item title="Local String">
-        <ngdp-markdown [markdown]="markdownString"></ngdp-markdown>
-      </ngdp-tab-item>
-    </ngdp-tab-menu>
-  `,
+  templateUrl: './markdown-example.doc-page.html',
 })
 export class MarkdownExampleDocumentPageComponent {
   markdownString = exampleMarkdown;

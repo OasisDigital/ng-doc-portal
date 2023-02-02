@@ -1,0 +1,55 @@
+<ngdp-tab-menu>
+  <ngdp-tab-item title="File Based">
+    <ngdp-markdown filePath="/assets/test-markdown.md"></ngdp-markdown>
+  </ngdp-tab-item>
+  <ngdp-tab-item title="Local String">
+    <ngdp-markdown [markdown]="markdownString"></ngdp-markdown>
+  </ngdp-tab-item>
+  <ngdp-tab-item title="Directive">
+    <pre ngdpMarkdown>
+      # Markdown from html with added directive
+
+      Line 1\
+      Line 2
+
+      different paragraph
+
+      **Hello World!**
+
+      [Google](https://google.com "tooltip title")
+
+      ---
+
+      ```js
+        console.log('hello world');
+
+        const blah = 'asd';
+      ```
+
+      *Hello* `inline code snippet` world
+
+      > block ~~quote~~ example
+
+      | Syntax      | Description |
+      | :---        |        :--- |
+      | Header      | Title       |
+      | Paragraph   | Text        |
+
+      - [x] Write the press release
+      - [ ] Update the website
+      - [ ] Contact the media
+
+      1. First item
+      2. Second item
+      3. Third item
+      4. Fourth item
+
+      - First item
+      - Second item
+      - Third item
+      - Fourth item
+
+      ![Oasis Digital Logo](https://oasisdigital.com/assets/images/od-logo.svg "Oasis Digital Logo")
+    </pre>
+  </ngdp-tab-item>
+</ngdp-tab-menu>
