@@ -167,6 +167,7 @@ function updateProjectExecutors(tree: Tree, options: NormalizedSchema) {
           commands: [
             {
               command: `npx nx compile ${appName}`,
+              forwardAllArgs: false,
             },
             {
               command: `npx nx ng-extract-i18n ${appName}`,
