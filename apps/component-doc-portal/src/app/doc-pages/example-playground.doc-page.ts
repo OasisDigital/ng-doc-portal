@@ -62,7 +62,7 @@ export class ExamplePlaygroundPageComponent {
         label: 'Select a Pet',
         property: 'pet',
         type: PlaygroundControlType.Select,
-        value: 'dog',
+        value: ['dog'],
         multiple: true,
         options: [
           {
@@ -84,6 +84,26 @@ export class ExamplePlaygroundPageComponent {
         property: 'color',
         type: PlaygroundControlType.ColorPicker,
         value: '#363636',
+      },
+      {
+        label: 'Select a Food',
+        type: PlaygroundControlType.Select,
+        property: 'food',
+        value: 'hamburger',
+        options: [
+          {
+            display: 'Hamburger',
+            value: 'hamburger',
+          },
+          {
+            display: 'Spaghetti',
+            value: 'spaghetti',
+          },
+          {
+            display: 'Broccoli',
+            value: 'broccoli',
+          },
+        ],
       },
     ],
   };

@@ -54,12 +54,24 @@ export interface PlaygroundControlOption {
   value: string;
 }
 
-export interface PlaygroundSelectControlConfig
+export interface PlaygroundMultiSelectControlConfig
   extends PlaygroundControlConfigBase {
   type: PlaygroundControlType.Select;
   options: PlaygroundControlOption[];
-  multiple?: boolean;
+  multiple: true;
+  value: any[];
 }
+
+export interface PlaygroundSingleSelectControlConfig
+  extends PlaygroundControlConfigBase {
+  type: PlaygroundControlType.Select;
+  options: PlaygroundControlOption[];
+  multiple?: false;
+}
+
+export type PlaygroundSelectControlConfig =
+  | PlaygroundSingleSelectControlConfig
+  | PlaygroundMultiSelectControlConfig;
 
 export interface PlaygroundCheckboxControlConfig
   extends PlaygroundControlConfigBase {

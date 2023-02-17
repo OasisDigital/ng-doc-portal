@@ -1,15 +1,18 @@
+import { JsonPipe } from '@angular/common';
 import { Component, Input } from '@angular/core';
 
 @Component({
   standalone: true,
   selector: 'app-test',
+  imports: [JsonPipe],
   template: `
-    <p>The Text: {{ text }}</p>
-    <p>pet: {{ pet }}</p>
+    <p>The Text: {{ text | json }}</p>
+    <p>pet: {{ pet | json }}</p>
     <p>
       color:
       <span class="color-block" [style.background]="color"></span>
     </p>
+    <p>food: {{ food | json }}</p>
   `,
   styles: [
     `
@@ -34,4 +37,5 @@ export class TestComponent {
   @Input() text?: string;
   @Input() pet?: string;
   @Input() color?: string;
+  @Input() food?: string;
 }

@@ -107,7 +107,15 @@ export class ComponentPlaygroundComponent implements OnDestroy {
           takeUntil(this.destroyControlsValueChanges)
         )
         .subscribe((newValue) => {
-          ref.instance[playgroundControl.config.property] = newValue;
+          let formattedValue = newValue;
+          if (
+            playgroundControl.config.type === PlaygroundControlType.Select &&
+            !playgroundControl.config.multiple &&
+            Array.isArray(newValue)
+          ) {
+            formattedValue = newValue[0];
+          }
+          ref.instance[playgroundControl.config.property] = formattedValue;
         });
     }
   }
