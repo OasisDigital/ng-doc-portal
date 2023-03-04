@@ -1,0 +1,46 @@
+// Bring in the milligram minimalist css library via cdn
+
+@import url('https://cdnjs.cloudflare.com/ajax/libs/milligram/1.4.1/milligram.min.css');
+
+// Overrides are below
+
+ngdp-title {
+  h1 {
+    font-size: 4rem;
+  }
+}
+
+ngdp-toolbar {
+  button {
+    margin-bottom: 0;
+  }
+}
+
+ngdp-side-nav {
+  li {
+    margin-bottom: 0;
+  }
+
+  .filter-input {
+    padding-top: 5px;
+    padding-bottom: 4px;
+  }
+}
+
+ngdp-code-snippet {
+  pre {
+    border-left: none;
+    background-color: transparent;
+
+    code.hljs {
+      border: 2px solid #9b4dca;
+    }
+  }
+
+  button.code-snippet-copy-button {
+    padding: 0 0.5rem;
+    line-height: normal;
+    height: 3rem;
+    margin-bottom: 0;
+  }
+}

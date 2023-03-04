@@ -11,14 +11,11 @@
   class="form-view"
   *ngIf="playgroundControls.length > 0 || classBindingControl"
 >
-  <div class="form-control" *ngIf="textContentControl">
+  <ng-container *ngIf="textContentControl">
     <label for="text-content-binding">Text Content:</label>
     <input id="text-content-binding" [formControl]="textContentControl" />
-  </div>
-  <div
-    class="form-control class-binding-control"
-    *ngIf="classBindingControl && classBindingControlConfig"
-  >
+  </ng-container>
+  <ng-container *ngIf="classBindingControl && classBindingControlConfig">
     <label for="class-binding">Class Binding:</label>
     <select
       id="class-binding"
@@ -37,12 +34,8 @@
         {{ class }}
       </option>
     </select>
-  </div>
-  <div
-    class="form-control"
-    [ngClass]="'playground-' + playgroundControl.config.type + '-control'"
-    *ngFor="let playgroundControl of playgroundControls"
-  >
+  </ng-container>
+  <ng-container *ngFor="let playgroundControl of playgroundControls">
     <ng-container
       *ngIf="TypeGuards.isTextControlConfig(playgroundControl.config)"
     >
@@ -210,5 +203,5 @@
         [formControl]="playgroundControl.formControl"
       />
     </ng-container>
-  </div>
+  </ng-container>
 </div>

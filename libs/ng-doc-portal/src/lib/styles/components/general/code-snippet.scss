@@ -12,6 +12,7 @@ ngdp-code-snippet {
     margin-top: 0;
     width: max-content;
     margin-bottom: 0;
+    margin: 10px 0;
     word-wrap: break-word;
     position: relative;
 
@@ -20,14 +21,14 @@ ngdp-code-snippet {
       line-height: 1.5em;
       font-size: 14px;
       min-height: 100%;
-      padding: 1em 5.2em 2em 1.2em;
+      padding: 1em 4.2em 3em 1.2em;
 
       &.hljs-line-numbers {
         padding: 0 !important;
       }
     }
 
-    button {
+    button.code-snippet-copy-button {
       position: absolute;
       bottom: 10px;
       right: 10px;

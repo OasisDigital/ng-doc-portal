@@ -2,12 +2,13 @@
   <div class="title">
     <ngdp-title></ngdp-title>
   </div>
-  <input
-    class="filter-input"
-    type="text"
-    placeholder="Filter Pages"
-    [formControl]="filterControl"
-  />
+  <div class="filter-input">
+    <input
+      type="text"
+      placeholder="Filter Pages"
+      [formControl]="filterControl"
+    />
+  </div>
   <ul class="side-nav-menu-root">
     <ng-container
       *ngTemplateOutlet="

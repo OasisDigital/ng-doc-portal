@@ -19,17 +19,23 @@ ngdp-side-nav {
     }
 
     .filter-input {
-      width: calc(100% - 10px);
-      border: none;
-      outline: none;
-      padding: 0 0;
       padding-left: 10px;
-      background: var(--ngdp-background-color);
-      color: var(--ngdp-font-color);
+      padding-right: 10px;
       border-bottom: 2px solid var(--ngdp-border-color);
-      font-size: 18px;
+      margin-bottom: 0;
 
-      height: 40px;
+      input {
+        height: 40px;
+        width: 100%;
+        border: none;
+        outline: none;
+        border-radius: 0;
+        background: var(--ngdp-background-color);
+        color: var(--ngdp-font-color);
+        font-size: 18px;
+        padding: 0;
+        margin-bottom: 0;
+      }
     }
 
     ul {
@@ -51,8 +57,7 @@ ngdp-side-nav {
           text-decoration: none;
           font-size: 20px;
           padding: 10px 20px;
-          width: calc(100% - 40px);
-          display: inline-block;
+          display: grid;
           color: var(--ngdp-font-color);
 
           &.active {

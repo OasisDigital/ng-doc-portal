@@ -69,6 +69,7 @@
           "apps/component-doc-portal/src/assets"
         ],
         "styles": [
+          "libs/ng-doc-portal/src/lib/styles/milligram.scss",
           "libs/ng-doc-portal/src/lib/styles/ng-doc-portal.scss",
           "apps/component-doc-portal/src/styles.scss"
         ],

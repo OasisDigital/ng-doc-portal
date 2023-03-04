@@ -67,6 +67,7 @@ function updateProjectStyles(tree: Tree, options: NormalizedSchema) {
   if (projectConfig.targets) {
     const styles = projectConfig.targets.build.options.styles;
     const updatedStyles = [
+      'node_modules/@oasisdigital/ng-doc-portal/src/lib/styles/milligram.scss',
       'node_modules/@oasisdigital/ng-doc-portal/src/lib/styles/ng-doc-portal.scss',
       ...styles,
     ];

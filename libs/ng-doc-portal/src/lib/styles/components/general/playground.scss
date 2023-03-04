@@ -2,6 +2,7 @@ ngdp-playground {
   height: 100%;
   display: grid;
   grid-template-rows: auto 1fr;
+  overflow-y: auto;
   margin-left: -20px;
 
   .component-view {
@@ -23,31 +24,24 @@ ngdp-playground {
     border-top: 2px solid var(--ngdp-border-color);
     display: grid;
     grid-auto-rows: max-content;
-    place-items: center;
+    grid-template-columns: max-content 1fr;
+    overflow-y: auto;
     padding: 10px;
     row-gap: 20px;
 
-    .form-control {
-      width: 100%;
+    * {
+      font-size: 18px;
+      color: var(--ngdp-font-color);
+    }
 
-      * {
-        font-size: 18px;
-      }
+    label {
+      font-size: 20px;
+      font-weight: bold;
+      margin-right: 10px;
+    }
 
-      label {
-        font-size: 20px;
-        font-weight: bold;
-        margin-right: 10px;
-      }
-
-      select[multiple] {
-        overflow-y: auto;
-      }
-
-      &.class-binding-control,
-      &.playground-select-control {
-        display: flex;
-      }
+    select[multiple] {
+      overflow-y: auto;
     }
   }
 }

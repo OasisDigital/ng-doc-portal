@@ -221,7 +221,16 @@ export default docPageConfig;
 
 ## Styling your Ng Doc Portal Application
 
-Since the `ng-doc-portal` system piggy backs off of an angular application you can simply add your custom styles to the root `styles.scss` file or in the `style` property of the angular app's `project.json` build config.
+### Milligram
+
+The `ng-doc-portal` package makes use of the [`milligram`](https://milligram.io/) minimalist css library for some basic look & feel improvements. If you do not want this, please remove the first line of the `targets.ng-build.options.styles` property in your application's `project.json`. This will remove the milligram cdn import and some override styles.
+
+### Ng Doc Portal Styles
+
+The `ng-doc-portal` package has some global styles to set borders, paddings, margins, and css grid structures. This is all set via global styles imported in the
+`targets.ng-build.options.styles` property of the application's `project.json` and are overwritable.
+
+Since the `ng-doc-portal` system piggy backs off of an angular application you can simply add your custom styles to the root `styles.scss` file or in the `style` property of the angular app's `project.json` build config to override or extend the base styles we include.
 
 ## Theming
 
