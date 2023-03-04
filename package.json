@@ -18,7 +18,8 @@
     "affected:lint": "nx affected:lint --base=origin/main",
     "affected:test": "nx affected:test --parallel --base=origin/main",
     "affected:check": "run-s format:check affected:lint affected:test --base=origin/main",
-    "build:packages": "nx build ng-doc-portal && nx build ng-doc-portal-plugin"
+    "build:packages": "nx build ng-doc-portal && nx build ng-doc-portal-plugin",
+    "update-versions": "node ./tools/scripts/update-versions.js"
   },
   "private": true,
   "dependencies": {
