@@ -1,0 +1,30 @@
+name: Public NPM Packages On Release
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  publish-packages:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: lts/*
+          registry-url: https://registry.npmjs.org/
+      - run: npm ci
+      - run: npm run update-versions ${{ github.event.release.tag_name }} libs/ng-doc-portal/package.json,libs/ng-doc-portal-plugin/package.json
+      - run: npm run nx build ng-doc-portal
+      - run: npm publish dist/libs/ng-doc-portal
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
+      - run: npm run nx build ng-doc-portal-plugin
+      - run: npm publish dist/libs/ng-doc-portal-plugin
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
+      - uses: stefanzweifel/git-auto-commit-action@v4.16.0
+        with:
+          commit_message: auto-bump to ${{ github.event.release.tag_name }}
