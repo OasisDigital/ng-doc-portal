@@ -33,10 +33,6 @@ Run `npm build` to build the example `ng-doc-portal` application.
 
 ## Publishing
 
-Currently there is no automation in place for adjusting the package versions & publishing. So, you will need to manually do the below:
+Publishing is automatically done via the Github release process.
 
-Adjust the version in both packages' `package.json` file.
-
-Run `npm build:packages` to build the compiled output.
-
-Open up the two dist folders for the packages and run `npm publish`.
+Once a release is created a workflow will be triggered to update, publish, and commit the `package.json` files of the npm packages in the repo.
