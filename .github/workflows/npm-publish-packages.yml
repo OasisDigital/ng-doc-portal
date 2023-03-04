@@ -1,4 +1,4 @@
-name: Public NPM Packages On Release
+name: Publish NPM Packages On Release
 
 on:
   release:
