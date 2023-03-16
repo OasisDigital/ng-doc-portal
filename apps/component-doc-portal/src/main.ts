@@ -1,13 +1,37 @@
-import { enableProdMode } from '@angular/core';
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import { DialogModule } from '@angular/cdk/dialog';
+import { importProvidersFrom } from '@angular/core';
+import { bootstrapApplication } from '@angular/platform-browser';
+import {
+  provideNgDocPortal,
+  withTitle,
+  withThemeOptions,
+  withToolbarPlugins,
+} from '@oasisdigital/ng-doc-portal';
 
-import { AppModule } from './app/app.module';
-import { environment } from './environments/environment';
+import { AppComponent } from './app/app.component';
+import { CustomPluginComponent } from './app/custom-plugin.component';
+import { CustomTitleComponent } from './app/custom-title-component';
+import { docPageLoaders } from './app/doc-page-loaders';
 
-if (environment.production) {
-  enableProdMode();
-}
-
-platformBrowserDynamic()
-  .bootstrapModule(AppModule)
-  .catch((err) => console.error(err));
+bootstrapApplication(AppComponent, {
+  providers: [
+    provideNgDocPortal(
+      docPageLoaders,
+      withTitle(CustomTitleComponent),
+      withThemeOptions([
+        {
+          value: 'light-theme',
+          display: 'Light Theme',
+          hljsTheme: 'assets/github.css',
+        },
+        {
+          value: 'dark-theme',
+          display: 'Dark Theme',
+          hljsTheme: 'assets/github-dark-dimmed.css',
+        },
+      ]),
+      withToolbarPlugins([CustomPluginComponent])
+    ),
+    importProvidersFrom(DialogModule),
+  ],
+});

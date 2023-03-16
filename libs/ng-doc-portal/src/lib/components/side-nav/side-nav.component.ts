@@ -1,6 +1,12 @@
+import { AsyncPipe, NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
 import { Component, Inject, OnDestroy } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import {
+  ActivatedRoute,
+  Router,
+  RouterLink,
+  RouterLinkActive,
+} from '@angular/router';
 import { map, Observable, Subject, takeUntil } from 'rxjs';
 
 import {
@@ -8,12 +14,24 @@ import {
   DocPageRoutes,
 } from '../../types/doc-page-config.types';
 import { DOC_PAGE_LOADERS_TOKEN } from '../../util/injection-tokens';
+import { TitleComponent } from '../title/title.component';
 
 const filterQueryParamKey = 'filter';
 
 @Component({
   selector: 'ngdp-side-nav',
+  standalone: true,
   templateUrl: './side-nav.component.html',
+  imports: [
+    ReactiveFormsModule,
+    NgTemplateOutlet,
+    NgIf,
+    NgFor,
+    RouterLink,
+    RouterLinkActive,
+    AsyncPipe,
+    TitleComponent,
+  ],
 })
 export class SideNavComponent implements OnDestroy {
   filteredRoutes: Observable<DocPageRoutes>;

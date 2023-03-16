@@ -6,7 +6,7 @@ import {
   NgDocPortalPlaygroundConfig,
 } from '@oasisdigital/ng-doc-portal';
 
-import { TestComponent } from './test.component';
+import { TestComponent } from './test-component/test.component';
 
 @Component({
   standalone: true,

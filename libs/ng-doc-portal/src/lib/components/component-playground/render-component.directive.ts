@@ -15,6 +15,7 @@ export interface RenderComponentConfig {
 
 @Directive({
   selector: '[ngdpRenderComponent]',
+  standalone: true,
 })
 export class RenderComponentDirective {
   @Input() set ngdpRenderComponent(config: RenderComponentConfig) {

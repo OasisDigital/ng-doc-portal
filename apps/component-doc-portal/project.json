@@ -74,18 +74,10 @@
           "apps/component-doc-portal/src/styles.scss"
         ],
         "scripts": [],
-        "allowedCommonJsDependencies": [
-          "prettier"
-        ]
+        "allowedCommonJsDependencies": ["prettier"]
       },
       "configurations": {
         "production": {
-          "fileReplacements": [
-            {
-              "replace": "apps/component-doc-portal/src/environments/environment.ts",
-              "with": "apps/component-doc-portal/src/environments/environment.prod.ts"
-            }
-          ],
           "outputHashing": "all"
         },
         "development": {

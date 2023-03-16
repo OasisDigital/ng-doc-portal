@@ -1,4 +1,4 @@
-import { DOCUMENT } from '@angular/common';
+import { DOCUMENT, NgFor, NgIf } from '@angular/common';
 import { ChangeDetectorRef } from '@angular/core';
 import { Inject } from '@angular/core';
 import {
@@ -10,6 +10,7 @@ import {
 } from '@angular/core';
 import {
   FormControl,
+  ReactiveFormsModule,
   UntypedFormControl,
   UntypedFormGroup,
 } from '@angular/forms';
@@ -22,7 +23,10 @@ import {
   PlaygroundControlType,
   PlaygroundTextContentControlConfig,
 } from './playground-types';
-import { RenderComponentConfig } from './render-component.directive';
+import {
+  RenderComponentConfig,
+  RenderComponentDirective,
+} from './render-component.directive';
 import { PlaygroundControlTemplateTypeGuards } from './template-type-guards';
 
 interface PlaygroundControl {
@@ -32,8 +36,10 @@ interface PlaygroundControl {
 
 @Component({
   selector: 'ngdp-playground',
+  standalone: true,
   templateUrl: './component-playground.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [ReactiveFormsModule, RenderComponentDirective, NgIf, NgFor],
 })
 export class ComponentPlaygroundComponent implements OnDestroy {
   renderComponentConfig?: RenderComponentConfig;

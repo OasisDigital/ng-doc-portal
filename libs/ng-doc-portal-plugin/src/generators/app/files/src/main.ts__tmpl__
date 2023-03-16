@@ -1,0 +1,9 @@
+import { bootstrapApplication } from '@angular/platform-browser';
+import { provideNgDocPortal } from '@oasisdigital/ng-doc-portal';
+
+import { AppComponent } from './app/app.component';
+import { docPageLoaders } from './app/doc-page-loaders';
+
+bootstrapApplication(AppComponent, {
+  providers: [provideNgDocPortal(docPageLoaders)],
+});

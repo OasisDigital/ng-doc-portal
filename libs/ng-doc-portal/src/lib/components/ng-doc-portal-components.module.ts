@@ -7,7 +7,7 @@ import { HighlightModule } from 'ngx-highlightjs';
 
 import { CodeSnippetComponent } from './code-snippet/code-snippet.component';
 import { CodeSnippetDirective } from './code-snippet/code-snippet.directive';
-import { ComponentPlaygroundModule } from './component-playground/component-playground.module';
+import { ComponentPlaygroundComponent } from './component-playground/component-playground.component';
 import { EmbedIframeComponent } from './embed-iframe/embed-iframe.component';
 import { MarkdownComponent } from './markdown/markdown.component';
 import { MarkdownDirective } from './markdown/markdown.directive';
@@ -23,10 +23,7 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
     CommonModule,
     RouterModule,
     HttpClientModule,
-    ComponentPlaygroundModule,
     ReactiveFormsModule,
-  ],
-  declarations: [
     TabMenuComponent,
     TabItemComponent,
     CodeSnippetComponent,
@@ -37,6 +34,7 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
     ToolbarComponent,
     TitleComponent,
     CodeSnippetDirective,
+    ComponentPlaygroundComponent,
   ],
   exports: [
     TabMenuComponent,
@@ -47,9 +45,9 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
     MarkdownDirective,
     EmbedIframeComponent,
     ToolbarComponent,
-    ComponentPlaygroundModule,
     TitleComponent,
     CodeSnippetDirective,
+    ComponentPlaygroundComponent,
   ],
 })
 export class NgDocPortalComponentsModule {}

@@ -1,3 +1,4 @@
+import { NgFor, NgIf, NgTemplateOutlet, UpperCasePipe } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectorRef,
@@ -13,7 +14,9 @@ import { TabItemComponent } from '../tab-item/tab-item.component';
 
 @Component({
   selector: 'ngdp-tab-menu',
+  standalone: true,
   templateUrl: './tab-menu.component.html',
+  imports: [NgFor, NgIf, UpperCasePipe, NgTemplateOutlet],
 })
 export class TabMenuComponent implements AfterViewInit, OnDestroy {
   @ContentChildren(TabItemComponent) tabMenuItems: QueryList<TabItemComponent> =

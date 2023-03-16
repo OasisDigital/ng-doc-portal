@@ -1,6 +1,5 @@
 // playground
 export * from './component-playground/playground-types';
-export * from './component-playground/component-playground.module';
 export * from './component-playground/component-playground.component';
 
 // other components

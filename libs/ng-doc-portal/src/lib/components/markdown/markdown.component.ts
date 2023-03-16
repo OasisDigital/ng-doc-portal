@@ -14,6 +14,7 @@ marked.setOptions({
 
 @Component({
   selector: 'ngdp-markdown',
+  standalone: true,
   template: `<div [innerHTML]="parsedHtml"></div>`,
 })
 export class MarkdownComponent {

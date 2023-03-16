@@ -233,6 +233,7 @@ export default async function (
     skipTests: true,
     prefix: 'app',
     style: 'scss',
+    standalone: true,
   });
 
   addFiles(tree, normalizedOptions);

@@ -4,6 +4,7 @@ import { MarkdownComponent } from './markdown.component';
 
 @Directive({
   selector: '[ngdpMarkdown]',
+  standalone: true,
 })
 export class MarkdownDirective {
   constructor(

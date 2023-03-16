@@ -1,4 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
+@use '@angular/cdk' as cdk;
+
+@include cdk.overlay();
+
 html {
   &.dark-theme {
     --ngdp-font-color: white;

@@ -1,3 +1,4 @@
+import { NgComponentOutlet, NgFor, NgIf } from '@angular/common';
 import {
   ChangeDetectorRef,
   Component,
@@ -7,7 +8,7 @@ import {
   Optional,
   Type,
 } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Subject, takeUntil } from 'rxjs';
 
 import { ThemeService } from '../../services/theme-service';
@@ -20,7 +21,9 @@ import { NG_DOC_PORTAL_TOOLBAR_PLUGINS_TOKEN } from './toolbar-tokens';
 
 @Component({
   selector: 'ngdp-toolbar',
+  standalone: true,
   templateUrl: './toolbar.component.html',
+  imports: [ReactiveFormsModule, NgFor, NgComponentOutlet, NgIf],
 })
 export class ToolbarComponent implements OnDestroy {
   themeControl: FormControl<string>;

@@ -5,10 +5,10 @@ export const NG_DOC_PORTAL_TOOLBAR_PLUGINS_TOKEN = new InjectionToken<
 >('NG_DOC_PORTAL_TOOLBAR_PLUGINS_TOKEN');
 
 export function ngDocPortalProvideToolbarPlugins(
-  plugins: Type<any>[]
+  plugins: Type<any> | Type<any>[]
 ): Provider {
   return {
     provide: NG_DOC_PORTAL_TOOLBAR_PLUGINS_TOKEN,
-    useValue: plugins,
+    useValue: Array.isArray(plugins) ? plugins : [plugins],
   };
 }

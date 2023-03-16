@@ -2,6 +2,7 @@ import { Directive, Input, TemplateRef } from '@angular/core';
 
 @Directive({
   selector: '[ngdpTabItem]',
+  standalone: true,
 })
 export class TabItemDirective {
   private _title = '';

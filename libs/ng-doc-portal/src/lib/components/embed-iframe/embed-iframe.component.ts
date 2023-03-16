@@ -3,6 +3,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'ngdp-embed-iframe',
+  standalone: true,
   templateUrl: './embed-iframe.component.html',
 })
 export class EmbedIframeComponent {

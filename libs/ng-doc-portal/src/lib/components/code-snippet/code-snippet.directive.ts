@@ -4,6 +4,7 @@ import { CodeSnippetComponent } from './code-snippet.component';
 
 @Directive({
   selector: '[ngdpCodeSnippet]',
+  standalone: true,
 })
 export class CodeSnippetDirective {
   @Input() lang: 'html' | 'typescript' = 'html';

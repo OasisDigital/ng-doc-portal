@@ -1,3 +1,4 @@
+import { AsyncPipe, NgIf } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectorRef,
@@ -9,6 +10,7 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
+import { HighlightModule } from 'ngx-highlightjs';
 import * as prettier from 'prettier';
 import * as parserAngular from 'prettier/parser-angular';
 import * as parserHTML from 'prettier/parser-html';
@@ -28,7 +30,9 @@ import {
 
 @Component({
   selector: 'ngdp-code-snippet',
+  standalone: true,
   templateUrl: './code-snippet.component.html',
+  imports: [NgIf, AsyncPipe, HighlightModule],
 })
 export class CodeSnippetComponent
   implements AfterViewInit, OnChanges, OnDestroy
