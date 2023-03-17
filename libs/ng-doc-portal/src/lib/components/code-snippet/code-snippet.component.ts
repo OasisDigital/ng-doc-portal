@@ -40,7 +40,7 @@ export class CodeSnippetComponent
   @ViewChild('content', { read: ElementRef })
   content?: ElementRef<HTMLDivElement>;
   @Input() code = '';
-  @Input() parser: 'html' | 'typescript' | 'css' | 'scss' = 'html';
+  @Input() lang: 'html' | 'typescript' | 'css' | 'scss' = 'html';
   displayError = '';
   displayCode = '';
   buttonText: Observable<string>;
@@ -60,10 +60,10 @@ export class CodeSnippetComponent
 
   setCodeFromDirective(
     value: string,
-    parser: 'html' | 'typescript' | 'css' | 'scss' = 'html'
+    lang: 'html' | 'typescript' | 'css' | 'scss' = 'html'
   ) {
     this.code = value;
-    this.parser = parser;
+    this.lang = lang;
     this.updateDisplayCode();
   }
 
@@ -71,7 +71,7 @@ export class CodeSnippetComponent
     try {
       this.displayCode = prettier.format(this.code, {
         semi: true,
-        parser: this.parser === 'html' ? 'angular' : this.parser,
+        parser: this.lang === 'html' ? 'angular' : this.lang,
         plugins: [parserTS, parserHTML, parserAngular, parserPostCss],
       });
     } catch (error: any) {

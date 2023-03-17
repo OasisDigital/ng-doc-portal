@@ -202,9 +202,9 @@ import {
       </ngdp-tab-item>
       <ngdp-tab-item title="Examples">
         <button>Example Button</button>
-        <ngdp-code-reveal lang="html">
+        <ngdp-code-snippet lang="html">
           <button>Example Buttons</button>
-        </ngdp-code-reveal>
+        </ngdp-code-snippet>
       </ngdp-tab-item>
     </ngdp-tab-menu>
   `,
