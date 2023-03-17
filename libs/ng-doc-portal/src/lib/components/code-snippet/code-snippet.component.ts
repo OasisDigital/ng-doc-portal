@@ -11,11 +11,11 @@ import {
   ViewChild,
 } from '@angular/core';
 import { HighlightModule } from 'ngx-highlightjs';
-import * as prettier from 'prettier';
-import * as parserAngular from 'prettier/parser-angular';
-import * as parserHTML from 'prettier/parser-html';
-import * as parserPostCss from 'prettier/parser-postcss';
-import * as parserTS from 'prettier/parser-typescript';
+import parserAngular from 'prettier/parser-angular';
+import parserHTML from 'prettier/parser-html';
+import parserPostCss from 'prettier/parser-postcss';
+import parserTS from 'prettier/parser-typescript';
+import prettier from 'prettier/standalone';
 import {
   catchError,
   delay,
