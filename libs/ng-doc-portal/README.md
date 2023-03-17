@@ -4,7 +4,7 @@ The `@oasisdigital/ng-doc-portal` package allows you to create your own componen
 
 This package is meant to be used in tangent with the `@oasisdigital/ng-doc-portal-plugin` package inside of an Nx Workspace.
 
-Please reference `https://www.npmjs.com/package/@oasisdigital/ng-doc-portal-plugin` to see the full getting started guide.
+Please reference the [ng-doc-portal-plugin](https://www.npmjs.com/package/@oasisdigital/ng-doc-portal-plugin) package to see the full getting started guide.
 
 ## Installation
 
