@@ -5,5 +5,5 @@
     "entryFile": "src/index.ts"
   },
   "assets": ["./src/lib/styles/**/*"],
-  "allowedNonPeerDependencies": ["marked", "ngx-highlightjs", "prettier"]
+  "allowedNonPeerDependencies": ["marked", "ngx-highlightjs"]
 }

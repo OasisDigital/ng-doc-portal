@@ -1,4 +1,4 @@
-import { applicationGenerator } from '@nrwl/angular/generators';
+import { applicationGenerator } from '@nx/angular/generators';
 import {
   formatFiles,
   generateFiles,
@@ -9,7 +9,7 @@ import {
   logger,
   readProjectConfiguration,
   updateProjectConfiguration,
-} from '@nrwl/devkit';
+} from '@nx/devkit';
 
 import { NgDocPortalPluginGeneratorSchema } from './schema';
 
@@ -72,21 +72,6 @@ function updateProjectStyles(tree: Tree, options: NormalizedSchema) {
       ...styles,
     ];
     projectConfig.targets.build.options.styles = updatedStyles;
-
-    updateProjectConfiguration(tree, options.projectName, projectConfig);
-  }
-}
-
-function updateProjectCommonJsDependencies(
-  tree: Tree,
-  options: NormalizedSchema
-) {
-  const projectConfig = readProjectConfiguration(tree, options.projectName);
-
-  if (projectConfig.targets) {
-    projectConfig.targets.build.options['allowedCommonJsDependencies'] = [
-      'prettier',
-    ];
 
     updateProjectConfiguration(tree, options.projectName, projectConfig);
   }
@@ -243,7 +228,6 @@ export default async function (
   );
 
   updateProjectStyles(tree, normalizedOptions);
-  updateProjectCommonJsDependencies(tree, normalizedOptions);
   updateProjectExecutors(tree, normalizedOptions);
   removeProjectBuildBudgets(tree, normalizedOptions);
   removeExtractI18N(tree, normalizedOptions);

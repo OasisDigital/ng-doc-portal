@@ -3,14 +3,19 @@ import { Component, Input } from '@angular/core';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import hljs from 'highlight.js';
 import { marked } from 'marked';
+import { markedHighlight } from 'marked-highlight';
 import { lastValueFrom } from 'rxjs';
 
-marked.setOptions({
-  highlight: function (code, lang) {
-    const language = hljs.getLanguage(lang) ? lang : 'plaintext';
-    return hljs.highlight(code, { language }).value;
-  },
-});
+marked.use(
+  { mangle: false, headerIds: false },
+  markedHighlight({
+    langPrefix: 'hljs language-',
+    highlight: function (code, lang) {
+      const language = hljs.getLanguage(lang) ? lang : 'plaintext';
+      return hljs.highlight(code, { language }).value;
+    },
+  })
+);
 
 @Component({
   selector: 'ngdp-markdown',

@@ -11,7 +11,7 @@ import {
     <textarea ngdpCodeSnippet lang="typescript">
       class ExampleComponent {
         @ViewChild('modalContent') modalContent?: TemplateRef<any>;
-          modalRef?: DialogRef<any>;
+        modalRef?: DialogRef<any>;
 
         constructor(private modal: Modal) {}
 

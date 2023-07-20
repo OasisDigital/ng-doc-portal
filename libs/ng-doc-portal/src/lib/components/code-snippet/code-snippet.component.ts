@@ -11,11 +11,6 @@ import {
   ViewChild,
 } from '@angular/core';
 import { HighlightModule } from 'ngx-highlightjs';
-import parserAngular from 'prettier/parser-angular';
-import parserHTML from 'prettier/parser-html';
-import parserPostCss from 'prettier/parser-postcss';
-import parserTS from 'prettier/parser-typescript';
-import prettier from 'prettier/standalone';
 import {
   catchError,
   delay,
@@ -67,17 +62,17 @@ export class CodeSnippetComponent
     this.updateDisplayCode();
   }
 
+  // This is used to strip leading whitespace leftover from the HTML / multiline string
   updateDisplayCode() {
-    try {
-      this.displayCode = prettier.format(this.code, {
-        semi: true,
-        parser: this.lang === 'html' ? 'angular' : this.lang,
-        plugins: [parserTS, parserHTML, parserAngular, parserPostCss],
-      });
-    } catch (error: any) {
-      console.error(error);
-      this.displayError = error.message ?? error;
+    if (!this.code) return;
+    let splitLines = this.code.split('\n');
+    while (splitLines[0] === '') {
+      splitLines = splitLines.slice(1);
     }
+    const spaceAmount = splitLines[0].search(/\S/);
+    this.displayCode = splitLines
+      .map((line) => line.slice(spaceAmount))
+      .join('\n');
   }
 
   copyToClipboard() {

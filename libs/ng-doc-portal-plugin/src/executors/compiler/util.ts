@@ -1,12 +1,12 @@
 import { tsquery } from '@phenomnomnominal/tsquery';
 import { format } from 'date-fns';
-import * as minimatch from 'minimatch';
-import * as prettier from 'prettier';
+import { minimatch } from 'minimatch';
+import prettier from 'prettier';
 
 import { EventPayload, GlobPattern, ProcessedFileEvent } from './types';
 
 import { readFileSync } from 'fs';
-import * as path from 'path';
+import path from 'path';
 
 /**
  * Extract all the payloads from the various processed file events.

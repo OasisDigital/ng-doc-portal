@@ -5,11 +5,12 @@
   "sourceRoot": "apps/ng-doc-portal-plugin-e2e/src",
   "targets": {
     "e2e": {
-      "executor": "@nrwl/nx-plugin:e2e",
+      "executor": "@nx/jest:jest",
       "options": {
-        "target": "ng-doc-portal-plugin:build",
-        "jestConfig": "apps/ng-doc-portal-plugin-e2e/jest.config.ts"
-      }
+        "jestConfig": "apps/ng-doc-portal-plugin-e2e/jest.config.ts",
+        "runInBand": true
+      },
+      "dependsOn": ["ng-doc-portal-plugin:build"]
     }
   },
   "tags": [],

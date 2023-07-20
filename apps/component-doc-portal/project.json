@@ -73,8 +73,7 @@
           "libs/ng-doc-portal/src/lib/styles/ng-doc-portal.scss",
           "apps/component-doc-portal/src/styles.scss"
         ],
-        "scripts": [],
-        "allowedCommonJsDependencies": ["prettier"]
+        "scripts": []
       },
       "configurations": {
         "production": {
@@ -110,7 +109,7 @@
       }
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "options": {
         "lintFilePatterns": [
           "apps/component-doc-portal/src/**/*.ts",
@@ -119,7 +118,7 @@
       }
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
+      "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/apps/component-doc-portal"],
       "options": {
         "jestConfig": "apps/component-doc-portal/jest.config.ts",

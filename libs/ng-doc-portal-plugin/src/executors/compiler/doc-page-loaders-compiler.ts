@@ -1,7 +1,7 @@
-import { readJsonFile } from '@nrwl/devkit';
-import * as chalk from 'chalk';
-import * as chokidar from 'chokidar';
-import * as fg from 'fast-glob';
+import { readJsonFile } from '@nx/devkit';
+import chalk from 'chalk';
+import chokidar from 'chokidar';
+import fastglob from 'fast-glob';
 import {
   concatMap,
   debounceTime,
@@ -120,7 +120,7 @@ export class DocPageLoadersCompiler {
     const patternStrings = convertPatternOrGlobPatternArray(this.globPatterns);
 
     return from(
-      fg(patternStrings, {
+      fastglob(patternStrings, {
         unique: true,
         dot: true,
         onlyFiles: true,

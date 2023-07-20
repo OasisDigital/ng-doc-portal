@@ -17,8 +17,8 @@ import { TestComponent } from './test-component/test.component';
         <h1>Playground Test Component</h1>
         <ngdp-code-snippet lang="typescript">
           <textarea>
-            function() {
-              asd;
+            function foo() {
+              console.log('bar');
             }
           </textarea
           >

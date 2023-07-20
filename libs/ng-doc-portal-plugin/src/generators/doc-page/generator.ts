@@ -6,7 +6,7 @@ import {
   formatFiles,
   getProjects,
   readWorkspaceConfiguration,
-} from '@nrwl/devkit';
+} from '@nx/devkit';
 
 import { DocPageSchema } from './schema';
 

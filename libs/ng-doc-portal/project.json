@@ -1,11 +1,12 @@
 {
   "name": "ng-doc-portal",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "library",
   "sourceRoot": "libs/ng-doc-portal/src",
   "prefix": "ngdp",
   "targets": {
     "build": {
-      "executor": "@nrwl/angular:package",
+      "executor": "@nx/angular:package",
       "outputs": ["{workspaceRoot}/dist/libs/ng-doc-portal"],
       "options": {
         "project": "libs/ng-doc-portal/ng-package.json"
@@ -21,7 +22,7 @@
       "defaultConfiguration": "production"
     },
     "test": {
-      "executor": "@nrwl/jest:jest",
+      "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/libs/ng-doc-portal"],
       "options": {
         "jestConfig": "libs/ng-doc-portal/jest.config.ts",
@@ -29,7 +30,7 @@
       }
     },
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "options": {
         "lintFilePatterns": [
           "libs/ng-doc-portal/**/*.ts",
