@@ -1,12 +1,12 @@
 import { tsquery } from '@phenomnomnominal/tsquery';
-import { format } from 'date-fns';
+import { format as dateFormat } from 'date-fns';
 import { minimatch } from 'minimatch';
-import prettier from 'prettier';
+import { format as prettierFormat } from 'prettier';
 
 import { EventPayload, GlobPattern, ProcessedFileEvent } from './types';
 
 import { readFileSync } from 'fs';
-import path from 'path';
+import { basename } from 'path';
 
 /**
  * Extract all the payloads from the various processed file events.
@@ -114,7 +114,7 @@ export function findTitlePrefixFromGlobPatterns(
 }
 
 export function generateTitleFromFilePath(filePath: string) {
-  const baseName = path.basename(filePath);
+  const baseName = basename(filePath);
   const fileName = baseName.substring(0, baseName.indexOf('.'));
   const words = fileName.split('-');
   let title = '';
@@ -241,7 +241,7 @@ export function generateDocPageLoader(filePath: string, title: string) {
  * @param content The file content to be prettified
  */
 export function formatContent(content: string): string {
-  return prettier.format(content, {
+  return prettierFormat(content, {
     parser: 'typescript',
     printWidth: 100,
     singleQuote: true,
@@ -274,5 +274,5 @@ export function convertPatternOrGlobPatternArray(
 }
 
 export function timeNow() {
-  return format(new Date(), 'HH:mm:ss:SSS');
+  return dateFormat(new Date(), 'HH:mm:ss:SSS');
 }

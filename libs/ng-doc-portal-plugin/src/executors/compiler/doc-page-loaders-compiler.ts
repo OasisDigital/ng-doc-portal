@@ -1,7 +1,7 @@
 import { readJsonFile } from '@nx/devkit';
-import chalk from 'chalk';
-import chokidar from 'chokidar';
-import fastglob from 'fast-glob';
+import { green, blue, red, yellow } from 'chalk';
+import { watch } from 'chokidar';
+import { glob } from 'fast-glob';
 import {
   concatMap,
   debounceTime,
@@ -85,7 +85,7 @@ export class DocPageLoadersCompiler {
     );
 
     handledFileEvents.pipe(take(1)).subscribe(() => {
-      console.log(chalk.blue('Watching doc-portal files for changes...\n'));
+      console.log(blue('Watching doc-portal files for changes...\n'));
     });
 
     return handledFileEvents;
@@ -114,13 +114,13 @@ export class DocPageLoadersCompiler {
    * @private
    */
   private buildInitialFileEvent(): Observable<RawInitEvent> {
-    this.log(chalk.blue('Searching for component document page files...'));
+    this.log(blue('Searching for component document page files...'));
     const startTime = Date.now();
 
     const patternStrings = convertPatternOrGlobPatternArray(this.globPatterns);
 
     return from(
-      fastglob(patternStrings, {
+      glob(patternStrings, {
         unique: true,
         dot: true,
         onlyFiles: true,
@@ -130,9 +130,7 @@ export class DocPageLoadersCompiler {
       map((filePaths): RawInitEvent => ({ type: 'init', filePaths })),
       tap(() => {
         const endTime = Date.now();
-        this.log(
-          chalk.green(`Searching complete in ${endTime - startTime}ms\n`)
-        );
+        this.log(green(`Searching complete in ${endTime - startTime}ms\n`));
       })
     );
   }
@@ -147,18 +145,16 @@ export class DocPageLoadersCompiler {
         this.globPatterns
       );
 
-      const watch = chokidar
-        .watch(patternStrings, {
-          ignored: 'node_modules',
-          ignoreInitial: true,
-        })
-        .on('all', async (event, rawFilePath) => {
-          observer.next(this.buildRawFileEvent(rawFilePath, event));
-        });
+      const watcher = watch(patternStrings, {
+        ignored: 'node_modules',
+        ignoreInitial: true,
+      }).on('all', async (event, rawFilePath) => {
+        observer.next(this.buildRawFileEvent(rawFilePath, event));
+      });
 
       return () => {
-        watch.unwatch(patternStrings);
-        watch.close();
+        watcher.unwatch(patternStrings);
+        watcher.close();
       };
     });
   }
@@ -176,13 +172,13 @@ export class DocPageLoadersCompiler {
   ): RawFileEvent {
     const filePath = rawFilePath.replace(/\\/g, '/');
     if (event === 'add' || event === 'addDir') {
-      this.log(chalk.green(`${timeNow()} - ADDED - ${filePath}`));
+      this.log(green(`${timeNow()} - ADDED - ${filePath}`));
       return { type: 'add', filePath };
     } else if (event === 'unlink' || event === 'unlinkDir') {
-      this.log(chalk.red(`${timeNow()} - DELETED - ${filePath}`));
+      this.log(red(`${timeNow()} - DELETED - ${filePath}`));
       return { type: 'unlink', filePath };
     } else {
-      this.log(chalk.yellow(`${timeNow()} - CHANGED - ${filePath}`));
+      this.log(yellow(`${timeNow()} - CHANGED - ${filePath}`));
       return { type: 'change', filePath };
     }
   }
@@ -200,7 +196,7 @@ export class DocPageLoadersCompiler {
     try {
       if (fileEvent.type === 'init') {
         const payload: EventPayload[] = [];
-        this.log(chalk.blue('Compiling component document page files...'));
+        this.log(blue('Compiling component document page files...'));
         const startTime = Number(new Date());
         for (const filePath of fileEvent.filePaths) {
           const title = await extractTitleFromDocPageFile(
@@ -211,7 +207,7 @@ export class DocPageLoadersCompiler {
         }
         const endTime = Number(new Date());
         this.log(
-          chalk.green(
+          green(
             `Finished compiling component document page files in ${
               endTime - startTime
             }ms\n`
@@ -226,7 +222,7 @@ export class DocPageLoadersCompiler {
         );
         const endTime = Date.now();
         this.log(
-          chalk.blue(
+          blue(
             `${timeNow()} - COMPILE - recompiled in ${endTime - startTime}ms`
           )
         );
@@ -235,9 +231,7 @@ export class DocPageLoadersCompiler {
         return fileEvent;
       }
     } catch (error) {
-      this.log(
-        chalk.red(`Unexpected error occurred while compiling...\n${error}`)
-      );
+      this.log(red(`Unexpected error occurred while compiling...\n${error}`));
       return null;
     }
   }
@@ -249,7 +243,7 @@ export class DocPageLoadersCompiler {
       if (titles[payload.title] !== undefined) {
         duplicatesDetected = true;
         this.log(
-          chalk.yellow(
+          yellow(
             `Duplicated title of "${payload.title}" detected in file '${payload.filePath}'`
           )
         );
@@ -259,7 +253,7 @@ export class DocPageLoadersCompiler {
     }
     if (duplicatesDetected) {
       this.log(
-        chalk.yellow('\nPlease resolve duplicated titles before publishing!\n')
+        yellow('\nPlease resolve duplicated titles before publishing!\n')
       );
     }
     return eventPayloads;
@@ -277,7 +271,7 @@ export class DocPageLoadersCompiler {
     } catch (e) {
       console.error(e);
       this.log(
-        chalk.red(
+        red(
           `\n\nUnexpected error occurred while generating doc-page-loaders.ts\n`
         )
       );
