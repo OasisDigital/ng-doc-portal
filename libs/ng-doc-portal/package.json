@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "marked": "^5.1.1",
+    "marked-highlight": "^2.0.1",
     "ngx-highlightjs": "^10.0.0"
   },
   "exports": {
