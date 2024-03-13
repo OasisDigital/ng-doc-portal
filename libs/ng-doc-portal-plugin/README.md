@@ -59,10 +59,7 @@ More examples below:
 
 ```json
 {
-  "globPatterns": [
-    "apps/component-doc-portal/src/app/doc-pages/*.doc-page.ts",
-    "apps/component-doc-portal/src/app/starting-example.doc-page.ts"
-  ]
+  "globPatterns": ["apps/component-doc-portal/src/app/doc-pages/*.doc-page.ts", "apps/component-doc-portal/src/app/starting-example.doc-page.ts"]
 }
 ```
 
@@ -271,7 +268,7 @@ If you want to sync your theming system with your ng doc portal application you 
 
 Example below:
 
-#### Standalone:
+#### Standalone
 
 ```ts
 // main.ts
@@ -286,7 +283,7 @@ provideNgDocPortal(
 );
 ```
 
-#### Pre-Standalone:
+#### Pre-Standalone
 
 ```ts
 // app.module.ts
@@ -316,7 +313,7 @@ The `value` is both used for the select dropdown option and is the class that wi
 
 The `default` property will set the theme as the default selected theme (if there isn't already one). Otherwise the first theme in the list will be the default.
 
-The `hljsTheme` property allows for custom css sheets to be applied to the HLJS syntax highlighting system for the `code-snippet` component. The value should be an href to a valid css HLJS theme css file. An example would be: `assets/github.css`. We recommend placing the css file in your Doc Portal's assets folder for easy linking. A list of available themes (or examples to make your own) can be found here: https://github.com/highlightjs/highlight.js/tree/main/src/styles
+The `hljsTheme` property allows for custom css sheets to be applied to the HLJS syntax highlighting system for the `code-snippet` component. The value should be an href to a valid css HLJS theme css file. An example would be: `assets/github.css`. We recommend placing the css file in your Doc Portal's assets folder for easy linking. A list of available themes (or examples to make your own) can be found here: <https://github.com/highlightjs/highlight.js/tree/main/src/styles>
 
 ### Syncing Ng Doc Portal Application With Your Theme Styles
 
@@ -458,6 +455,39 @@ providers: [
 
 The `ngDocPortalProvideToolbarPlugins` takes in an either a single component or an array of components as it's argument. These components will need to fit in a default height (can be overwritten) of 40-48px (depending on if there is horizontal overflow or not). The width of the component is not limited.
 
+## Custom Laning Page
+
+By default we setup a landing page when there is no component doc page selected (default route of '/'). This will have the default text of 'Please select a component document page from the side navigation.'.
+
+If you want to set a custom landing page you may do so by providing the `ngDocPortalProvideLandingPage` function in the root module of the doc portal application.
+
+This function takes in a custom Component class.
+
+Examples:
+
+#### Standalone
+
+```ts
+// main.ts
+
+provideNgDocPortal(
+  docPageLoaders,
+  // Add the below method to your `provideNgDocPortal` arguments
+  withLandingPage(MyCustomLandingPageComponent)
+);
+```
+
+#### Pre-Standalone
+
+```ts
+// app.module.ts
+
+providers: [
+  // Add the below method call to your `providers` list
+  ngDocpPortalProvideLandingPage(MyCustomLandingPageComponent),
+];
+```
+
 ## Ng Doc Portal's Component Library
 
 The `ng-doc-portal` package ships with a small component-library that will help you document your component and display this information.
@@ -558,9 +588,7 @@ The `<ngdp-embed-iframe>` component allows you to embed sites into your doc page
 Example below:
 
 ```html
-<ngdp-embed-iframe
-  src="https://www.youtube.com/embed/dQw4w9WgXcQ"
-></ngdp-embed-iframe>
+<ngdp-embed-iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ"></ngdp-embed-iframe>
 ```
 
 ### Markdown
