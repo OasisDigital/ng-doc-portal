@@ -16,6 +16,12 @@ ngdp-side-nav {
       display: grid;
       place-items: center;
       border-bottom: 2px solid var(--ngdp-border-color);
+
+      a {
+        width: 100%;
+        text-decoration: none;
+        color: inherit;
+      }
     }
 
     .filter-input {

@@ -13,8 +13,8 @@ export const ngDocPortalRoutes: Routes = [
       {
         path: '',
         loadComponent: () =>
-          import('./pages/no-selection-page/no-selection-page.component').then(
-            (file) => file.NoSelectionPageComponent
+          import('./pages/landing-page/landing-page.component').then(
+            (file) => file.LandingPageComponent
           ),
       },
       {

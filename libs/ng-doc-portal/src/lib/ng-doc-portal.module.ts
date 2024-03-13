@@ -6,8 +6,8 @@ import { HIGHLIGHT_OPTIONS } from 'ngx-highlightjs';
 import { NgDocPortalComponentsModule } from './components/ng-doc-portal-components.module';
 import { ngDocPortalRoutes } from './ng-doc-portal.routes';
 import { DocPageViewerComponent } from './pages/doc-page-viewer/doc-page-viewer.component';
+import { LandingPageComponent } from './pages/landing-page/landing-page.component';
 import { MainFeatureComponent } from './pages/main-feature/main-feature.component';
-import { NoSelectionPageComponent } from './pages/no-selection-page/no-selection-page.component';
 import { DocPageLoaderRecord } from './types/doc-page-config.types';
 import { DOC_PAGE_LOADERS_TOKEN } from './util/injection-tokens';
 
@@ -17,8 +17,8 @@ import { DOC_PAGE_LOADERS_TOKEN } from './util/injection-tokens';
     RouterModule.forRoot(ngDocPortalRoutes),
     NgDocPortalComponentsModule,
     MainFeatureComponent,
-    NoSelectionPageComponent,
     DocPageViewerComponent,
+    LandingPageComponent,
   ],
   exports: [RouterModule],
   providers: [

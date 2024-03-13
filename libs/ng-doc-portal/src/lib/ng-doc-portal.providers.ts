@@ -10,6 +10,7 @@ import { HIGHLIGHT_OPTIONS } from 'ngx-highlightjs';
 import { NG_DOC_PORTAL_TOOLBAR_PLUGINS_TOKEN } from './components';
 import { NG_DOC_PORTAL_TITLE_TOKEN } from './components/title/title.token';
 import { ngDocPortalRoutes } from './ng-doc-portal.routes';
+import { NG_DOC_PORTAL_LANDING_PAGE_TOKEN } from './pages/landing-page/landing-page.token';
 import {
   NG_DOC_PORTAL_THEME_OPTIONS_TOKEN,
   ThemeOption,
@@ -21,6 +22,7 @@ export const enum NgDocPortalFeatureKind {
   TitleFeature,
   ThemeOptionsFeature,
   ToolbarPluginsFeature,
+  LandingPageFeature,
 }
 
 export interface NgDocPortalFeature<
@@ -36,11 +38,14 @@ export type ThemeOptionsFeature =
   NgDocPortalFeature<NgDocPortalFeatureKind.ThemeOptionsFeature>;
 export type TitleFeature =
   NgDocPortalFeature<NgDocPortalFeatureKind.TitleFeature>;
+export type LandingPageFeature =
+  NgDocPortalFeature<NgDocPortalFeatureKind.LandingPageFeature>;
 
 export type NgDocPortalFeatures =
   | TitleFeature
   | ThemeOptionsFeature
-  | ToolbarPluginsFeature;
+  | ToolbarPluginsFeature
+  | LandingPageFeature;
 
 export function provideNgDocPortal(
   docPageConfigs: DocPageLoaderRecord,
@@ -104,6 +109,19 @@ export function withToolbarPlugins(
   ];
   return ngDocPortalFeature(
     NgDocPortalFeatureKind.ToolbarPluginsFeature,
+    providers
+  );
+}
+
+export function withLandingPage(landingPage: Type<any>): LandingPageFeature {
+  const providers: Provider[] = [
+    {
+      provide: NG_DOC_PORTAL_LANDING_PAGE_TOKEN,
+      useValue: landingPage,
+    },
+  ];
+  return ngDocPortalFeature(
+    NgDocPortalFeatureKind.LandingPageFeature,
     providers
   );
 }

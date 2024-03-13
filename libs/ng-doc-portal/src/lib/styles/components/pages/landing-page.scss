@@ -1,7 +1,11 @@
-ngdp-no-selection-page {
+ngdp-landing-page {
   height: 100%;
   width: 100%;
   display: grid;
   grid-template-columns: 1fr;
   justify-items: center;
+
+  & > h1 {
+    margin-top: 24px;
+  }
 }
