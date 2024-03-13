@@ -1,7 +1,7 @@
 {
   "name": "@oasisdigital/ng-doc-portal-plugin",
   "description": "Nx plugin for adding the ng-doc-portal system to your nx workspace",
-  "version": "v1.7.0",
+  "version": "v1.7.1",
   "main": "src/index.js",
   "generators": "./generators.json",
   "executors": "./executors.json",
