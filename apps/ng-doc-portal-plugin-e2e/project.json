@@ -8,7 +8,8 @@
       "executor": "@nx/jest:jest",
       "options": {
         "jestConfig": "apps/ng-doc-portal-plugin-e2e/jest.config.ts",
-        "runInBand": true
+        "runInBand": true,
+        "passWithNoTests": false
       },
       "dependsOn": ["ng-doc-portal-plugin:build"]
     }

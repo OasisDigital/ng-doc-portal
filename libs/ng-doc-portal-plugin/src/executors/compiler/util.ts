@@ -16,7 +16,7 @@ import { basename } from 'path';
  */
 export function accumulatePayloads(
   acc: EventPayload[],
-  curr: ProcessedFileEvent
+  curr: ProcessedFileEvent,
 ): EventPayload[] {
   if (curr.type === 'init') {
     const list = sortFullPayloadList(curr.payload);
@@ -50,7 +50,7 @@ export function sortFullPayloadList(list: EventPayload[]) {
 
 export function insertIntoSortedPayloadList(
   list: EventPayload[],
-  item: EventPayload
+  item: EventPayload,
 ) {
   let index = 0;
   let low = 0;
@@ -86,7 +86,7 @@ export function comparePayloadTitles(a: EventPayload, b: EventPayload) {
 
 export function findTitlePrefixFromGlobPatterns(
   filePath: string,
-  globPatterns: (string | GlobPattern)[]
+  globPatterns: (string | GlobPattern)[],
 ): string | undefined {
   const pattern = globPatterns.find((globPattern) => {
     if (typeof globPattern === 'string') {
@@ -136,7 +136,7 @@ export async function getTitleFromTypeScript(filePath: string) {
 
   const defaultExportClassDeclaration = tsquery(
     ast,
-    'ClassDeclaration:has(ExportKeyword):has(DefaultKeyword)'
+    'ClassDeclaration:has(ExportKeyword):has(DefaultKeyword)',
   ).at(0);
 
   if (defaultExportClassDeclaration) {
@@ -156,7 +156,7 @@ export async function getTitleFromTypeScript(filePath: string) {
 
       let objectLiteralExpression = tsquery(
         exportAssignment,
-        'ObjectLiteralExpression'
+        'ObjectLiteralExpression',
       ).at(0);
 
       if (!objectLiteralExpression) {
@@ -164,8 +164,8 @@ export async function getTitleFromTypeScript(filePath: string) {
         objectLiteralExpression = tsquery(
           ast,
           `VariableDeclaration:has(Identifier[name="${identifier?.getText(
-            ast
-          )}"]) > ObjectLiteralExpression`
+            ast,
+          )}"]) > ObjectLiteralExpression`,
         ).at(0);
       }
 
@@ -175,7 +175,7 @@ export async function getTitleFromTypeScript(filePath: string) {
 
         const title = tsquery(
           objectLiteralExpression,
-          'PropertyAssignment:has(Identifier[name="title"]) > StringLiteral'
+          'PropertyAssignment:has(Identifier[name="title"]) > StringLiteral',
         )
           .at(0)
           ?.getText(ast);
@@ -185,7 +185,7 @@ export async function getTitleFromTypeScript(filePath: string) {
           return title.replace(/'/g, '');
         } else {
           throw new Error(
-            `No property found for 'title' in exported object literal for file: ${filePath}`
+            `No property found for 'title' in exported object literal for file: ${filePath}`,
           );
         }
       } else {
@@ -205,7 +205,7 @@ export async function getTitleFromTypeScript(filePath: string) {
  */
 export async function extractTitleFromDocPageFile(
   filePath: string,
-  globPatterns: (string | GlobPattern)[]
+  globPatterns: (string | GlobPattern)[],
 ) {
   const title = await getTitleFromTypeScript(filePath);
   const prefix = findTitlePrefixFromGlobPatterns(filePath, globPatterns);
@@ -240,7 +240,7 @@ export function generateDocPageLoader(filePath: string, title: string) {
  *
  * @param content The file content to be prettified
  */
-export function formatContent(content: string): string {
+export async function formatContent(content: string): Promise<string> {
   return prettierFormat(content, {
     parser: 'typescript',
     printWidth: 100,
@@ -264,12 +264,12 @@ export function wrapTypescriptBoilerplate(configStrings: string[]) {
 }
 
 export function convertPatternOrGlobPatternArray(
-  patterns: (string | GlobPattern)[]
+  patterns: (string | GlobPattern)[],
 ) {
   return patterns.map((strOrGlobPattern) =>
     typeof strOrGlobPattern === 'string'
       ? strOrGlobPattern
-      : strOrGlobPattern.pattern
+      : strOrGlobPattern.pattern,
   );
 }
 

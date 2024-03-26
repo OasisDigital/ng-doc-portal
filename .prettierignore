@@ -3,3 +3,5 @@
 /dist
 /coverage
 **/project.json
+
+/.nx/cache

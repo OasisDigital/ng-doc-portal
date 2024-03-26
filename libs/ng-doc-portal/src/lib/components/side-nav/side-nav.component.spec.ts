@@ -9,15 +9,15 @@ import { createDocPageRoutes } from './side-nav.component';
 const mockDocPageConfigs = {
   'general-button': {
     title: 'General/Button',
-    loadComponent: jest.fn(),
+    fetch: jest.fn(),
   },
   'forms-input': {
     title: 'Forms/Input',
-    loadComponent: jest.fn(),
+    fetch: jest.fn(),
   },
   'general-label': {
     title: 'General/Label',
-    loadComponent: jest.fn(),
+    fetch: jest.fn(),
   },
 } as DocPageLoaderRecord;
 
@@ -28,15 +28,15 @@ describe('createDocPageRoutes', () => {
     expect(docPageRoutes.length).toEqual(2);
 
     const generalMenu = docPageRoutes.find(
-      (menu) => menu.title === 'General'
+      (menu) => menu.title === 'General',
     ) as DocPagesMenu;
 
     const buttonMetadata = generalMenu.items.find(
-      (routeMetadata) => routeMetadata.title === 'Button'
+      (routeMetadata) => routeMetadata.title === 'Button',
     ) as DocPageMetadata;
 
     const labelMetadata = generalMenu.items.find(
-      (routeMetadata) => routeMetadata.title === 'Label'
+      (routeMetadata) => routeMetadata.title === 'Label',
     ) as DocPageMetadata;
 
     expect(buttonMetadata.route).toEqual('general-button');

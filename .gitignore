@@ -44,3 +44,5 @@ Thumbs.db
 .angular
 
 **/doc-page-loaders.ts
+
+.nx/cache

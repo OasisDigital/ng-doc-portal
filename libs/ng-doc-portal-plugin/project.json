@@ -37,23 +37,14 @@
       }
     },
     "lint": {
-      "executor": "@nx/linter:eslint",
-      "outputs": ["{options.outputFile}"],
-      "options": {
-        "lintFilePatterns": [
-          "libs/ng-doc-portal-plugin/**/*.ts",
-          "libs/ng-doc-portal-plugin/generators.json",
-          "libs/ng-doc-portal-plugin/executors.json",
-          "libs/ng-doc-portal-plugin/package.json"
-        ]
-      }
+      "executor": "@nx/eslint:lint",
+      "outputs": ["{options.outputFile}"]
     },
     "test": {
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/libs/ng-doc-portal-plugin"],
       "options": {
-        "jestConfig": "libs/ng-doc-portal-plugin/jest.config.ts",
-        "passWithNoTests": true
+        "jestConfig": "libs/ng-doc-portal-plugin/jest.config.ts"
       }
     }
   },
