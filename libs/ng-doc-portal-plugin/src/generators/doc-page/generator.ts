@@ -1,12 +1,4 @@
-import {
-  Tree,
-  logger,
-  names,
-  generateFiles,
-  formatFiles,
-  getProjects,
-  readWorkspaceConfiguration,
-} from '@nx/devkit';
+import { Tree, logger, names, generateFiles, formatFiles } from '@nx/devkit';
 
 import { DocPageSchema } from './schema';
 
@@ -18,9 +10,6 @@ export default async function (tree: Tree, schema: DocPageSchema) {
   logger.info(
     `✳️  Starting Schematic Command: ✳️  ${execSchematicCommand} ${schema.name}`
   );
-  const defaultProject = readWorkspaceConfiguration(tree).defaultProject;
-  const findPath = getProjects(tree).get(defaultProject ?? '')?.root;
-  const targetPath = findPath ?? './';
   const templatePath = path.join(__dirname, 'files');
   const interfaceNames = names(schema.name);
 
@@ -31,6 +20,7 @@ export default async function (tree: Tree, schema: DocPageSchema) {
     // make the different name variants available as substitutions
     ...interfaceNames,
   };
-  generateFiles(tree, templatePath, targetPath, substitutions);
+
+  generateFiles(tree, templatePath, schema.directory, substitutions);
   await formatFiles(tree);
 }

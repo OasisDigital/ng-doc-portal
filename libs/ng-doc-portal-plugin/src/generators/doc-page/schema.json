@@ -11,6 +11,14 @@
         "index": 0
       }
     },
+    "directory": {
+      "type": "string",
+      "description": "Directory to generate files in",
+      "$default": {
+        "$source": "argv",
+        "index": 2
+      }
+    },
     "path": {
       "type": "string",
       "description": "The Doc Portal Navigation Path of the Doc Page.",
