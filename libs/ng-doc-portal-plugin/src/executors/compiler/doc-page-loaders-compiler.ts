@@ -44,11 +44,11 @@ export class DocPageLoadersCompiler {
   constructor(
     private readonly configFileLocation: string,
     private readonly docPageLoadersFileLocation: string,
-    private readonly silenced = false,
+    private readonly silenced = false
   ) {
     if (!existsSync(this.configFileLocation)) {
       throw new Error(
-        `Could not find config file at ${this.configFileLocation}`,
+        `Could not find config file at ${this.configFileLocation}`
       );
     }
 
@@ -77,11 +77,11 @@ export class DocPageLoadersCompiler {
   watch() {
     const fileEvents = concat(
       this.buildInitialFileEvent(),
-      this.buildWatcher(),
+      this.buildWatcher()
     );
 
     const handledFileEvents = this.handleFileEvents(fileEvents).pipe(
-      shareReplay(1),
+      shareReplay(1)
     );
 
     handledFileEvents.pipe(take(1)).subscribe(() => {
@@ -100,12 +100,12 @@ export class DocPageLoadersCompiler {
       map((payloads) => this.detectAndHandleDuplicateTitles(payloads)),
       map((eventPayloads) =>
         eventPayloads.map((eventPayload) =>
-          generateDocPageLoader(eventPayload.filePath, eventPayload.title),
-        ),
+          generateDocPageLoader(eventPayload.filePath, eventPayload.title)
+        )
       ),
       map(wrapTypescriptBoilerplate),
       switchMap((content) => formatContent(content)),
-      switchMap((content) => this.writeDynamicPageContentToFile(content)),
+      switchMap((content) => this.writeDynamicPageContentToFile(content))
     );
   }
 
@@ -125,13 +125,13 @@ export class DocPageLoadersCompiler {
         dot: true,
         onlyFiles: true,
         ignore: ['node_modules'],
-      }),
+      })
     ).pipe(
       map((filePaths): RawInitEvent => ({ type: 'init', filePaths })),
       tap(() => {
         const endTime = Date.now();
         this.log(green(`Searching complete in ${endTime - startTime}ms\n`));
-      }),
+      })
     );
   }
 
@@ -142,7 +142,7 @@ export class DocPageLoadersCompiler {
   private buildWatcher(): Observable<RawFileEvent> {
     return new Observable<RawFileEvent>((observer) => {
       const patternStrings = convertPatternOrGlobPatternArray(
-        this.globPatterns,
+        this.globPatterns
       );
 
       const watcher = watch(patternStrings, {
@@ -168,7 +168,7 @@ export class DocPageLoadersCompiler {
    */
   private buildRawFileEvent(
     rawFilePath: string,
-    event: 'add' | 'addDir' | 'change' | 'unlink' | 'unlinkDir',
+    event: 'add' | 'addDir' | 'change' | 'unlink' | 'unlinkDir'
   ): RawFileEvent {
     const filePath = rawFilePath.replace(/\\/g, '/');
     if (event === 'add' || event === 'addDir') {
@@ -191,7 +191,7 @@ export class DocPageLoadersCompiler {
    * @private
    */
   private async addPayloadToEvent(
-    fileEvent: RawFileEvent,
+    fileEvent: RawFileEvent
   ): Promise<ProcessedFileEvent | null> {
     try {
       if (fileEvent.type === 'init') {
@@ -201,7 +201,7 @@ export class DocPageLoadersCompiler {
         for (const filePath of fileEvent.filePaths) {
           const title = await extractTitleFromDocPageFile(
             filePath,
-            this.globPatterns,
+            this.globPatterns
           );
           payload.push({ filePath, title });
         }
@@ -210,21 +210,21 @@ export class DocPageLoadersCompiler {
           green(
             `Finished compiling component document page files in ${
               endTime - startTime
-            }ms\n`,
-          ),
+            }ms\n`
+          )
         );
         return { ...fileEvent, payload };
       } else if (fileEvent.type === 'add' || fileEvent.type === 'change') {
         const startTime = Date.now();
         const title = await extractTitleFromDocPageFile(
           fileEvent.filePath,
-          this.globPatterns,
+          this.globPatterns
         );
         const endTime = Date.now();
         this.log(
           blue(
-            `${timeNow()} - COMPILE - recompiled in ${endTime - startTime}ms`,
-          ),
+            `${timeNow()} - COMPILE - recompiled in ${endTime - startTime}ms`
+          )
         );
         return { ...fileEvent, title };
       } else {
@@ -244,8 +244,8 @@ export class DocPageLoadersCompiler {
         duplicatesDetected = true;
         this.log(
           yellow(
-            `Duplicated title of "${payload.title}" detected in file '${payload.filePath}'`,
-          ),
+            `Duplicated title of "${payload.title}" detected in file '${payload.filePath}'`
+          )
         );
         payload.title += ` ${++titles[payload.title]}`;
       }
@@ -253,7 +253,7 @@ export class DocPageLoadersCompiler {
     }
     if (duplicatesDetected) {
       this.log(
-        yellow('\nPlease resolve duplicated titles before publishing!\n'),
+        yellow('\nPlease resolve duplicated titles before publishing!\n')
       );
     }
     return eventPayloads;
@@ -272,8 +272,8 @@ export class DocPageLoadersCompiler {
       console.error(e);
       this.log(
         red(
-          `\n\nUnexpected error occurred while generating doc-page-loaders.ts\n`,
-        ),
+          `\n\nUnexpected error occurred while generating doc-page-loaders.ts\n`
+        )
       );
     }
   }

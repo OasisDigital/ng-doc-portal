@@ -8,7 +8,7 @@ const execSchematicCommand = `npm run nx workspace-generator doc-page`;
 
 export default async function (tree: Tree, schema: DocPageSchema) {
   logger.info(
-    `✳️  Starting Schematic Command: ✳️  ${execSchematicCommand} ${schema.name}`,
+    `✳️  Starting Schematic Command: ✳️  ${execSchematicCommand} ${schema.name}`
   );
   const templatePath = path.join(__dirname, 'files');
   const interfaceNames = names(schema.name);

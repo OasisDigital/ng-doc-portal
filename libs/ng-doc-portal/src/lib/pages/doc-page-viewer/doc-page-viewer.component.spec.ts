@@ -55,7 +55,7 @@ describe('DocPageViewerComponent', () => {
 
   it('should return mock component from the lazy mode config', async () => {
     paramMapSpy.next(
-      convertToParamMap({ [docPageRouteParam]: mockLazyConfigParam }),
+      convertToParamMap({ [docPageRouteParam]: mockLazyConfigParam })
     );
 
     const result = await firstValueFrom(component.component$);
@@ -65,7 +65,7 @@ describe('DocPageViewerComponent', () => {
 
   it('should return mock component from the runtime mode config', async () => {
     paramMapSpy.next(
-      convertToParamMap({ [docPageRouteParam]: mockRuntimeConfigParam }),
+      convertToParamMap({ [docPageRouteParam]: mockRuntimeConfigParam })
     );
 
     const result = await firstValueFrom(component.component$);

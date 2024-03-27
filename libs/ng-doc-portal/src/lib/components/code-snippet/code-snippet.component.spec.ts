@@ -25,7 +25,7 @@ describe('CodeSnippetComponent', () => {
       component.buttonText
         .pipe(skip(1), take(2), toArray())
         .subscribe((buttonText) =>
-          expect(buttonText).toEqual(['Copied', 'Copy']),
+          expect(buttonText).toEqual(['Copied', 'Copy'])
         );
 
       component.copyTrigger.next();
@@ -40,7 +40,7 @@ describe('CodeSnippetComponent', () => {
       component.buttonText
         .pipe(skip(1), take(2), toArray())
         .subscribe((buttonText) =>
-          expect(buttonText).toEqual(['Failed', 'Copy']),
+          expect(buttonText).toEqual(['Failed', 'Copy'])
         );
 
       component.copyTrigger.next();

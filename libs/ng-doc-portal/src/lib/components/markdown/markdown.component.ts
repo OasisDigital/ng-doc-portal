@@ -13,7 +13,7 @@ marked.use(
       const language = hljs.getLanguage(lang) ? lang : 'plaintext';
       return hljs.highlight(code, { language }).value;
     },
-  }),
+  })
 );
 
 @Component({
@@ -37,12 +37,12 @@ export class MarkdownComponent {
 
   constructor(
     private http: HttpClient,
-    private sanitizer: DomSanitizer,
+    private sanitizer: DomSanitizer
   ) {}
 
   parseMarkdown(textToMark: string) {
     this.parsedHtml = this.sanitizer.bypassSecurityTrustHtml(
-      marked.parse(textToMark) as string,
+      marked.parse(textToMark) as string
     );
   }
 
