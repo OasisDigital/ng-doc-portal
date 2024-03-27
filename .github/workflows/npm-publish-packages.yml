@@ -29,6 +29,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
       - uses: stefanzweifel/git-auto-commit-action@v4.16.0
         with:
+          token: ${{ secrets.ORG_PAT }}
           branch: main
           commit_message: auto-bump to ${{ github.event.release.tag_name }}
           commit_author: Zachary Kipping <zjkipping@hotmail.com>
