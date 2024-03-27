@@ -1,7 +1,7 @@
 {
   "name": "@oasisdigital/ng-doc-portal",
   "description": "Documentation portal system written natively in Angular",
-  "version": "v1.7.1",
+  "version": "v1.8.0",
   "peerDependencies": {
     "@angular/common": "^17.0.0",
     "@angular/core": "^17.0.0",
