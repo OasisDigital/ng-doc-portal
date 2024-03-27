@@ -23,7 +23,7 @@ jobs:
       - run: npm ci
       - uses: nrwl/nx-set-shas@v3
       - run: git branch --track main origin/main
-      - run: npm run nx affected --target=lint --base=origin/main
+      - run: npx nx affected --target=lint --base=origin/main
   prettier:
     runs-on: ubuntu-latest
     steps:
@@ -37,7 +37,7 @@ jobs:
       - run: npm ci
       - uses: nrwl/nx-set-shas@v3
       - run: git branch --track main origin/main
-      - run: npm run nx format:check --base=origin/main
+      - run: npx nx format:check --base=origin/main
   build:
     runs-on: ubuntu-latest
     steps:
@@ -51,4 +51,4 @@ jobs:
       - run: npm ci
       - uses: nrwl/nx-set-shas@v3
       - run: git branch --track main origin/main
-      - run: npm run nx --target=build --base=origin/main
+      - run: npx nx --target=build --base=origin/main

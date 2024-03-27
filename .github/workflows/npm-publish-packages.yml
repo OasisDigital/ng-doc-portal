@@ -19,11 +19,11 @@ jobs:
           registry-url: https://registry.npmjs.org/
       - run: npm ci
       - run: npm run update-versions ${{ github.event.release.tag_name }} libs/ng-doc-portal/package.json,libs/ng-doc-portal-plugin/package.json
-      - run: npm run nx build ng-doc-portal
+      - run: npx nx build ng-doc-portal
       - run: npm publish dist/libs/ng-doc-portal
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
-      - run: npm run nx build ng-doc-portal-plugin
+      - run: npx nx build ng-doc-portal-plugin
       - run: npm publish dist/libs/ng-doc-portal-plugin
         env:
           NODE_AUTH_TOKEN: ${{secrets.npm_token}}
