@@ -2,8 +2,9 @@ import { TestBed } from '@angular/core/testing';
 import { ActivatedRoute, convertToParamMap, Router } from '@angular/router';
 import { firstValueFrom, ReplaySubject } from 'rxjs';
 
-import { DocPageConfigService } from '../../services/doc-page-loaders.service';
+import { DocPageLoaderRecord } from '../../types/doc-page-config.types';
 import { docPageRouteParam } from '../../util/constants';
+import { DOC_PAGE_LOADERS_TOKEN } from '../../util/injection-tokens';
 
 import { DocPageViewerComponent } from './doc-page-viewer.component';
 
@@ -35,24 +36,15 @@ describe('DocPageViewerComponent', () => {
           },
         },
         {
-          provide: DocPageConfigService,
+          provide: DOC_PAGE_LOADERS_TOKEN,
           useValue: {
-            configs: {
-              [mockLazyConfigParam]: {
-                mode: 'lazy',
-                loadConfig: () =>
-                  Promise.resolve({
-                    docPageComponent: MockLazyModeComponent,
-                  }),
-              },
-              [mockRuntimeConfigParam]: {
-                mode: 'runtime',
-                config: {
-                  docPageComponent: MockRuntimeModeComponent,
-                },
-              },
+            [mockLazyConfigParam]: {
+              fetch: () => Promise.resolve(MockLazyModeComponent),
             },
-          },
+            [mockRuntimeConfigParam]: {
+              fetch: () => Promise.resolve(MockRuntimeModeComponent),
+            },
+          } as unknown as DocPageLoaderRecord,
         },
         DocPageViewerComponent,
       ],

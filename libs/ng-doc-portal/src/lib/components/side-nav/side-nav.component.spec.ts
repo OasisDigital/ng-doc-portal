@@ -9,15 +9,15 @@ import { createDocPageRoutes } from './side-nav.component';
 const mockDocPageConfigs = {
   'general-button': {
     title: 'General/Button',
-    loadComponent: jest.fn(),
+    fetch: jest.fn(),
   },
   'forms-input': {
     title: 'Forms/Input',
-    loadComponent: jest.fn(),
+    fetch: jest.fn(),
   },
   'general-label': {
     title: 'General/Label',
-    loadComponent: jest.fn(),
+    fetch: jest.fn(),
   },
 } as DocPageLoaderRecord;
 

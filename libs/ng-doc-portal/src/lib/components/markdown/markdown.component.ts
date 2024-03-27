@@ -7,7 +7,6 @@ import { markedHighlight } from 'marked-highlight';
 import { lastValueFrom } from 'rxjs';
 
 marked.use(
-  { mangle: false, headerIds: false },
   markedHighlight({
     langPrefix: 'hljs language-',
     highlight: function (code, lang) {
@@ -36,11 +35,14 @@ export class MarkdownComponent {
     })();
   }
 
-  constructor(private http: HttpClient, private sanitizer: DomSanitizer) {}
+  constructor(
+    private http: HttpClient,
+    private sanitizer: DomSanitizer
+  ) {}
 
   parseMarkdown(textToMark: string) {
     this.parsedHtml = this.sanitizer.bypassSecurityTrustHtml(
-      marked.parse(textToMark)
+      marked.parse(textToMark) as string
     );
   }
 

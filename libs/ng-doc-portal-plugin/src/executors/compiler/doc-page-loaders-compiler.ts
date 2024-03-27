@@ -104,7 +104,7 @@ export class DocPageLoadersCompiler {
         )
       ),
       map(wrapTypescriptBoilerplate),
-      map(formatContent),
+      switchMap((content) => formatContent(content)),
       switchMap((content) => this.writeDynamicPageContentToFile(content))
     );
   }

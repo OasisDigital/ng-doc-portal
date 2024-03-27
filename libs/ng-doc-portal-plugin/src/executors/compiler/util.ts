@@ -240,7 +240,7 @@ export function generateDocPageLoader(filePath: string, title: string) {
  *
  * @param content The file content to be prettified
  */
-export function formatContent(content: string): string {
+export async function formatContent(content: string): Promise<string> {
   return prettierFormat(content, {
     parser: 'typescript',
     printWidth: 100,

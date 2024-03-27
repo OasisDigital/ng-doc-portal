@@ -6,16 +6,16 @@
   "generators": "./generators.json",
   "executors": "./executors.json",
   "peerDependencies": {
-    "prettier": "^2.6.2",
-    "@nx/devkit": "^16.0.0",
-    "@nx/angular": "^16.0.0"
+    "prettier": "^3.2.5",
+    "@nx/devkit": "^18.0.0",
+    "@nx/angular": "^18.0.0"
   },
   "dependencies": {
     "@phenomnomnominal/tsquery": "^6.0.0",
     "chalk": "^4.1.2",
     "chokidar": "^3.5.3",
-    "date-fns": "2.30.0",
-    "fast-glob": "^3.3.0",
+    "date-fns": "^3.6.0",
+    "fast-glob": "^3.3.2",
     "minimatch": "^9.0.3"
   },
   "publishConfig": {

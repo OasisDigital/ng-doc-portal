@@ -7,7 +7,7 @@ describe('CodeSnippetComponent', () => {
   let component: CodeSnippetComponent;
 
   beforeEach(() => {
-    component = new CodeSnippetComponent();
+    component = new CodeSnippetComponent({} as any);
   });
 
   describe('buttonText', () => {
