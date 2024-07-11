@@ -1,4 +1,4 @@
-import { NgComponentOutlet, NgIf } from '@angular/common';
+import { NgComponentOutlet } from '@angular/common';
 import { Component, Inject, Optional, Type } from '@angular/core';
 
 import { NG_DOC_PORTAL_LANDING_PAGE_TOKEN } from './landing-page.token';
@@ -7,15 +7,13 @@ import { NG_DOC_PORTAL_LANDING_PAGE_TOKEN } from './landing-page.token';
   selector: 'ngdp-landing-page',
   standalone: true,
   template: `
-    <ng-container *ngIf="!landingPageOverride">
+    @if (landingPageOverride) {
+      <ng-container [ngComponentOutlet]="landingPageOverride"></ng-container>
+    } @else {
       <h1>Please select a component document page from the side navigation.</h1>
-    </ng-container>
-    <ng-container
-      *ngIf="landingPageOverride"
-      [ngComponentOutlet]="landingPageOverride"
-    ></ng-container>
+    }
   `,
-  imports: [NgIf, NgComponentOutlet],
+  imports: [NgComponentOutlet],
 })
 export class LandingPageComponent {
   constructor(

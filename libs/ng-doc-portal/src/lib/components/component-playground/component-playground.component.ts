@@ -1,4 +1,4 @@
-import { DOCUMENT, NgFor, NgIf } from '@angular/common';
+import { DOCUMENT } from '@angular/common';
 import { ChangeDetectorRef } from '@angular/core';
 import { Inject } from '@angular/core';
 import {
@@ -39,7 +39,7 @@ interface PlaygroundControl {
   standalone: true,
   templateUrl: './component-playground.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [ReactiveFormsModule, RenderComponentDirective, NgIf, NgFor],
+  imports: [ReactiveFormsModule, RenderComponentDirective],
 })
 export class ComponentPlaygroundComponent implements OnDestroy {
   renderComponentConfig?: RenderComponentConfig;

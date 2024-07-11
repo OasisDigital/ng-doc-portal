@@ -1,5 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { HttpClientModule } from '@angular/common/http';
+import {
+  provideHttpClient,
+  withInterceptorsFromDi,
+} from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
@@ -18,24 +21,6 @@ import { TitleComponent } from './title/title.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 
 @NgModule({
-  imports: [
-    HighlightModule,
-    CommonModule,
-    RouterModule,
-    HttpClientModule,
-    ReactiveFormsModule,
-    TabMenuComponent,
-    TabItemComponent,
-    CodeSnippetComponent,
-    SideNavComponent,
-    MarkdownComponent,
-    MarkdownDirective,
-    EmbedIframeComponent,
-    ToolbarComponent,
-    TitleComponent,
-    CodeSnippetDirective,
-    ComponentPlaygroundComponent,
-  ],
   exports: [
     TabMenuComponent,
     TabItemComponent,
@@ -49,5 +34,23 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
     CodeSnippetDirective,
     ComponentPlaygroundComponent,
   ],
+  imports: [
+    HighlightModule,
+    CommonModule,
+    RouterModule,
+    ReactiveFormsModule,
+    TabMenuComponent,
+    TabItemComponent,
+    CodeSnippetComponent,
+    SideNavComponent,
+    MarkdownComponent,
+    MarkdownDirective,
+    EmbedIframeComponent,
+    ToolbarComponent,
+    TitleComponent,
+    CodeSnippetDirective,
+    ComponentPlaygroundComponent,
+  ],
+  providers: [provideHttpClient(withInterceptorsFromDi())],
 })
 export class NgDocPortalComponentsModule {}

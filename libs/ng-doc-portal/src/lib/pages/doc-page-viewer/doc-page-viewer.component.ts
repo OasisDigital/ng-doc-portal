@@ -1,4 +1,4 @@
-import { AsyncPipe, NgComponentOutlet, NgIf } from '@angular/common';
+import { AsyncPipe, NgComponentOutlet } from '@angular/common';
 import { Component, Inject, Type } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { filter, map, Observable, switchMap, tap } from 'rxjs';
@@ -12,11 +12,10 @@ import { DOC_PAGE_LOADERS_TOKEN } from '../../util/injection-tokens';
 
 @Component({
   standalone: true,
-  template: `<ng-container
-    *ngIf="component$ | async as component"
-    [ngComponentOutlet]="component"
-  ></ng-container>`,
-  imports: [NgIf, NgComponentOutlet, AsyncPipe],
+  template: `@if (component$ | async; as component) {
+    <ng-container [ngComponentOutlet]="component"></ng-container>
+  }`,
+  imports: [NgComponentOutlet, AsyncPipe],
 })
 export class DocPageViewerComponent {
   component$: Observable<Type<any>>;

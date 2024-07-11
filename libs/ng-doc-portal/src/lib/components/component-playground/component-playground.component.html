@@ -1,207 +1,184 @@
 <div class="component-view">
   <div class="component-display">
-    <ng-container
-      *ngIf="renderComponentConfig"
-      [ngdpRenderComponent]="renderComponentConfig"
-      (componentRefCreated)="initializeComponentBindings($event)"
-    ></ng-container>
+    @if (renderComponentConfig) {
+      <ng-container
+        [ngdpRenderComponent]="renderComponentConfig"
+        (componentRefCreated)="initializeComponentBindings($event)"
+      ></ng-container>
+    }
   </div>
 </div>
-<div
-  class="form-view"
-  *ngIf="playgroundControls.length > 0 || classBindingControl"
->
-  <ng-container *ngIf="textContentControl">
-    <label for="text-content-binding">Text Content:</label>
-    <input id="text-content-binding" [formControl]="textContentControl" />
-  </ng-container>
-  <ng-container *ngIf="classBindingControl && classBindingControlConfig">
-    <label for="class-binding">Class Binding:</label>
-    <select
-      id="class-binding"
-      [formControl]="classBindingControl"
-      [multiple]="classBindingControlConfig.multiple"
-      [size]="
-        classBindingControlConfig.multiple
-          ? clamp(classBindingControlConfig.classes.length, 5)
-          : undefined
-      "
-    >
-      <option
-        *ngFor="let class of classBindingControlConfig.classes"
-        [value]="class"
-      >
-        {{ class }}
-      </option>
-    </select>
-  </ng-container>
-  <ng-container *ngFor="let playgroundControl of playgroundControls">
-    <ng-container
-      *ngIf="TypeGuards.isTextControlConfig(playgroundControl.config)"
-    >
-      <label [for]="playgroundControl.config.property">
-        {{ playgroundControl.config.label }}:
-      </label>
-      <input
-        [id]="playgroundControl.config.property"
-        [placeholder]="playgroundControl.config.placeholder ?? ''"
-        [formControl]="playgroundControl.formControl"
-      />
-    </ng-container>
-    <ng-container
-      *ngIf="TypeGuards.isTextAreaControlConfig(playgroundControl.config)"
-    >
-      <label [for]="playgroundControl.config.property">
-        {{ playgroundControl.config.label }}:
-      </label>
-      <textarea
-        [id]="playgroundControl.config.property"
-        [placeholder]="playgroundControl.config.placeholder ?? ''"
-        [formControl]="playgroundControl.formControl"
-      ></textarea>
-    </ng-container>
-    <ng-container
-      *ngIf="TypeGuards.isNumberControlConfig(playgroundControl.config)"
-    >
-      <label [for]="playgroundControl.config.property">
-        {{ playgroundControl.config.label }}:
-      </label>
-      <input
-        type="number"
-        [id]="playgroundControl.config.property"
-        [placeholder]="playgroundControl.config.placeholder ?? ''"
-        [formControl]="playgroundControl.formControl"
-        [min]="playgroundControl.config.min ?? null"
-        [max]="playgroundControl.config.max ?? null"
-      />
-    </ng-container>
-    <ng-container
-      *ngIf="TypeGuards.isRangeControlConfig(playgroundControl.config)"
-    >
-      <label [for]="playgroundControl.config.property">
-        {{ playgroundControl.config.label }}:
-      </label>
-      <input
-        type="range"
-        [id]="playgroundControl.config.property"
-        [placeholder]="playgroundControl.config.placeholder ?? ''"
-        [formControl]="playgroundControl.formControl"
-        [min]="playgroundControl.config.min ?? null"
-        [max]="playgroundControl.config.max ?? null"
-        [step]="playgroundControl.config.step ?? null"
-      />
-    </ng-container>
-    <ng-container
-      *ngIf="TypeGuards.isSelectControlConfig(playgroundControl.config)"
-    >
-      <label [for]="playgroundControl.config.property">
-        {{ playgroundControl.config.label }}:
-      </label>
+@if (playgroundControls.length > 0 || classBindingControl) {
+  <div class="form-view">
+    @if (textContentControl) {
+      <label for="text-content-binding">Text Content:</label>
+      <input id="text-content-binding" [formControl]="textContentControl" />
+    }
+    @if (classBindingControl && classBindingControlConfig) {
+      <label for="class-binding">Class Binding:</label>
       <select
-        [id]="playgroundControl.config.property"
-        [formControl]="playgroundControl.formControl"
-        [multiple]="playgroundControl.config.multiple"
+        id="class-binding"
+        [formControl]="classBindingControl"
+        [multiple]="classBindingControlConfig.multiple"
         [size]="
-          playgroundControl.config.multiple
-            ? clamp(playgroundControl.config.options.length, 5)
+          classBindingControlConfig.multiple
+            ? clamp(classBindingControlConfig.classes.length, 5)
             : undefined
         "
       >
-        <option
-          *ngFor="let option of playgroundControl.config.options"
-          [value]="option.value"
-        >
-          {{ option.display }}
-        </option>
+        @for (class of classBindingControlConfig.classes; track class) {
+          <option [value]="class">
+            {{ class }}
+          </option>
+        }
       </select>
-    </ng-container>
-    <ng-container
-      *ngIf="TypeGuards.isCheckboxControlConfig(playgroundControl.config)"
-    >
-      <label [for]="playgroundControl.config.property">
-        {{ playgroundControl.config.label }}:
-      </label>
-      <input
-        type="checkbox"
-        [id]="playgroundControl.config.property"
-        [formControl]="playgroundControl.formControl"
-      />
-    </ng-container>
-    <ng-container
-      *ngIf="TypeGuards.isRadioGroupControlConfig(playgroundControl.config)"
-    >
-      <label> {{ playgroundControl.config.label }}: </label>
-      <div
-        class="radio-option"
-        *ngFor="let option of playgroundControl.config.options"
-      >
-        <label [for]="playgroundControl.config.property + '-' + option.value">
-          {{ option.display }}:
+    }
+    @for (playgroundControl of playgroundControls; track playgroundControl) {
+      @if (TypeGuards.isTextControlConfig(playgroundControl.config)) {
+        <label [for]="playgroundControl.config.property">
+          {{ playgroundControl.config.label }}:
         </label>
         <input
-          type="radio"
-          [id]="playgroundControl.config.property + '-' + option.value"
+          [id]="playgroundControl.config.property"
+          [placeholder]="playgroundControl.config.placeholder ?? ''"
           [formControl]="playgroundControl.formControl"
-          [value]="option.value"
         />
-      </div>
-    </ng-container>
-    <ng-container
-      *ngIf="TypeGuards.isDateControlConfig(playgroundControl.config)"
-    >
-      <label [for]="playgroundControl.config.property">
-        {{ playgroundControl.config.label }}:
-      </label>
-      <input
-        type="date"
-        [id]="playgroundControl.config.property"
-        [placeholder]="playgroundControl.config.placeholder ?? ''"
-        [formControl]="playgroundControl.formControl"
-        [min]="playgroundControl.config.min"
-        [max]="playgroundControl.config.max"
-      />
-    </ng-container>
-    <ng-container
-      *ngIf="TypeGuards.isTimeControlConfig(playgroundControl.config)"
-    >
-      <label [for]="playgroundControl.config.property">
-        {{ playgroundControl.config.label }}:
-      </label>
-      <input
-        type="time"
-        [id]="playgroundControl.config.property"
-        [placeholder]="playgroundControl.config.placeholder ?? ''"
-        [formControl]="playgroundControl.formControl"
-        [min]="playgroundControl.config.min"
-        [max]="playgroundControl.config.max"
-      />
-    </ng-container>
-    <ng-container
-      *ngIf="TypeGuards.isDateTimeControlConfig(playgroundControl.config)"
-    >
-      <label [for]="playgroundControl.config.property">
-        {{ playgroundControl.config.label }}:
-      </label>
-      <input
-        type="datetime"
-        [id]="playgroundControl.config.property"
-        [placeholder]="playgroundControl.config.placeholder ?? ''"
-        [formControl]="playgroundControl.formControl"
-        [min]="playgroundControl.config.min"
-        [max]="playgroundControl.config.max"
-      />
-    </ng-container>
-    <ng-container
-      *ngIf="TypeGuards.isColorPickerControlConfig(playgroundControl.config)"
-    >
-      <label [for]="playgroundControl.config.property">
-        {{ playgroundControl.config.label }}:
-      </label>
-      <input
-        type="color"
-        [id]="playgroundControl.config.property"
-        [formControl]="playgroundControl.formControl"
-      />
-    </ng-container>
-  </ng-container>
-</div>
+      } @else if (
+        TypeGuards.isTextAreaControlConfig(playgroundControl.config)
+      ) {
+        <label [for]="playgroundControl.config.property">
+          {{ playgroundControl.config.label }}:
+        </label>
+        <textarea
+          [id]="playgroundControl.config.property"
+          [placeholder]="playgroundControl.config.placeholder ?? ''"
+          [formControl]="playgroundControl.formControl"
+        ></textarea>
+      } @else if (TypeGuards.isNumberControlConfig(playgroundControl.config)) {
+        <label [for]="playgroundControl.config.property">
+          {{ playgroundControl.config.label }}:
+        </label>
+        <input
+          type="number"
+          [id]="playgroundControl.config.property"
+          [placeholder]="playgroundControl.config.placeholder ?? ''"
+          [formControl]="playgroundControl.formControl"
+          [min]="playgroundControl.config.min ?? null"
+          [max]="playgroundControl.config.max ?? null"
+        />
+      } @else if (TypeGuards.isRangeControlConfig(playgroundControl.config)) {
+        <label [for]="playgroundControl.config.property">
+          {{ playgroundControl.config.label }}:
+        </label>
+        <input
+          type="range"
+          [id]="playgroundControl.config.property"
+          [placeholder]="playgroundControl.config.placeholder ?? ''"
+          [formControl]="playgroundControl.formControl"
+          [min]="playgroundControl.config.min ?? null"
+          [max]="playgroundControl.config.max ?? null"
+          [step]="playgroundControl.config.step ?? null"
+        />
+      } @else if (TypeGuards.isSelectControlConfig(playgroundControl.config)) {
+        <label [for]="playgroundControl.config.property">
+          {{ playgroundControl.config.label }}:
+        </label>
+        <select
+          [id]="playgroundControl.config.property"
+          [formControl]="playgroundControl.formControl"
+          [multiple]="playgroundControl.config.multiple"
+          [size]="
+            playgroundControl.config.multiple
+              ? clamp(playgroundControl.config.options.length, 5)
+              : undefined
+          "
+        >
+          @for (option of playgroundControl.config.options; track option) {
+            <option [value]="option.value">
+              {{ option.display }}
+            </option>
+          }
+        </select>
+      } @else if (
+        TypeGuards.isCheckboxControlConfig(playgroundControl.config)
+      ) {
+        <label [for]="playgroundControl.config.property">
+          {{ playgroundControl.config.label }}:
+        </label>
+        <input
+          type="checkbox"
+          [id]="playgroundControl.config.property"
+          [formControl]="playgroundControl.formControl"
+        />
+      } @else if (
+        TypeGuards.isRadioGroupControlConfig(playgroundControl.config)
+      ) {
+        <label> {{ playgroundControl.config.label }}: </label>
+        @for (option of playgroundControl.config.options; track option) {
+          <div class="radio-option">
+            <label
+              [for]="playgroundControl.config.property + '-' + option.value"
+            >
+              {{ option.display }}:
+            </label>
+            <input
+              type="radio"
+              [id]="playgroundControl.config.property + '-' + option.value"
+              [formControl]="playgroundControl.formControl"
+              [value]="option.value"
+            />
+          </div>
+        }
+      } @else if (TypeGuards.isDateControlConfig(playgroundControl.config)) {
+        <label [for]="playgroundControl.config.property">
+          {{ playgroundControl.config.label }}:
+        </label>
+        <input
+          type="date"
+          [id]="playgroundControl.config.property"
+          [placeholder]="playgroundControl.config.placeholder ?? ''"
+          [formControl]="playgroundControl.formControl"
+          [min]="playgroundControl.config.min"
+          [max]="playgroundControl.config.max"
+        />
+      } @else if (TypeGuards.isTimeControlConfig(playgroundControl.config)) {
+        <label [for]="playgroundControl.config.property">
+          {{ playgroundControl.config.label }}:
+        </label>
+        <input
+          type="time"
+          [id]="playgroundControl.config.property"
+          [placeholder]="playgroundControl.config.placeholder ?? ''"
+          [formControl]="playgroundControl.formControl"
+          [min]="playgroundControl.config.min"
+          [max]="playgroundControl.config.max"
+        />
+      } @else if (
+        TypeGuards.isDateTimeControlConfig(playgroundControl.config)
+      ) {
+        <label [for]="playgroundControl.config.property">
+          {{ playgroundControl.config.label }}:
+        </label>
+        <input
+          type="datetime"
+          [id]="playgroundControl.config.property"
+          [placeholder]="playgroundControl.config.placeholder ?? ''"
+          [formControl]="playgroundControl.formControl"
+          [min]="playgroundControl.config.min"
+          [max]="playgroundControl.config.max"
+        />
+      } @else if (
+        TypeGuards.isColorPickerControlConfig(playgroundControl.config)
+      ) {
+        <label [for]="playgroundControl.config.property">
+          {{ playgroundControl.config.label }}:
+        </label>
+        <input
+          type="color"
+          [id]="playgroundControl.config.property"
+          [formControl]="playgroundControl.formControl"
+        />
+      }
+    }
+  </div>
+}

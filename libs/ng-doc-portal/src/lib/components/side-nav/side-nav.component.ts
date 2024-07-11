@@ -1,4 +1,4 @@
-import { AsyncPipe, NgFor, NgIf, NgTemplateOutlet } from '@angular/common';
+import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { Component, Inject, OnDestroy } from '@angular/core';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import {
@@ -25,8 +25,6 @@ const filterQueryParamKey = 'filter';
   imports: [
     ReactiveFormsModule,
     NgTemplateOutlet,
-    NgIf,
-    NgFor,
     RouterLink,
     RouterLinkActive,
     AsyncPipe,

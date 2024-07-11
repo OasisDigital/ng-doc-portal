@@ -1,6 +1,9 @@
-<pre *ngIf="!displayError">
-  <code [highlight]="displayCode" [languages]="['typescript', 'html']"></code>
-  <button class="code-snippet-copy-button" (click)="copyToClipboard()">{{ buttonText | async }}</button>
-</pre>
-<div class="hljs hljs-deletion" *ngIf="displayError">{{ displayError }}</div>
+@if (displayError) {
+  <div class="hljs hljs-deletion">{{ displayError }}</div>
+} @else {
+  <pre>
+    <code [highlight]="displayCode" [languages]="['typescript', 'html']"></code>
+    <button class="code-snippet-copy-button" (click)="copyToClipboard()">{{ buttonText | async }}</button>
+  </pre>
+}
 <div [hidden]="true" #content><ng-content></ng-content></div>

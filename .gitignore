@@ -46,3 +46,4 @@ Thumbs.db
 **/doc-page-loaders.ts
 
 .nx/cache
+.nx/workspace-data

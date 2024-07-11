@@ -1,13 +1,16 @@
 <div class="tab-header">
-  <div
-    *ngFor="let tab of tabs"
-    [class.highlight]="activeTab?.title === tab.title"
-    (click)="goToTab(tab)"
-  >
-    {{ tab.title | uppercase }}
-  </div>
+  @for (tab of tabs; track tab) {
+    <div
+      [class.highlight]="activeTab?.title === tab.title"
+      (click)="goToTab(tab)"
+    >
+      {{ tab.title | uppercase }}
+    </div>
+  }
 </div>
 
-<div class="tab-content" *ngIf="activeTab">
-  <ng-container *ngTemplateOutlet="activeTab.templateRef"></ng-container>
-</div>
+@if (activeTab) {
+  <div class="tab-content">
+    <ng-container *ngTemplateOutlet="activeTab.templateRef"></ng-container>
+  </div>
+}

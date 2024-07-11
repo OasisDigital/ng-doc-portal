@@ -1,4 +1,4 @@
-import { NgComponentOutlet, NgIf } from '@angular/common';
+import { NgComponentOutlet } from '@angular/common';
 import { Component, Inject, Optional, Type } from '@angular/core';
 
 import { NG_DOC_PORTAL_TITLE_TOKEN } from './title.token';
@@ -7,15 +7,13 @@ import { NG_DOC_PORTAL_TITLE_TOKEN } from './title.token';
   selector: 'ngdp-title',
   standalone: true,
   template: `
-    <ng-container *ngIf="!titleComponent">
+    @if (titleComponent) {
+      <ng-container [ngComponentOutlet]="titleComponent"></ng-container>
+    } @else {
       <h1>{{ titleString ?? 'Doc Portal' }}</h1>
-    </ng-container>
-    <ng-container
-      *ngIf="titleComponent"
-      [ngComponentOutlet]="titleComponent"
-    ></ng-container>
+    }
   `,
-  imports: [NgIf, NgComponentOutlet],
+  imports: [NgComponentOutlet],
 })
 export class TitleComponent {
   titleString: string | undefined;

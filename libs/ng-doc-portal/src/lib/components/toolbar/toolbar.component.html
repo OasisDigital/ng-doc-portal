@@ -1,13 +1,12 @@
-<select
-  *ngIf="!!this.themeOptions?.length"
-  class="ngdp-select"
-  [formControl]="themeControl"
->
-  <option *ngFor="let themeOption of themeOptions" [value]="themeOption.value">
-    {{ themeOption.display }}
-  </option>
-</select>
-<ng-container
-  *ngFor="let plugin of plugins"
-  [ngComponentOutlet]="plugin"
-></ng-container>
+@if (!!this.themeOptions?.length) {
+  <select class="ngdp-select" [formControl]="themeControl">
+    @for (themeOption of themeOptions; track themeOption) {
+      <option [value]="themeOption.value">
+        {{ themeOption.display }}
+      </option>
+    }
+  </select>
+}
+@for (plugin of plugins; track plugin) {
+  <ng-container [ngComponentOutlet]="plugin"></ng-container>
+}

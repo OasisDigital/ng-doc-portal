@@ -1,4 +1,4 @@
-import { AsyncPipe, NgIf } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectorRef,
@@ -27,7 +27,7 @@ import {
   selector: 'ngdp-code-snippet',
   standalone: true,
   templateUrl: './code-snippet.component.html',
-  imports: [NgIf, AsyncPipe, HighlightModule],
+  imports: [AsyncPipe, HighlightModule],
 })
 export class CodeSnippetComponent
   implements AfterViewInit, OnChanges, OnDestroy
