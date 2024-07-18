@@ -8,7 +8,8 @@
   "peerDependencies": {
     "prettier": "^3.2.5",
     "@nx/devkit": "^19.0.0",
-    "@nx/angular": "^19.0.0"
+    "@nx/angular": "^19.0.0",
+    "rxjs": "^7.4.0"
   },
   "dependencies": {
     "@phenomnomnominal/tsquery": "^6.0.0",
