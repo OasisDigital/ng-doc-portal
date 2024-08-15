@@ -130,7 +130,9 @@ export class DocPageLoadersCompiler {
       map((filePaths): RawInitEvent => ({ type: 'init', filePaths })),
       tap(() => {
         const endTime = Date.now();
-        this.log(chalk.green(`Searching complete in ${endTime - startTime}ms\n`));
+        this.log(
+          chalk.green(`Searching complete in ${endTime - startTime}ms\n`)
+        );
       })
     );
   }
@@ -231,7 +233,9 @@ export class DocPageLoadersCompiler {
         return fileEvent;
       }
     } catch (error) {
-      this.log(chalk.red(`Unexpected error occurred while compiling...\n${error}`));
+      this.log(
+        chalk.red(`Unexpected error occurred while compiling...\n${error}`)
+      );
       return null;
     }
   }
