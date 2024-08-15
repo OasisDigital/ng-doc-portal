@@ -1,3 +1,3 @@
 {
-  "globPattern": "apps/<%= fileName %>/**/*.doc-page.ts"
+  "globPattern": "apps/<%= projectDirectory %>/**/*.doc-page.ts"
 }

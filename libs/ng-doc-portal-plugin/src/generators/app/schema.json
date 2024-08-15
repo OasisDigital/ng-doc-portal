@@ -21,7 +21,8 @@
     "directory": {
       "type": "string",
       "description": "A directory where the project is placed",
-      "alias": "d"
+      "alias": "d",
+      "x-prompt": "What directory would you like it in?"
     }
   },
   "required": ["name"]
