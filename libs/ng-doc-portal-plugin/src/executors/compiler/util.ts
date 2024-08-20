@@ -226,11 +226,20 @@ export async function extractTitleFromDocPageFile(
 export function generateDocPageLoader(filePath: string, title: string) {
   // Figure out variables for config list file output
   const filePathWithoutExtension = filePath.replace('.ts', '');
+  /* If nested folders are used */
+  const nestedPathCount = (
+    filePathWithoutExtension.split('/src')[0].split('apps/')[1].match(/\//g) ||
+    []
+  ).length;
   const route = title.toLowerCase().replace(/[ /]/g, '-');
+  let startingPath = '../../../../';
+  for (let index = 0; index < nestedPathCount; index++) {
+    startingPath += '../';
+  }
   return `
     '${route}': {
       title: '${title}',
-      fetch: () => import('../../../../${filePathWithoutExtension}').then((file) => file.default)
+      fetch: () => import('${startingPath}${filePathWithoutExtension}').then((file) => file.default)
     }
 `;
 }

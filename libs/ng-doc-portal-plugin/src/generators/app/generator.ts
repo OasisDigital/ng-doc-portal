@@ -30,6 +30,7 @@ function normalizeOptions(
   const projectDirectory = options.directory
     ? `${names(options.directory).fileName}/${name}`
     : name;
+
   const projectName = projectDirectory.replace(new RegExp('/', 'g'), '-');
   const projectRoot = `${getWorkspaceLayout(tree).appsDir}/${projectDirectory}`;
   const parsedTags = options.tags
@@ -81,10 +82,12 @@ function updateProjectExecutors(tree: Tree, options: NormalizedSchema) {
   const projectConfig = readProjectConfiguration(tree, options.projectName);
 
   const appName = options.name || 'component-doc-portal';
-
+  const projectDirectory = options.directory
+    ? `${names(options.directory).fileName}/${appName}`
+    : appName;
   if (projectConfig.targets) {
     const targetOptions = {
-      configFile: `apps/${appName}/ng-doc-portal-config.json`,
+      configFile: `apps/${projectDirectory}/ng-doc-portal-config.json`,
     };
 
     projectConfig.targets = {
@@ -128,9 +131,9 @@ function updateProjectExecutors(tree: Tree, options: NormalizedSchema) {
           const ngServeTarget = projectConfig.targets?.['ng-serve'] as any;
           (projectConfig.targets as any)['ng-serve'].configurations[
             configKey
-          ].browserTarget = ngServeTarget.configurations[
+          ].buildTarget = ngServeTarget.configurations[
             configKey
-          ].browserTarget.replace(':build:', ':ng-build:');
+          ].buildTarget.replace(':build:', ':ng-build:');
         }
       );
     }
@@ -141,9 +144,9 @@ function updateProjectExecutors(tree: Tree, options: NormalizedSchema) {
         ...projectConfig.targets['extract-i18n'],
         options: {
           ...projectConfig.targets['extract-i18n'].options,
-          browserTarget: projectConfig.targets[
+          buildTarget: projectConfig.targets[
             'extract-i18n'
-          ].options.browserTarget.replace(':build', ':ng-build'),
+          ].options.buildTarget.replace(':build', ':ng-build'),
         },
       };
 

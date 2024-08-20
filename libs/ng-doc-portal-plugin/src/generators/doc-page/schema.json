@@ -9,7 +9,8 @@
       "$default": {
         "$source": "argv",
         "index": 0
-      }
+      },
+      "x-prompt": "What Doc Page name would you like to use?"
     },
     "directory": {
       "type": "string",
@@ -17,7 +18,8 @@
       "$default": {
         "$source": "argv",
         "index": 2
-      }
+      },
+      "x-prompt": "What Directory path would you like to use?"
     },
     "path": {
       "type": "string",
