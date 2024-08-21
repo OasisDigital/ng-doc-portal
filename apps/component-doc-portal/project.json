@@ -55,13 +55,13 @@
       }
     },
     "ng-build": {
-      "executor": "@angular-devkit/build-angular:browser",
+      "executor": "@angular-devkit/build-angular:application",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/apps/component-doc-portal",
         "index": "apps/component-doc-portal/src/index.html",
-        "main": "apps/component-doc-portal/src/main.ts",
-        "polyfills": "apps/component-doc-portal/src/polyfills.ts",
+        "browser": "apps/component-doc-portal/src/main.ts",
+        "polyfills": ["zone.js"],
         "tsConfig": "apps/component-doc-portal/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
         "assets": [
@@ -80,9 +80,7 @@
           "outputHashing": "all"
         },
         "development": {
-          "buildOptimizer": false,
           "optimization": false,
-          "vendorChunk": true,
           "extractLicenses": false,
           "sourceMap": true,
           "namedChunks": true
