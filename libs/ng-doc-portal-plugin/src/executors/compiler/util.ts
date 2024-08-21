@@ -209,7 +209,6 @@ export async function extractTitleFromDocPageFile(
 ) {
   const title = await getTitleFromTypeScript(filePath);
   const prefix = findTitlePrefixFromGlobPatterns(filePath, globPatterns);
-
   if (prefix) {
     return `${prefix}/${title}`;
   } else {
@@ -226,20 +225,11 @@ export async function extractTitleFromDocPageFile(
 export function generateDocPageLoader(filePath: string, title: string) {
   // Figure out variables for config list file output
   const filePathWithoutExtension = filePath.replace('.ts', '');
-  /* If nested folders are used */
-  const nestedPathCount = (
-    filePathWithoutExtension.split('/src')[0].split('apps/')[1].match(/\//g) ||
-    []
-  ).length;
   const route = title.toLowerCase().replace(/[ /]/g, '-');
-  let startingPath = '../../../../';
-  for (let index = 0; index < nestedPathCount; index++) {
-    startingPath += '../';
-  }
   return `
     '${route}': {
       title: '${title}',
-      fetch: () => import('${startingPath}${filePathWithoutExtension}').then((file) => file.default)
+      fetch: () => import('../../../../${filePathWithoutExtension}').then((file) => file.default)
     }
 `;
 }
@@ -264,6 +254,7 @@ export async function formatContent(content: string): Promise<string> {
  */
 export function wrapTypescriptBoilerplate(configStrings: string[]) {
   return `
+  /* eslint-disable */
   import { DocPageLoaderRecord } from '@oasisdigital/ng-doc-portal';
 
   export const docPageLoaders: DocPageLoaderRecord = {
